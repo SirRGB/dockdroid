@@ -35,7 +35,22 @@ _setup_jdk8() {
   javac -version
 }
 
+# Allow greater key sizes
+_key_size_sys_core() {
+  sed -i 's/!= 2048/< 2048/' "${ROM_DIR}"/system/core/libmincrypt/tools/DumpPublicKey.java
+}
+
+_key_size_recovery() {
+  sed -i 's/!= 2048/< 2048/' "${ROM_DIR}"/bootable/recovery/tools/dumpkey/DumpPublicKey.java
+}
+
 _setup_py2
 if [[ "${SDK_VERSION}" -lt 28 ]]; then
   _setup_jdk8
+fi
+
+if [[ "${SDK_VERSION}" -lt 29 ]] && [[ "${SDK_VERSION}" -gt 25 ]]; then
+  _key_size_recovery
+else
+  _key_size_sys_core
 fi

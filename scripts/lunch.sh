@@ -45,7 +45,6 @@ _get_sdk_version() {
     SDK_VERSION=34
   fi
   echo -e "${GREEN}SDK VERSION: ${SDK_VERSION}${NC}"
-  unset ROM_DIR
 }
 
 _lunch() {
@@ -73,7 +72,7 @@ _lunch() {
   set +eu
   lunch "${product}""${release_codename}"-"${BUILD_TYPE}"
   set -eu
-  unset BUILD_TYPE
+  unset BUILD_TYPE ROM_DIR
 }
 
 _ccache
