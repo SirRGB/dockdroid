@@ -12,7 +12,7 @@ _setup_logs() {
 # Pull manifest, local manifest and sync
 _sync() {
   cd "${ROM_DIR}" || exit
-  repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 --git-lfs --no-clone-bundle | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
+  repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 -g default,-darwin --git-lfs --no-clone-bundle | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
   if [[ -n $(ls .repo/local_manifests/) ]]; then
     rm .repo/local_manifests/*
   fi
