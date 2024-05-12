@@ -20,7 +20,8 @@ _sync() {
   local threads
   threads=$(nproc)
   repo forall -c 'git reset --hard; git clean -fdx' > /dev/null || true
-  repo sync --no-tags --no-clone-bundle -c --force-sync --retry-fetches=25 -j"${threads}" --jobs-network=$((threads < 16 ? threads : 16)) | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
+  repo sync --no-tags --no-clone-bundle -c --force-sync --retry-fetches=25 -j"${threads}" --jobs-network=$((threads < 16 ? threads : 16)) |
+    tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
   unset ROM_DIR ROM_BRANCH ROM_MANIFEST LOCAL_MANIFEST
 }
 
