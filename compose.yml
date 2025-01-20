@@ -1,0 +1,14 @@
+services:
+  minidroid:
+    build: .
+    volumes:
+      #rw
+      - ~/docker_droid/keys:/droid_workdir/keys
+      - ~/docker_droid/src:/droid_workdir/src
+      - ~/docker_droid/logs:/droid_workdir/logs
+      - ~/docker_droid/ccache:/droid_workdir/ccache
+      #ro
+      - ~/docker_droid/dotfiles/.gitconfig:/home/droid/.gitconfig:ro
+      - ~/docker_droid/dotfiles/.ssh:/home/droid/.ssh:ro
+      - ~/docker_droid/dotfiles/.gnupg:/home/droid/.gnupg:ro
+      - ~/docker_droid/secrets:/droid_workdir/secrets:ro

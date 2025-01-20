@@ -1,0 +1,58 @@
+FROM bitnami/minideb:bookworm
+
+ARG userid=1000
+ARG groupid=1000
+ARG username=droid
+
+ENV LOCAL_MANIFEST https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/cheeseburgerdumpling/A14Lineage.xml
+ENV DEVICE cheeseburger
+ENV BUILD_TYPE userdebug
+ENV ROM_MANIFEST https://github.com/LineageOS/android
+ENV ROM_BRANCH lineage-21.0
+
+ENV SRC_SUBDIR Los14
+ENV SCRIPT_DIR /droid_workdir/scripts
+ENV ROM_DIR /droid_workdir/src/$SRC_SUBDIR
+ENV KEYS_DIR /droid_workdir/keys
+ENV CCACHE_SIZE 80G
+ENV CCACHE_DIR /droid_workdir/ccache
+ENV BIN_DIR /droid_workdir/bin
+ENV SECRETS_DIR /droid_workdir/secrets
+ENV OTA_REPO_URL git@github.com:SirRGB/ota_config
+ENV OTA_DIR "$ROM_DIR"_ota
+
+# Switch to Root for Setup
+USER root
+
+# Android build deps
+RUN install_packages bc bison build-essential ca-certificates ccache curl flex g++-multilib gcc-multilib git git-lfs gnupg gperf \
+    imagemagick lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop \
+    pngcrush python3 python-is-python3 rsync schedtool ssh squashfs-tools unzip xsltproc zip zlib1g-dev
+
+# Set up user and work directories
+RUN groupadd -g $groupid $username \
+   && useradd -m -s /bin/bash -u $userid -g $groupid $username
+
+RUN mkdir -p "$SCRIPT_DIR" "$ROM_DIR" "$BIN_DIR" "$CCACHE_DIR" "$SECRETS_DIR"
+COPY scripts/ "$SCRIPT_DIR"/
+COPY bin/ "$BIN_DIR"/
+RUN chown -R $userid:$groupid /droid_workdir && chmod -R ug+srw /droid_workdir
+RUN chmod -R ug+x "$BIN_DIR" "$SECRETS_DIR" "$SCRIPT_DIR"
+
+# Switch to user for execution
+USER $username
+
+# Install and verify repo
+RUN gpg --recv-key 8BB9AD793E8E6153AF0F9A4416530D5E920F5C65
+RUN curl -o "$BIN_DIR"/repo https://storage.googleapis.com/git-repo-downloads/repo
+RUN curl https://storage.googleapis.com/git-repo-downloads/repo.asc | gpg --verify - "$BIN_DIR"/repo
+RUN chmod a+x "$BIN_DIR"/repo
+
+# Install Telegram script
+RUN curl https://raw.githubusercontent.com/fabianonline/telegram.sh/refs/heads/master/telegram > "$BIN_DIR"/telegram
+RUN chmod a+x "$BIN_DIR"/telegram
+
+# Set up ccache
+RUN export USE_CCACHE=1 && export CCACHE_EXEC="$CCACHE_DIR" && ccache -M "$CCACHE_SIZE" && ccache -o compression=true
+
+ENTRYPOINT "$SCRIPT_DIR"/init.sh
