@@ -13,7 +13,7 @@ _sync() {
   repo init -u "$ROM_MANIFEST" -b "$ROM_BRANCH" --depth=1 --git-lfs
   mkdir -p .repo/local_manifests
   if [[ -f .repo/local_manifests/* ]]; then
-  	rm .repo/local_manifests/*
+    rm .repo/local_manifests/*
   fi
   curl "$LOCAL_MANIFEST" > .repo/local_manifests/manifest.xml
   local THREADS=$(nproc)

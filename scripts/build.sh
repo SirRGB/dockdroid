@@ -207,6 +207,10 @@ cleanup() {
 }
 trap cleanup ERR
 
+# Set Key perms
+ls -al "$KEYS_DIR"/
+chmod 600 "$KEYS_DIR"/*
+
 _determine_signing # _sign_new, _sign_old
 _packaging # _version
 _extract_recovery

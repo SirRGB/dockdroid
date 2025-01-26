@@ -33,11 +33,12 @@ RUN install_packages bc bison build-essential ca-certificates ccache curl flex g
 RUN groupadd -g $groupid $username \
    && useradd -m -s /bin/bash -u $userid -g $groupid $username
 
-RUN mkdir -p "$SCRIPT_DIR" "$ROM_DIR" "$BIN_DIR" "$CCACHE_DIR" "$SECRETS_DIR"
+RUN mkdir -p "$SCRIPT_DIR" "$ROM_DIR" "$BIN_DIR" "$CCACHE_DIR" "$SECRETS_DIR" "$KEYS_DIR"
 COPY scripts/ "$SCRIPT_DIR"/
 COPY bin/ "$BIN_DIR"/
 RUN chown -R $userid:$groupid /droid_workdir && chmod -R ug+srw /droid_workdir
 RUN chmod -R ug+x "$BIN_DIR" "$SECRETS_DIR" "$SCRIPT_DIR"
+RUN chmod -R 700 "$KEYS_DIR"
 
 # Switch to user for execution
 USER $username
@@ -46,11 +47,11 @@ USER $username
 RUN gpg --recv-key 8BB9AD793E8E6153AF0F9A4416530D5E920F5C65
 RUN curl -o "$BIN_DIR"/repo https://storage.googleapis.com/git-repo-downloads/repo
 RUN curl https://storage.googleapis.com/git-repo-downloads/repo.asc | gpg --verify - "$BIN_DIR"/repo
-RUN chmod a+x "$BIN_DIR"/repo
+RUN chmod 500 "$BIN_DIR"/repo
 
 # Install Telegram script
 RUN curl https://raw.githubusercontent.com/fabianonline/telegram.sh/refs/heads/master/telegram > "$BIN_DIR"/telegram
-RUN chmod a+x "$BIN_DIR"/telegram
+RUN chmod 500 "$BIN_DIR"/telegram
 
 # Set up ccache
 RUN export USE_CCACHE=1 && export CCACHE_EXEC="$CCACHE_DIR" && ccache -M "$CCACHE_SIZE" && ccache -o compression=true
