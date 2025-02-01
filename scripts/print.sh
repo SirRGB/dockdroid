@@ -1,17 +1,26 @@
+_telegram_check_token() {
+  TELEGRAM_SET=false
+  set +u
+  if [[ -n ${TELEGRAM_SET} ]]; then
+    TELEGRAM_SET=true
+  fi
+  set -u
+}
+
 _print_sync_start() {
-  if [[ -z "$TELEGRAM_TOKEN" ]] && [[ -z "$TELEGRAM_CHAT" ]]; then
+  if [[ -n ${TELEGRAM_SET} ]]; then
     _telegram_sync_start
   fi
 }
 
-_print_sync_sucess() {
+_print_sync_success() {
   local GREEN='\033[0;32m'
 
   SYNC_END=$(date +"%s")
   SYNC_DIFF=$((SYNC_END - SYNC_START))
   echo -e "${GREEN}Sync completed successfully in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
 
-  if [[ -z "$TELEGRAM_TOKEN" ]] && [[ -z "$TELEGRAM_CHAT" ]]; then
+  if [[ -n ${TELEGRAM_SET} ]]; then
     _telegram_sync_end
   fi
 }
@@ -23,7 +32,7 @@ _print_sync_fail() {
   SYNC_DIFF=$((SYNC_END - SYNC_START))
   echo -e "${RED}Sync failed in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
 
-  if [[ -z "$TELEGRAM_TOKEN" ]] && [[ -z "$TELEGRAM_CHAT" ]]; then
+  if [[ -n ${TELEGRAM_SET} ]]; then
     _telegram_sync_fail
   fi
 }
@@ -54,13 +63,13 @@ _print_build_success() {
   echo -e "${GREEN}Build completed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
   echo -e "${GREEN}PACKAGE: $OUT/$PACKAGE_NAME"
 
-  if [[ -z "$TELEGRAM_TOKEN" ]] && [[ -z "$TELEGRAM_CHAT" ]]; then
+  if [[ -n ${TELEGRAM_SET} ]]; then
     _telegram_build_end
   fi
 }
 
 _print_build_start() {
-  if [[ -z "$TELEGRAM_TOKEN" ]] && [[ -z "$TELEGRAM_CHAT" ]]; then
+  if [[ -n ${TELEGRAM_SET} ]]; then
     _telegram_build_start
   fi
 }
@@ -91,13 +100,13 @@ _telegram_build_fail() {
 }
 
 _print_upload_start() {
-  if [[ -z "$TELEGRAM_TOKEN" ]] && [[ -z "$TELEGRAM_CHAT" ]]; then
+  if [[ -n ${TELEGRAM_SET} ]]; then
     _telegram_build_start
   fi
 }
 
 _print_upload_end() {
-  if [[ -z "$TELEGRAM_TOKEN" ]] && [[ -z "$TELEGRAM_CHAT" ]]; then
+  if [[ -n ${TELEGRAM_SET} ]]; then
     _telegram_upload_end
   fi
 }

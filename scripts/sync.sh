@@ -26,8 +26,9 @@ cleanup() {
 }
 trap cleanup ERR
 
+_telegram_check_token
 _print_sync_start
 _sync
-_print_sync_sucess
+_print_sync_success
 
 source "$SCRIPT_DIR"/lunch.sh
