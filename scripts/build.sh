@@ -205,7 +205,7 @@ _packaging() {
 # Extract signed recovery from signed target files
 _extract_recovery() {
   RECOVERY_NAME="$(echo $PACKAGE_NAME | sed 's/.zip/-recovery.img/g')"
-  unzip -p "$OUT"/signed-target_files.zip IMAGES/recovery.img > "$RECOVERY_NAME"
+  unzip -p "$OUT"/signed-target_files.zip IMAGES/recovery.img > "$OUT"/"$RECOVERY_NAME"
 }
 
 cleanup() {
