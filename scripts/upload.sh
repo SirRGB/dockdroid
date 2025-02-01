@@ -63,3 +63,4 @@ elif [[ -f .ssh/id_* ]] && [[ -z "$SF_USER" ]] && [[ -z "$SF_RELEASES_REPO" ]]; 
   _print_upload_start
   _push_ota_info
 fi
+_telegram_separator

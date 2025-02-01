@@ -52,8 +52,6 @@ _telegram_sync_fail() {
   telegram -M "Sync failed successfully"
 }
 
-
-
 # Print build success
 _print_build_success() {
   local GREEN='\033[0;32m'
@@ -119,4 +117,8 @@ _telegram_upload_end() {
   local custom_recovery_url="echo $custom_build_type | sed 's/.zip/-recovery.img/g'"
   telegram -M "Build successfully uploaded:\n[Download ROM:]($custom_ota_url)\n[Download Recovery]($custom_recovery_url)"
   curl --data parse_mode=HTML --data chat_id="$TELEGRAM_CHAT" --data sticker=CAADBQADGgEAAixuhBPbSa3YLUZ8DBYE --request POST https://api.telegram.org/bot"$TELEGRAM_TOKEN"/sendSticker
+}
+
+_telegram_separator() {
+  curl --data parse_mode=HTML --data chat_id=$TELEGRAM_CHAT --data sticker=CAADBQADGgEAAixuhBPbSa3YLUZ8DBYE --request POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendSticker
 }
