@@ -4,6 +4,12 @@
 
 source ${SCRIPT_DIR}/print.sh
 
+# Drop old builds
+_cleanup() {
+  m installclean
+}
+
+# Decide for signing method
 _determine_signing() {
   m target-files-package otatools
   # Read SDK Version, version_defaults doesnt exist on A14+
@@ -30,7 +36,7 @@ _determine_signing() {
   fi
 }
 
-# Old signing process (package), A11/below
+# Old signing process, A11/below
 _sign_old() {
   croot
   sign_target_files_apks -o -d "$KEYS_DIR" \
@@ -207,6 +213,7 @@ cleanup() {
 }
 trap cleanup ERR
 
+_cleanup
 _determine_signing # _sign_new, _sign_old
 _packaging # _version
 _extract_recovery
