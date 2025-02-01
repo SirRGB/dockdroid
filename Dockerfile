@@ -1,9 +1,9 @@
 FROM bitnami/minideb:bookworm
 
 # User
-ENV userid=1000
-ENV groupid=1000
-ENV username=droid
+ARG userid=1000
+ARG groupid=1000
+ARG username=droid
 
 # ROM
 ENV LOCAL_MANIFEST https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/cheeseburgerdumpling/A14Lineage.xml
