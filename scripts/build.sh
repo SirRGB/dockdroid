@@ -178,14 +178,14 @@ _version() {
   else
     ROM_VERSION=$(echo $(egrep "$VERSION_REGEX" "$ANDROID_BUILD_TOP"/vendor/*/config/common.mk | tr -d 'A-z:= ') | sed 's/ /./g')
   fi
-  ROM_PREFIX=$(egrep '_TARGET_PACKAGE[[:space:]]:=' "$ANDROID_BUILD_TOP"/vendor/*/build/tasks/* | cut -d"/" -f2 | cut -d"-" -f1)
+  ROM_PREFIX=$(egrep '_TARGET_PACKAGE[[:space:]]:=' "$ANDROID_BUILD_TOP"/vendor/*/build/tasks/* | cut -d"=" -f2 | cut -d"/" -f2 | cut -d"-" -f1)
   local ROM_EXTRAVERSION=
   if [ "$WITH_GMS" = "true" ]; then
     local ROM_EXTRAVERSION="GMS-"
   elif [ "$WITH_MICROG" = "true" ]; then
     local ROM_EXTRAVERSION="MICROG-"
   fi
-  PACKAGE_NAME="$ROM_PREFIX"-"$ROM_VERSION"-"$ROM_EXTRAVERSION"$(date +%Y%m%d)-"$TARGET_DEVICE"-signed.zip
+  PACKAGE_NAME="$ROM_PREFIX"-"$ROM_VERSION"-"$ROM_EXTRAVERSION"$(date +%Y%m%d)-"$DEVICE"-signed.zip
 }
 
 # Create flashable zip from target files
@@ -206,10 +206,6 @@ cleanup() {
   _print_build_fail
 }
 trap cleanup ERR
-
-# Set Key perms
-ls -al "$KEYS_DIR"/
-chmod 600 "$KEYS_DIR"/*
 
 _determine_signing # _sign_new, _sign_old
 _packaging # _version

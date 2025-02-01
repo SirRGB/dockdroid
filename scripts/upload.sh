@@ -6,7 +6,7 @@ source "$SCRIPT_DIR"/print.sh
 
 _upload_gh() {
   TAG="$(echo $(date +%Y%m%d%H%M)-$PACKAGE_NAME | tr -d '.zip')"
-  local DESC="$ROM_PREFIX for $TARGET_DEVICE"
+  local DESC="$ROM_PREFIX for $DEVICE"
 
   github-release SirRGB/releases "$OUT"/"$PACKAGE_NAME" "$TAG" "main" "$DESC"
   github-release SirRGB/releases "$OUT"/"$RECOVERY_NAME" "$TAG" "main" "$DESC"

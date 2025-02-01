@@ -1,23 +1,27 @@
 FROM bitnami/minideb:bookworm
 
-ARG userid=1000
-ARG groupid=1000
-ARG username=droid
+# User
+ENV userid=1000
+ENV groupid=1000
+ENV username=droid
 
+# ROM
 ENV LOCAL_MANIFEST https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/cheeseburgerdumpling/A14Lineage.xml
 ENV DEVICE cheeseburger
 ENV BUILD_TYPE userdebug
 ENV ROM_MANIFEST https://github.com/LineageOS/android
 ENV ROM_BRANCH lineage-21.0
 
+# Dirs
 ENV SRC_SUBDIR Los14
-ENV SCRIPT_DIR /droid_workdir/scripts
-ENV ROM_DIR /droid_workdir/src/$SRC_SUBDIR
-ENV KEYS_DIR /droid_workdir/keys
+ENV ROOT_DIR /droid_workdir
+ENV SCRIPT_DIR $ROOT_DIR/scripts
+ENV ROM_DIR $ROOT_DIR/src/$SRC_SUBDIR
+ENV KEYS_DIR $ROOT_DIR/keys
 ENV CCACHE_SIZE 80G
-ENV CCACHE_DIR /droid_workdir/ccache
-ENV BIN_DIR /droid_workdir/bin
-ENV SECRETS_DIR /droid_workdir/secrets
+ENV CCACHE_DIR $ROOT_DIR/ccache
+ENV BIN_DIR $ROOT_DIR/bin
+ENV SECRETS_DIR $ROOT_DIR/secrets
 ENV OTA_REPO_URL git@github.com:SirRGB/ota_config
 ENV OTA_DIR "$ROM_DIR"_ota
 
@@ -29,14 +33,16 @@ RUN install_packages bc bison build-essential ca-certificates ccache curl flex g
     imagemagick lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop \
     pngcrush python3 python-is-python3 rsync schedtool ssh squashfs-tools unzip xsltproc zip zlib1g-dev
 
-# Set up user and work directories
-RUN groupadd -g $groupid $username \
-   && useradd -m -s /bin/bash -u $userid -g $groupid $username
-
+# Create dirs and copy scripts
 RUN mkdir -p "$SCRIPT_DIR" "$ROM_DIR" "$BIN_DIR" "$CCACHE_DIR" "$SECRETS_DIR" "$KEYS_DIR"
 COPY scripts/ "$SCRIPT_DIR"/
 COPY bin/ "$BIN_DIR"/
-RUN chown -R $userid:$groupid /droid_workdir && chmod -R ug+srw /droid_workdir
+
+# Set up user and work directories
+RUN groupadd -g $groupid $username \
+   && useradd -m -s /bin/bash -u $userid -g $groupid $username -d $ROOT_DIR
+
+RUN chown -R $userid:$groupid $ROOT_DIR && chmod -R ug+srw $ROOT_DIR
 RUN chmod -R ug+x "$BIN_DIR" "$SECRETS_DIR" "$SCRIPT_DIR"
 RUN chmod -R 700 "$KEYS_DIR"
 
