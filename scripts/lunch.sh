@@ -4,6 +4,17 @@ set +u
 
 source "$SCRIPT_DIR"/print.sh
 
+# Set up ccache
+_ccache() {
+  if [[ -n ${CCACHE_SIZE} ]] && [[ ${CCACHE_SIZE} -gt 0 ]]; then
+    export USE_CCACHE=1
+    export CCACHE_EXEC=/usr/bin/ccache
+    export CCACHE_DIR=/mnt/ccache
+    ccache -M ${CCACHE_SIZE}G
+    ccache -o compression=true
+  fi
+}
+
 _lunch() {
   source build/envsetup.sh
 
@@ -21,6 +32,7 @@ _lunch() {
   lunch "$PRODUCT""$RELEASE_CODENAME"-"$BUILD_TYPE"
 }
 
+_ccache
 _lunch
 _print_build_start
 

@@ -5,7 +5,7 @@ services:
       #rw
       - ~/docker_droid/src:/droid_workdir/src
       - ~/docker_droid/logs:/droid_workdir/logs
-      - ~/docker_droid/ccache:/droid_workdir/ccache
+      - ~/docker_droid/ccache:/mnt/ccache
       - ~/docker_droid/keys:/droid_workdir/keys # aosp does weird chmod stuff in here
       #ro
       - ~/docker_droid/dotfiles/.gitconfig:/home/droid/.gitconfig:ro

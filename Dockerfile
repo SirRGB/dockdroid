@@ -20,8 +20,7 @@ ENV ROM_DIR $ROOT_DIR/src/$SRC_SUBDIR
 ENV OTA_REPO_URL git@github.com:SirRGB/ota_config
 ENV OTA_DIR "$ROM_DIR"_ota
 ENV KEYS_DIR $ROOT_DIR/keys
-ENV CCACHE_SIZE 80G
-ENV CCACHE_DIR $ROOT_DIR/ccache
+ENV CCACHE_SIZE 80
 ENV BIN_DIR $ROOT_DIR/bin
 ENV SECRETS_DIR $ROOT_DIR/secrets
 
@@ -29,12 +28,12 @@ ENV SECRETS_DIR $ROOT_DIR/secrets
 USER root
 
 # Android build deps
-RUN install_packages bc bison build-essential ca-certificates ccache curl flex g++-multilib gcc-multilib git git-lfs gnupg gperf \
-    imagemagick lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop \
-    pngcrush python3 python-is-python3 rsync schedtool ssh squashfs-tools unzip xsltproc zip zlib1g-dev
+RUN install_packages bc bison build-essential ca-certificates ccache curl flex g++-multilib gcc-multilib git git-lfs gnupg \
+    gperf imagemagick lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libsdl1.2-dev libssl-dev libxml2 libxml2-utils \
+    lzop pngcrush python3 python-is-python3 rsync schedtool ssh squashfs-tools unzip xsltproc zip zlib1g-dev
 
 # Create dirs and copy scripts
-RUN mkdir -p "$SCRIPT_DIR" "$ROM_DIR" "$BIN_DIR" "$CCACHE_DIR" "$SECRETS_DIR" "$KEYS_DIR"
+RUN mkdir -p "$SCRIPT_DIR" "$ROM_DIR" "$BIN_DIR" "$SECRETS_DIR" "$KEYS_DIR"
 COPY scripts/ "$SCRIPT_DIR"/
 COPY bin/ "$BIN_DIR"/
 
@@ -44,7 +43,6 @@ RUN groupadd -g $groupid $username \
 
 RUN chown -R $userid:$groupid $ROOT_DIR && chmod -R ug+srw $ROOT_DIR
 RUN chmod -R ug+x "$BIN_DIR" "$SECRETS_DIR" "$SCRIPT_DIR"
-RUN chmod -R 700 "$KEYS_DIR"
 
 # Switch to user for execution
 USER $username
@@ -58,8 +56,5 @@ RUN chmod 500 "$BIN_DIR"/repo
 # Install Telegram script
 RUN curl https://raw.githubusercontent.com/fabianonline/telegram.sh/refs/heads/master/telegram > "$BIN_DIR"/telegram
 RUN chmod 500 "$BIN_DIR"/telegram
-
-# Set up ccache
-RUN export USE_CCACHE=1 && export CCACHE_EXEC="$CCACHE_DIR" && ccache -M "$CCACHE_SIZE" && ccache -o compression=true
 
 ENTRYPOINT "$SCRIPT_DIR"/init.sh
