@@ -19,6 +19,7 @@ _sync() {
 
 cleanup() {
   _print_sync_fail
+  _telegram_separator
 }
 trap cleanup ERR
 

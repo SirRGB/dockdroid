@@ -1,5 +1,5 @@
 services:
-  minidroid:
+  dockdroid:
     build: .
     volumes:
       #rw

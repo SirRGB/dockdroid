@@ -210,6 +210,7 @@ _extract_recovery() {
 
 cleanup() {
   _print_build_fail
+  _telegram_separator
 }
 trap cleanup ERR
 

@@ -56,7 +56,7 @@ _print_build_success() {
   BUILD_END=$(date +"%s")
   BUILD_DIFF=$((BUILD_END - BUILD_START))
   echo -e "${GREEN}Build completed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
-  echo -e "${GREEN}PACKAGE: $OUT/$PACKAGE_NAME"
+  echo -e "${GREEN}Package: $OUT/$PACKAGE_NAME"
 
   if [[ -n ${TELEGRAM_SET} ]]; then
     _telegram_build_success
@@ -77,7 +77,7 @@ _print_build_fail() {
   BUILD_DIFF=$((BUILD_END - BUILD_START))
   echo -e "${RED}Build failed in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
 
-  if [[ -z "$TELEGRAM_TOKEN" ]] && [[ -z "$TELEGRAM_CHAT" ]]; then
+  if [[ -n ${TELEGRAM_SET} ]]; then
     _telegram_build_fail
   fi
 }
@@ -111,8 +111,10 @@ _telegram_upload_start() {
 }
 
 _telegram_upload_success() {
-  local custom_recovery_url="echo $custom_build_type | sed 's/.zip/-recovery.img/g'"
-  telegram -M "Build successfully uploaded:\n[Download ROM:]($custom_ota_url)\n[Download Recovery]($custom_recovery_url)"
+  local custom_recovery_url=$(echo $custom_ota_url | sed "s/.zip/-recovery.img/g")
+  telegram -M "Build successfully uploaded:
+ROM: ${custom_ota_url}
+Recovery: ${custom_recovery_url}"
 }
 
 _telegram_separator() {

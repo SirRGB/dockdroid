@@ -32,16 +32,16 @@ _upload_sf() {
 # Create/print ota json
 _ota_info() {
   local file_size=$(stat -c%s ${OUT}/${PACKAGE_NAME})
-  local id=$(sha256sum ${OUT}/${PACKAGE_NAME})
+  local id=$(sha256sum ${OUT}/${PACKAGE_NAME} | cut -d" " -f1)
   local datetime=$(grep ro\.build\.date\.utc ${OUT}/system/build.prop | cut -d"=" -f2)
   local rom_version=${ROM_VERSION}
   local custom_build_type="UNOFFICIAL"
   if [[ ${UPLOAD_TARGET} = "gh" ]]; then
-    custom_ota_url="https://github.com/${GH_RELEASES_REPO}/releases/download/${TAG}/${PACKAGE_NAME}"
+    export custom_ota_url="https://github.com/${GH_RELEASES_REPO}/releases/download/${TAG}/${PACKAGE_NAME}"
   elif [[ ${UPLOAD_TARGET} = "sf" ]]; then
-    custom_ota_url="https://sourceforge.net/projects/$SF_RELEASES_REPO/files/$DEVICE/$ROM_PREFIX/$PACKAGE_NAME/download"
+    export custom_ota_url="https://sourceforge.net/projects/$SF_RELEASES_REPO/files/$DEVICE/$ROM_PREFIX/$PACKAGE_NAME/download"
   fi
-  echo "{\n  \"response\": [\n    {\n      \"datetime\": $datetime,\n      \"filename\": \"$PACKAGE_NAME\",\n      \"id\": \"$id\",\n      \"romtype\": \"$custom_build_type\",\n      \"size\": $file_size,\n      \"url\": \"custom_ota_url\",\n      \"version\": \"$rom_version\"\n    }\n  ]\n}" > "$OUT"/"$PACKAGE_NAME".json
+  echo -e "{\n  \"response\": [\n    {\n      \"datetime\": ${datetime},\n      \"filename\": \"${PACKAGE_NAME}\",\n      \"id\": \"${id}\",\n      \"romtype\": \"${custom_build_type}\",\n      \"size\": ${file_size},\n      \"url\": \"${custom_ota_url}\",\n      \"version\": \"${rom_version}\"\n    }\n  ]\n}" > "$OUT"/"$PACKAGE_NAME".json
   echo "OTA JSON: ${OUT}/${PACKAGE_NAME}.json"
 }
 

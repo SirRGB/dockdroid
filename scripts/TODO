@@ -1,4 +1,4 @@
 key gen
 device/flavor list
 legacy compat i.e. py2, jdk8 + TLSv1, TLSv1.1 (https://stackoverflow.com/questions/67363030/rebuild-android-code-with-error-ssl-error-when-connecting-to-the-jack-server-t)
-guard sf/gh token
+gpg?
