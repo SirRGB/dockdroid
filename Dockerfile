@@ -40,9 +40,7 @@ COPY bin/ "$BIN_DIR"/
 # Set up user and work directories
 RUN groupadd -g $groupid $username \
    && useradd -m -s /bin/bash -u $userid -g $groupid $username -d $ROOT_DIR
-
 RUN chown -R $userid:$groupid $ROOT_DIR && chmod -R ug+srw $ROOT_DIR
-RUN chmod -R ug+x "$BIN_DIR" "$SECRETS_DIR" "$SCRIPT_DIR"
 
 # Switch to user for execution
 USER $username
@@ -51,10 +49,8 @@ USER $username
 RUN gpg --recv-key 8BB9AD793E8E6153AF0F9A4416530D5E920F5C65
 RUN curl -o "$BIN_DIR"/repo https://storage.googleapis.com/git-repo-downloads/repo
 RUN curl https://storage.googleapis.com/git-repo-downloads/repo.asc | gpg --verify - "$BIN_DIR"/repo
-RUN chmod 500 "$BIN_DIR"/repo
-
 # Install Telegram script
 RUN curl https://raw.githubusercontent.com/fabianonline/telegram.sh/refs/heads/master/telegram > "$BIN_DIR"/telegram
-RUN chmod 500 "$BIN_DIR"/telegram
+RUN chmod -R 500 ${BIN_DIR} ${SCRIPT_DIR}
 
 ENTRYPOINT "$SCRIPT_DIR"/init.sh

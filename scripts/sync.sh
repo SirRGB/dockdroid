@@ -1,13 +1,9 @@
 #!/bin/bash
 
-#set -euxo pipefail
-
 source "$SCRIPT_DIR"/print.sh
 
 # Pull manifest, local manifest and sync
 _sync() {
-#  ls "$ROM_DIR"
-  echo "$ROM_DIR"
   cd "$ROM_DIR"
   SYNC_START=$(date +"%s")
   repo init -u "$ROM_MANIFEST" -b "$ROM_BRANCH" --depth=1 --git-lfs

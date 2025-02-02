@@ -21,7 +21,7 @@ _print_sync_success() {
   echo -e "${GREEN}Sync completed successfully in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
 
   if [[ -n ${TELEGRAM_SET} ]]; then
-    _telegram_sync_end
+    _telegram_sync_success
   fi
 }
 
@@ -41,14 +41,11 @@ _telegram_sync_start() {
   telegram -M "Sync started for ${ROM_MANIFEST}/tree/${ROM_BRANCH}"
 }
 
-_telegram_sync_end() {
+_telegram_sync_success() {
   telegram -M "Sync completed successfully in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
 }
 
 _telegram_sync_fail() {
-  SYNC_END=$(date +"%s")
-  SYNC_DIFF=$((SYNC_END - SYNC_START))
-
   telegram -M "Sync failed successfully"
 }
 
@@ -62,7 +59,7 @@ _print_build_success() {
   echo -e "${GREEN}PACKAGE: $OUT/$PACKAGE_NAME"
 
   if [[ -n ${TELEGRAM_SET} ]]; then
-    _telegram_build_end
+    _telegram_build_success
   fi
 }
 
@@ -89,7 +86,7 @@ _telegram_build_start() {
   telegram -M "Build started for ${DEVICE}"
 }
 
-_telegram_build_end() {
+_telegram_build_success() {
   telegram -M "Build completed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
 }
 
@@ -99,13 +96,13 @@ _telegram_build_fail() {
 
 _print_upload_start() {
   if [[ -n ${TELEGRAM_SET} ]]; then
-    _telegram_build_start
+    _telegram_upload_start
   fi
 }
 
-_print_upload_end() {
+_print_upload_success() {
   if [[ -n ${TELEGRAM_SET} ]]; then
-    _telegram_upload_end
+    _telegram_upload_success
   fi
 }
 
@@ -113,12 +110,11 @@ _telegram_upload_start() {
   telegram -M "Upload started"
 }
 
-_telegram_upload_end() {
+_telegram_upload_success() {
   local custom_recovery_url="echo $custom_build_type | sed 's/.zip/-recovery.img/g'"
   telegram -M "Build successfully uploaded:\n[Download ROM:]($custom_ota_url)\n[Download Recovery]($custom_recovery_url)"
-  curl --data parse_mode=HTML --data chat_id="$TELEGRAM_CHAT" --data sticker=CAADBQADGgEAAixuhBPbSa3YLUZ8DBYE --request POST https://api.telegram.org/bot"$TELEGRAM_TOKEN"/sendSticker
 }
 
 _telegram_separator() {
-  curl --data parse_mode=HTML --data chat_id=$TELEGRAM_CHAT --data sticker=CAADBQADGgEAAixuhBPbSa3YLUZ8DBYE --request POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendSticker
+  curl --data parse_mode=HTML --data chat_id=${TELEGRAM_CHAT} --data sticker=CAADBQADGgEAAixuhBPbSa3YLUZ8DBYE --request POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendSticker
 }

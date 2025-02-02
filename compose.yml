@@ -8,7 +8,7 @@ services:
       - ~/docker_droid/ccache:/mnt/ccache
       - ~/docker_droid/keys:/droid_workdir/keys # aosp does weird chmod stuff in here
       #ro
-      - ~/docker_droid/dotfiles/.gitconfig:/home/droid/.gitconfig:ro
-      - ~/docker_droid/dotfiles/.ssh:/home/droid/.ssh:ro
-      - ~/docker_droid/dotfiles/.gnupg:/home/droid/.gnupg:ro
+      - ~/docker_droid/dotfiles/.gitconfig:/droid_workdir/.gitconfig:ro
+      - ~/docker_droid/dotfiles/.ssh:/droid_workdir/.ssh:ro
+      - ~/docker_droid/dotfiles/.gnupg:/droid_workdir/.gnupg:ro
       - ~/docker_droid/secrets:/droid_workdir/secrets:ro

@@ -16,7 +16,6 @@ Variables
 - SF_RELEASES_REPO
 - TELEGRAM_TOKEN
 - TELEGRAM_CHAT
-- SF_USER
 
 Authentication:
 while github releases relies on the token, ota info pushing to a github repo and the sourceforge upload require ssh keys, that are added in your account and gitconfig.

@@ -28,10 +28,10 @@ _determine_signing() {
 
   # If Android version greater than 11, use apex signing
   if [ ${SDK_VERSION} -gt 30 ]; then
-    echo "Apex Signing"
+    echo "APEX Signing"
     _sign_new
   else
-    echo "Package Signing"
+    echo "Legacy Signing"
     _sign_old
   fi
 }
