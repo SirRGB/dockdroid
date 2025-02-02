@@ -1,4 +1,7 @@
 key gen
-device/flavor list
+A10 lunch currently fails
+bacon regex, automatic
+find a way to pass env vars more easily
+device/flavor list, for loop
 legacy compat i.e. py2, jdk8 + TLSv1, TLSv1.1 (https://stackoverflow.com/questions/67363030/rebuild-android-code-with-error-ssl-error-when-connecting-to-the-jack-server-t)
-gpg?
+gpg commit signing?
