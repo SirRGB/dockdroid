@@ -1,20 +1,22 @@
 WIP
 ----
 
-Setup
+Prerequisites
 --
-- docker
-- ssh
-- gitconfig
-- zram/swap
+- [docker](https://docs.docker.com/engine/install)
+ - [rootless (recommended)](https://docs.docker.com/engine/security/rootless/)
+- [ssh](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+- [gitconfig](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
+- [zram/swap (distro dependant, highly recommended)](https://github.com/systemd/zram-generator)
+- perm mess
 
-Variables
+Variables (secrets)
 --
-- GITHUB_TOKEN
+- [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
 - GH_RELEASES_REPO
 - SF_USER
 - SF_RELEASES_REPO
-- TELEGRAM_TOKEN
+- [TELEGRAM_TOKEN](https://core.telegram.org/bots/features#botfather)
 - TELEGRAM_CHAT
 
 Authentication:
