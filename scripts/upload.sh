@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -euxo pipefail
-
 source "$SCRIPT_DIR"/print.sh
 
 _upload_check() {

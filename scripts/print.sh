@@ -1,14 +1,14 @@
 _telegram_check_token() {
-  TELEGRAM_SET=false
+  TELEGRAM_SET="false"
   set +u
-  if [[ -n ${TELEGRAM_SET} ]]; then
-    TELEGRAM_SET=true
+  if [[ -n ${TELEGRAM_TOKEN} ]]; then
+    TELEGRAM_SET="true"
   fi
   set -u
 }
 
 _print_sync_start() {
-  if [[ -n ${TELEGRAM_SET} ]]; then
+  if [[ ${TELEGRAM_SET} = "true" ]]; then
     _telegram_sync_start
   fi
 }
@@ -20,7 +20,7 @@ _print_sync_success() {
   SYNC_DIFF=$((SYNC_END - SYNC_START))
   echo -e "${GREEN}Sync completed successfully in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
 
-  if [[ -n ${TELEGRAM_SET} ]]; then
+  if [[ ${TELEGRAM_SET} = "true" ]]; then
     _telegram_sync_success
   fi
 }
@@ -32,7 +32,7 @@ _print_sync_fail() {
   SYNC_DIFF=$((SYNC_END - SYNC_START))
   echo -e "${RED}Sync failed in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
 
-  if [[ -n ${TELEGRAM_SET} ]]; then
+  if [[ ${TELEGRAM_SET} = "true" ]]; then
     _telegram_sync_fail
   fi
 }
@@ -58,13 +58,13 @@ _print_build_success() {
   echo -e "${GREEN}Build completed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
   echo -e "${GREEN}Package: $OUT/$PACKAGE_NAME"
 
-  if [[ -n ${TELEGRAM_SET} ]]; then
+  if [[ ${TELEGRAM_SET} = "true" ]]; then
     _telegram_build_success
   fi
 }
 
 _print_build_start() {
-  if [[ -n ${TELEGRAM_SET} ]]; then
+  if [[ ${TELEGRAM_SET} = "true" ]]; then
     _telegram_build_start
   fi
 }
@@ -77,7 +77,7 @@ _print_build_fail() {
   BUILD_DIFF=$((BUILD_END - BUILD_START))
   echo -e "${RED}Build failed in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
 
-  if [[ -n ${TELEGRAM_SET} ]]; then
+  if [[ ${TELEGRAM_SET} = "true" ]]; then
     _telegram_build_fail
   fi
 }
@@ -95,13 +95,13 @@ _telegram_build_fail() {
 }
 
 _print_upload_start() {
-  if [[ -n ${TELEGRAM_SET} ]]; then
+  if [[ ${TELEGRAM_SET} = "true" ]]; then
     _telegram_upload_start
   fi
 }
 
 _print_upload_success() {
-  if [[ -n ${TELEGRAM_SET} ]]; then
+  if [[ ${TELEGRAM_SET} = "true" ]]; then
     _telegram_upload_success
   fi
 }
@@ -113,10 +113,14 @@ _telegram_upload_start() {
 _telegram_upload_success() {
   local custom_recovery_url=$(echo $custom_ota_url | sed "s/.zip/-recovery.img/g")
   telegram -M "Build successfully uploaded:
-ROM: ${custom_ota_url}
-Recovery: ${custom_recovery_url}"
+ROM:
+${custom_ota_url}
+Recovery:
+${custom_recovery_url}"
 }
 
 _telegram_separator() {
-  curl --data parse_mode=HTML --data chat_id=${TELEGRAM_CHAT} --data sticker=CAADBQADGgEAAixuhBPbSa3YLUZ8DBYE --request POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendSticker
+  if [[ ${TELEGRAM_SET} = "true" ]]; then
+    curl --data parse_mode=HTML --data chat_id=${TELEGRAM_CHAT} --data sticker=CAADBQADGgEAAixuhBPbSa3YLUZ8DBYE --request POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendSticker
+  fi
 }
