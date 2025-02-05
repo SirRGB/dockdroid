@@ -11,6 +11,7 @@ ENV DEVICE cheeseburger
 ENV BUILD_TYPE userdebug
 ENV ROM_MANIFEST https://github.com/LineageOS/android
 ENV ROM_BRANCH lineage-21.0
+ENV KEYS_SUBJECT '/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
 
 # Dirs
 ENV ROOT_DIR /droid_workdir
@@ -48,9 +49,11 @@ USER $username
 # Install and verify repo
 RUN gpg --recv-key 8BB9AD793E8E6153AF0F9A4416530D5E920F5C65
 RUN curl -o "$BIN_DIR"/repo https://storage.googleapis.com/git-repo-downloads/repo
-RUN curl https://storage.googleapis.com/git-repo-downloads/repo.asc | gpg --verify - "$BIN_DIR"/repo
+RUN curl https://storage.googleapis.com/git-repo-downloads/repo.asc | gpg --verify - ${BIN_DIR}/repo
+# Provide make_key to create signing keys
+RUN curl https://raw.githubusercontent.com/LineageOS/android_development/refs/heads/lineage-22.1/tools/make_key > ${BIN_DIR}/make_key && sed -i 's|2048|4096|g' ${BIN_DIR}/make_key
 # Install Telegram script
-RUN curl https://raw.githubusercontent.com/fabianonline/telegram.sh/refs/heads/master/telegram > "$BIN_DIR"/telegram
+RUN curl https://raw.githubusercontent.com/fabianonline/telegram.sh/refs/heads/master/telegram > ${BIN_DIR}/telegram
 RUN chmod -R 500 ${BIN_DIR} ${SCRIPT_DIR}
 
 ENTRYPOINT "$SCRIPT_DIR"/init.sh
