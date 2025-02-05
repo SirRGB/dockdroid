@@ -9,6 +9,7 @@ Prerequisites
 - [gitconfig](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
 - [zram/swap (distro dependant, highly recommended)](https://github.com/systemd/zram-generator)
 - perm mess
+ - currently the only way it seems to work is creating the required folders by hand and getting a full sync first and then checking the uid with ls -n, to chown everything to that user.
 
 Variables (secrets)
 --
