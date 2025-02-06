@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail #-x
+set -eEuo pipefail #-x
 
 export PATH="$PATH":"$BIN_DIR"
 

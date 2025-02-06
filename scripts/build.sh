@@ -6,12 +6,16 @@ source ${SCRIPT_DIR}/print.sh
 
 # Drop old builds
 _cleanup() {
+  set +eu
   m installclean
+  set -eu
 }
 
 # Decide for signing method
 _determine_signing() {
+  set +eu
   m target-files-package otatools
+  set -eu
   # Read SDK Version, version_defaults doesnt exist on A14+
   if [[ -f "${ANDROID_BUILD_TOP}/build/make/core/version_defaults.mk" ]]; then
     local SDK_VERSION=$(egrep "PLATFORM_SDK_VERSION :=" ${ANDROID_BUILD_TOP}/build/make/core/version_defaults.mk | tr -d "A-z:= ")
@@ -38,14 +42,17 @@ _determine_signing() {
 
 # Old signing process, A11/below
 _sign_old() {
+  set +eu
   croot
   sign_target_files_apks -o -d "$KEYS_DIR" \
       "$OUT"/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip \
       "$OUT"/signed-target_files.zip
+  set -eu
 }
 
 # New signing process (APEX), A12/up
 _sign_new() {
+  set +eu
   croot
   sign_target_files_apks -o -d "$KEYS_DIR" \
       --extra_apks AdServicesApk.apk="$KEYS_DIR"/releasekey \
@@ -171,6 +178,7 @@ _sign_new() {
       --extra_apex_payload_key com.qorvo.uwb.apex="$KEYS_DIR"/com.qorvo.uwb.pem \
       "$OUT"/obj/PACKAGING/target_files_intermediates/*-target_files*.zip \
       "$OUT"/signed-target_files.zip
+  set -eu
 }
 
 # Only works for PRODUCT_VERSION_MAJOR|MINOR
@@ -197,9 +205,11 @@ _version() {
 # Create flashable zip from target files
 _packaging() {
   _version
+  set +eu
   ota_from_target_files -k "$KEYS_DIR"/releasekey \
       "$OUT"/signed-target_files.zip \
       "$OUT"/"$PACKAGE_NAME"
+  set -eu
 }
 
 # Extract signed recovery from signed target files
