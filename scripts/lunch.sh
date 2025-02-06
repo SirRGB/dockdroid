@@ -38,7 +38,7 @@ _lunch() {
   # Append release codename, if exists (A14+)
   RELEASE_CODENAME=
   if [[ -d "${ANDROID_BUILD_TOP}"/build/release/aconfig/ ]]; then
-    RELEASE_CODENAME=-$(ls -1 -I trunk* -I root "${ANDROID_BUILD_TOP}"/build/release/aconfig/)
+    RELEASE_CODENAME=-$(ls -1 -I trunk* -I root "${ANDROID_BUILD_TOP}"/build/release/aconfig/ | tail -n1)
   fi
   local RELEASE_CODENAME
 
