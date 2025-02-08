@@ -4,12 +4,13 @@ WIP
 Prerequisites
 --
 - [docker](https://docs.docker.com/engine/install)
- - [rootless (recommended)](https://docs.docker.com/engine/security/rootless/)
+- [docker rootless (recommended)](https://docs.docker.com/engine/security/rootless/)
 - [ssh](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - [gitconfig](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
 - [zram/swap (distro dependant, highly recommended)](https://github.com/systemd/zram-generator)
 - perm mess
- - currently the only way it seems to work is creating the required folders by hand and getting a full sync first and then checking the uid with ls -n, to chown everything to that user.
+- currently the only way it seems to work is creating ~/docker_droid/Los14/.repo by hand, chmodding that to 707
+  and getting a sync started and then checking the uid with ls -n, to chown everything to dockeruser:user and chmodding it to 770.
 
 Variables (secrets)
 --

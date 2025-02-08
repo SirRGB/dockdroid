@@ -11,10 +11,11 @@ _sync() {
     rm .repo/local_manifests/*
   fi
   curl "${LOCAL_MANIFEST}" > .repo/local_manifests/manifest.xml
-  THREADS=$(nproc --all)
   local THREADS
+  THREADS=$(nproc)
   repo forall -c 'git reset --hard; git clean -fdx' > /dev/null || true
   repo sync --no-tags --no-clone-bundle -c --force-sync --retry-fetches=25 -j"${THREADS}" --jobs-network=$((THREADS < 16 ? THREADS : 16))
+  unset ROM_DIR ROM_BRANCH ROM_MANIFEST LOCAL_MANIFEST
 }
 
 cleanup() {

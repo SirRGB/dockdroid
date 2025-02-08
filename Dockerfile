@@ -13,15 +13,17 @@ ENV ROM_MANIFEST https://github.com/LineageOS/android
 ENV ROM_BRANCH lineage-21.0
 ENV KEYS_SUBJECT '/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
 
+# Extra
+ENV CCACHE_SIZE 80
+ENV OTA_REPO_URL git@github.com:SirRGB/ota_config
+
 # Dirs
 ENV ROOT_DIR /droid_workdir
 ENV SCRIPT_DIR "${ROOT_DIR}"/scripts
 ENV SRC_SUBDIR Los14
 ENV ROM_DIR "${ROOT_DIR}"/src/"${SRC_SUBDIR}"
-ENV OTA_REPO_URL git@github.com:SirRGB/ota_config
 ENV OTA_DIR "${ROM_DIR}"_ota
 ENV KEYS_DIR "${ROOT_DIR}"/keys
-ENV CCACHE_SIZE 80
 ENV BIN_DIR "${ROOT_DIR}"/bin
 ENV SECRETS_DIR "${ROOT_DIR}"/secrets
 

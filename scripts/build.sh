@@ -11,6 +11,7 @@ _cleanup() {
 
 # Decide for signing method
 _determine_signing() {
+  local SDK_VERSION
   set +eu
   m target-files-package otatools
   set -eu
@@ -27,7 +28,6 @@ _determine_signing() {
   else
     SDK_VERSION="36"
   fi
-  local SDK_VERSION
 
   # If Android version greater than 11, use apex signing
   if [[ "${SDK_VERSION}" -gt 30 ]]; then
@@ -183,23 +183,26 @@ _sign_new() {
 # Only works for PRODUCT_VERSION_MAJOR|MINOR
 # Planned to work on Leaf OS/Lineage OS/CyanogenMOD/amyROM
 _version() {
-  VERSION_REGEX='^PRODUCT_VERSION_M.{2}OR[[:space:]]:?=[[:space:]][[:digit:]]{1,2}'
   local VERSION_REGEX
+  VERSION_REGEX='^PRODUCT_VERSION_M.{2}OR[[:space:]]:?=[[:space:]][[:digit:]]{1,2}'
+  readonly VERSION_REGEX
 
   # Search for line containing the regex inside *[V|v]ersion.mk|common.mk, cut that number and set points in between
+  local ROM_PREFIX ROM_VERSION ROM_EXTRAVERSION
+  ROM_PREFIX=$(grep -E '_TARGET_PACKAGE[[:space:]]:=' "${ANDROID_BUILD_TOP}"/vendor/*/build/tasks/* | cut -d"=" -f2 | cut -d"/" -f2 | cut -d"-" -f1)
   if [[ -n $(ls "${ANDROID_BUILD_TOP}"/vendor/*/config/*[vV]ersion.mk) ]]; then
     ROM_VERSION=$(echo $(grep -E "${VERSION_REGEX}" "${ANDROID_BUILD_TOP}"/vendor/*/config/*[vV]ersion.mk | tr -d 'A-z:= ') | sed 's/ /./g')
   else
     ROM_VERSION=$(echo $(grep -E "${VERSION_REGEX}" "${ANDROID_BUILD_TOP}"/vendor/*/config/common.mk | tr -d 'A-z:= ') | sed 's/ /./g')
   fi
-  ROM_PREFIX=$(grep -E '_TARGET_PACKAGE[[:space:]]:=' "${ANDROID_BUILD_TOP}"/vendor/*/build/tasks/* | cut -d"=" -f2 | cut -d"/" -f2 | cut -d"-" -f1)
   ROM_EXTRAVERSION=
+  set +u
   if [[ "${WITH_GMS}" = "true" ]]; then
     ROM_EXTRAVERSION="GMS-"
   elif [[ "${WITH_MICROG}" = "true" ]]; then
     ROM_EXTRAVERSION="MICROG-"
   fi
-  local ROM_EXTRAVERSION
+  set -u
   PACKAGE_NAME="${ROM_PREFIX}"-"${ROM_VERSION}"-"${ROM_EXTRAVERSION}"$(date +%Y%m%d)-"${DEVICE}"-signed.zip
 }
 

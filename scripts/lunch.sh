@@ -13,6 +13,7 @@ _ccache() {
     ccache -M "${CCACHE_SIZE}"G
     ccache -o compression=true
   fi
+  unset CCACHE_SIZE
 }
 
 _keysgen() {
@@ -36,20 +37,21 @@ _lunch() {
   set -eu
 
   # Append release codename, if exists (A14+)
-  RELEASE_CODENAME=
+  local release_codename
+  release_codename=
   if [[ -d "${ANDROID_BUILD_TOP}"/build/release/aconfig/ ]]; then
-    RELEASE_CODENAME=-$(ls -1 -I trunk* -I root "${ANDROID_BUILD_TOP}"/build/release/aconfig/ | tail -n1)
+    release_codename=-$(ls -1 -I trunk* -I root "${ANDROID_BUILD_TOP}"/build/release/aconfig/ | tail -n1)
   fi
-  local RELEASE_CODENAME
 
   # Extract lunch prefix from AndroidProducts
-  PRODUCT=$(grep -E "${DEVICE}" "${ANDROID_BUILD_TOP}"/device/*/"${DEVICE}"/AndroidProducts.mk | cut -d"/" -f2 | cut -d"." -f1)
-  local PRODUCT
+  local product
+  product=$(grep -E "${DEVICE}" "${ANDROID_BUILD_TOP}"/device/*/"${DEVICE}"/AndroidProducts.mk | cut -d"/" -f2 | cut -d"." -f1)
 
   # It's all coming together
   set +eu
-  lunch "${PRODUCT}""${RELEASE_CODENAME}"-"${BUILD_TYPE}"
+  lunch "${product}""${release_codename}"-"${BUILD_TYPE}"
   set -eu
+  unset BUILD_TYPE
 }
 
 _ccache

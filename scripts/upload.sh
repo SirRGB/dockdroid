@@ -19,8 +19,8 @@ _upload_gh() {
   DESC="${ROM_PREFIX} for ${DEVICE}"
   local DESC
 
-  github-release SirRGB/releases "${TAG}" "main" "${DESC}" "${OUT}"/"${PACKAGE_NAME}"
-  github-release SirRGB/releases "${TAG}" "main" "${DESC}" "${OUT}"/"${RECOVERY_NAME}"
+  github-release "${OTA_REPO_URL//git@github.com:/}" "${TAG}" "main" "${DESC}" "${OUT}"/"${PACKAGE_NAME}"
+  github-release "${OTA_REPO_URL//git@github.com:/}" "${TAG}" "main" "${DESC}" "${OUT}"/"${RECOVERY_NAME}"
 }
 
 _upload_sf() {
