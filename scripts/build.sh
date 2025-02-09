@@ -188,7 +188,7 @@ _version() {
   readonly VERSION_REGEX
 
   # Search for line containing the regex inside *[V|v]ersion.mk|common.mk, cut that number and set points in between
-  local ROM_PREFIX ROM_VERSION ROM_EXTRAVERSION
+  local ROM_VERSION ROM_EXTRAVERSION
   ROM_PREFIX=$(grep -E '_TARGET_PACKAGE[[:space:]]:=' "${ANDROID_BUILD_TOP}"/vendor/*/build/tasks/* | cut -d"=" -f2 | cut -d"/" -f2 | cut -d"-" -f1)
   if [[ -n $(ls "${ANDROID_BUILD_TOP}"/vendor/*/config/*[vV]ersion.mk) ]]; then
     ROM_VERSION=$(echo $(grep -E "${VERSION_REGEX}" "${ANDROID_BUILD_TOP}"/vendor/*/config/*[vV]ersion.mk | tr -d 'A-z:= ') | sed 's/ /./g')
