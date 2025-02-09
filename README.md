@@ -8,9 +8,9 @@ Prerequisites
 - [ssh](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - [gitconfig](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
 - [zram/swap (distro dependant, highly recommended)](https://github.com/systemd/zram-generator)
-- perm mess
-- currently the only way it seems to work is creating ~/docker_droid/Los14/.repo by hand, chmodding that to 707
-  and getting a sync started and then checking the uid with ls -n, to chown everything to dockeruser:user and chmodding it to 770.
+- currently the only way it seems to work is creating ~/docker_droid/Los14/.repo by hand, chmodding that to 707  
+  and getting a sync started and then checking the uid with ls -n, to chown everything to dockeruser:user and chmodding it to 770.  
+  for debian/ubuntu this seems to be 100999 and on fedora 52587, which should be  $subUID+$containerUID-1 according to the [docker forums](https://forums.docker.com/t/map-more-uid-on-rootless-docker-and-mount-volume/102928/8)
 
 Variables (secrets)
 --
