@@ -1,6 +1,13 @@
 WIP
 ----
 
+## Why Docker?
+
+Docker provides a uniform build environment, without external dependencies,  
+that you have to set up manually.  
+The goal is to make building properly with ota and signing easy for everyone.
+
+
 ## Prerequisites
 
 - [Docker](https://docs.docker.com/engine/install)
@@ -15,7 +22,8 @@ WIP
 ### Setting up permissions (rootless)
 
 First we need to find the avaliable subuids, that are used for docker.  
-For debian/ubuntu this seems to be 100999 and on fedora 52587, which should be $subUID+$containerUID-1 according to the [docker forums](https://forums.docker.com/t/map-more-uid-on-rootless-docker-and-mount-volume/102928/8).  
+For debian/ubuntu this seems to be 100999 and on fedora 52587,  
+which should be $subUID+$containerUID-1 according to the [docker forums](https://forums.docker.com/t/map-more-uid-on-rootless-docker-and-mount-volume/102928/8).
 
 
 We need to manually create the required folders, because Docker does not run as Root (assuming you did choose the Rootless Setup).
@@ -23,18 +31,18 @@ We need to manually create the required folders, because Docker does not run as 
 mkdir -p ~/docker_droid/src/Los14/.repo ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
 ```
 Then we need to chown that directory to the Docker user:  
----
-Debian/Ubuntu
+
+#### Debian/Ubuntu
 ```
 sudo chown -R 100999:100999 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
 ```
----
-Fedora
+
+#### Fedora
 ```
 sudo chown -R 52587:52587 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
 ```
----
-Other
+
+#### Other
 (If you know a smarter way to do this please tell me,  
 I know the available suibuids can be found with `cat /etc/subuid | grep $USER | cut -d":" -f2`  
 I just do not know if the container uid is predictable,  
@@ -83,6 +91,15 @@ while github releases relies on the token, ota info pushing to a github repo and
 - dotfiles: .gitconfig for syncing and .ssh for authentification.
 - ccache: Used for build caching to speed up compilation. Set to 80GB by default. Can be disabled by overwriting the value with 0 for space saving.
 - secrets: If token.sh is provided (optional), it will be read. You can specify GITHUB_TOKEN, TELEGRAM_TOKEN and TELEGRAM_CHAT here.
+
+
+# Run the build
+
+- After setting everything up you should do a test build with the default variables for testing.
+```
+docker compose up --force-recreate --build
+```
+- You can set your own parameters within the [compose file](https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/#use-the-environment-attribute) or specifying an [env file](https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/#use-the-env_file-attribute) and rerunning the build
 
 
 # Too much RAM
