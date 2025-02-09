@@ -30,6 +30,11 @@ We need to manually create the required folders, because Docker does not run as 
 ```
 mkdir -p ~/docker_droid/src/Los14/.repo ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
 ```
+and clone this repo
+```
+git clone https://github.com/SirRGB/dockdroid ~/docker_droid/dockdroid
+```
+
 Then we need to chown that directory to the Docker user:  
 
 #### Debian/Ubuntu
@@ -86,16 +91,16 @@ while github releases relies on the token, ota info pushing to a github repo and
 
 # Directories
 
+- dotfiles: .gitconfig for syncing and .ssh for authentification. Needs to be copied from the host manually.
 - keys: Contains keys for signing the build. Will be generated automatically if not provided.
 - logs: Will soon contain logs and error messages.
-- dotfiles: .gitconfig for syncing and .ssh for authentification.
 - ccache: Used for build caching to speed up compilation. Set to 80GB by default. Can be disabled by overwriting the value with 0 for space saving.
 - secrets: If token.sh is provided (optional), it will be read. You can specify GITHUB_TOKEN, TELEGRAM_TOKEN and TELEGRAM_CHAT here.
 
 
 # Run the build
 
-- After setting everything up you should do a test build with the default variables for testing.
+- After setting everything up you should do a test build with the default variables for testing. (Be sure to be in ~/docker_droid/dockdroid)
 ```
 docker compose up --force-recreate --build
 ```
@@ -104,7 +109,7 @@ docker compose up --force-recreate --build
 
 # Too much RAM
 
-You can further speed up build times by tmpfs as described [here](https://github.com/alsutton/aosp-build-docker-images/tree/main?tab=readme-ov-file#improving-performance-on-linux)
+You can further speed up build times by using tmpfs as described [here](https://github.com/alsutton/aosp-build-docker-images/tree/main?tab=readme-ov-file#improving-performance-on-linux)
 
 
 ## Credits/Reference
