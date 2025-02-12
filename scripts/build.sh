@@ -183,27 +183,29 @@ _sign_new() {
 # Only works for PRODUCT_VERSION_MAJOR|MINOR
 # Planned to work on Leaf OS/Lineage OS/CyanogenMOD/amyROM
 _version() {
-  local VERSION_REGEX
-  VERSION_REGEX='^PRODUCT_VERSION_M.{2}OR[[:space:]]:?=[[:space:]][[:digit:]]{1,2}'
-  readonly VERSION_REGEX
+  local major_version_regex minor_version_regex rom_extraversion
+  major_version_regex='^PRODUCT_VERSION_MAJOR[[:space:]]:?=[[:space:]][[:digit:]]{1,2}'
+  minor_version_regex='^PRODUCT_VERSION_MINOR[[:space:]]:?=[[:space:]][[:digit:]]{1,2}'
+  readonly major_version_regex minor_version_regex
 
   # Search for line containing the regex inside *[V|v]ersion.mk|common.mk, cut that number and set points in between
-  local ROM_VERSION ROM_EXTRAVERSION
   ROM_PREFIX=$(grep -E '_TARGET_PACKAGE[[:space:]]:=' "${ANDROID_BUILD_TOP}"/vendor/*/build/tasks/* | cut -d"=" -f2 | cut -d"/" -f2 | cut -d"-" -f1)
   if [[ -n $(ls "${ANDROID_BUILD_TOP}"/vendor/*/config/*[vV]ersion.mk) ]]; then
-    ROM_VERSION=$(echo $(grep -E "${VERSION_REGEX}" "${ANDROID_BUILD_TOP}"/vendor/*/config/*[vV]ersion.mk | tr -d 'A-z:= ') | sed 's/ /./g')
+    ROM_VERSION=$(grep -E "${major_version_regex}" "${ANDROID_BUILD_TOP}"/vendor/*/config/*[vV]ersion.mk | tr -d 'A-z:= \n').\
+$(grep -E "${minor_version_regex}" "${ANDROID_BUILD_TOP}"/vendor/*/config/*[vV]ersion.mk | tr -d 'A-z:= ')
   else
-    ROM_VERSION=$(echo $(grep -E "${VERSION_REGEX}" "${ANDROID_BUILD_TOP}"/vendor/*/config/common.mk | tr -d 'A-z:= ') | sed 's/ /./g')
+    ROM_VERSION=$(grep -E "${major_version_regex}" "${ANDROID_BUILD_TOP}"/vendor/*/config/common.mk | tr -d 'A-z:= \n').\
+$(grep -E "${minor_version_regex}" "${ANDROID_BUILD_TOP}"/vendor/*/config/common.mk | tr -d 'A-z:= ')
   fi
-  ROM_EXTRAVERSION=
+  rom_extraversion=
   set +u
   if [[ "${WITH_GMS}" = "true" ]]; then
-    ROM_EXTRAVERSION="GMS-"
+    rom_extraversion="GMS-"
   elif [[ "${WITH_MICROG}" = "true" ]]; then
-    ROM_EXTRAVERSION="MICROG-"
+    rom_extraversion="MICROG-"
   fi
   set -u
-  PACKAGE_NAME="${ROM_PREFIX}"-"${ROM_VERSION}"-"${ROM_EXTRAVERSION}"$(date +%Y%m%d)-"${DEVICE}"-signed.zip
+  PACKAGE_NAME="${ROM_PREFIX}"-"${ROM_VERSION}"-"${rom_extraversion}"$(date +%Y%m%d)-"${DEVICE}"-signed.zip
 }
 
 # Create flashable zip from target files
