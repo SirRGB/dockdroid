@@ -14,7 +14,7 @@ The goal is to make building properly with ota and signing easy for everyone.
 - [Docker Rootless (recommended)](https://docs.docker.com/engine/security/rootless/)
 - [SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - [GitConfig](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
-- ZRam [Debian](https://wiki.debian.org/ZRam), [Fedora](https://github.com/systemd/zram-generator), [Ubuntu](https://wiki.ubuntuusers.de/zRam)
+- ZRam: [Debian](https://wiki.debian.org/ZRam), [Fedora](https://github.com/systemd/zram-generator), [Ubuntu](https://wiki.ubuntuusers.de/zRam)
 
 
 ## Setup
@@ -30,12 +30,17 @@ We need to manually create the required folders, because Docker does not run as 
 ```
 mkdir -p ~/docker_droid/src/Los14/.repo ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
 ```
+Copy the required dotfiles from the host machines
+```
+cp ~/.gitconfig ~/docker_droid/dotfiles
+cp -r ~/.ssh ~/docker_droid/dotfiles
+```
 and clone this repo
 ```
 git clone https://github.com/SirRGB/dockdroid ~/docker_droid/dockdroid
 ```
 
-Then we need to chown that directory to the Docker user:  
+Then we need to chown that directory to the Docker user:
 
 #### Debian/Ubuntu
 ```
@@ -121,5 +126,5 @@ You can further speed up build times by using tmpfs as described [here](https://
 - [lineageos4microg/docker-lineage-cicd](https://github.com/lineageos4microg/docker-lineage-cicd)
 - [amyROM/vendor_amy](https://github.com/amyROM/vendor_amy/blob/207d5e32c3fba38b9fe1ab9cd12c71ca6b81d653/scripts/generate_json_build_info.sh)
 
-github release taken from
+github release binary taken from
 - [Jarlpenguin/releases](https://github.com/Jarlpenguin/releases/raw/main/bin/github-release)
