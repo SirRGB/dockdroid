@@ -15,9 +15,9 @@ _upload_check() {
 }
 
 _upload_gh() {
+  local DESC
   TAG=$(echo "$(date +%Y%m%d%H%M)"-"${PACKAGE_NAME//.zip/}")
   DESC="${ROM_PREFIX} for ${DEVICE}"
-  local DESC
 
   github-release "${OTA_REPO_URL//git@github.com:/}" "${TAG}" "main" "${DESC}" "${OUT}"/"${PACKAGE_NAME}"
   github-release "${OTA_REPO_URL//git@github.com:/}" "${TAG}" "main" "${DESC}" "${OUT}"/"${RECOVERY_NAME}"
@@ -30,20 +30,16 @@ _upload_sf() {
 
 # Create/print ota json
 _ota_info() {
+  local file_size id datetime custom_build_type
   file_size=$(stat -c%s "${OUT}"/"${PACKAGE_NAME}")
-  local file_size
   id=$(sha256sum "${OUT}"/"${PACKAGE_NAME}" | cut -d" " -f1)
-  local id
   datetime=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut -d"=" -f2)
-  local datetime
   custom_build_type="UNOFFICIAL"
-  local custom_build_type
   if [[ "${UPLOAD_TARGET}" = "gh" ]]; then
     custom_ota_url="https://github.com/${GH_RELEASES_REPO}/releases/download/${TAG}/${PACKAGE_NAME}"
   elif [[ "${UPLOAD_TARGET}" = "sf" ]]; then
     custom_ota_url="https://sourceforge.net/projects/${SF_RELEASES_REPO}/files/${DEVICE}/${ROM_PREFIX}/${PACKAGE_NAME}/download"
   fi
-  export custom_ota_url
   echo -e "{\n  \"response\": [\n    {\n      \"datetime\": ${datetime},\n      \"filename\": \"${PACKAGE_NAME}\",\n      \"id\": \"${id}\",\n      \"romtype\": \"${custom_build_type}\",\n      \"size\": ${file_size},\n      \"url\": \"${custom_ota_url}\",\n      \"version\": \"${ROM_VERSION}\"\n    }\n  ]\n}" > "${OUT}"/"${PACKAGE_NAME}".json
   echo "OTA JSON: ${OUT}/${PACKAGE_NAME}.json"
 }
