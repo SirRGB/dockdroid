@@ -14,6 +14,14 @@ _upload_check() {
   set -u
 }
 
+_upload() {
+  if [[ "${UPLOAD_TARGET}" = "gh" ]]; then
+    _upload_gh
+  elif [[ "${UPLOAD_TARGET}" = "sf" ]]; then
+    _upload_sf
+  fi
+}
+
 _upload_gh() {
   local DESC
   TAG=$(echo "$(date +%Y%m%d%H%M)"-"${PACKAGE_NAME//.zip/}")
@@ -62,17 +70,11 @@ _push_ota_info() {
 
 # Check for tokens before attempting upload
 _upload_check
-if [[ "${UPLOAD_TARGET}" = "gh" ]]; then
+if [[ -n "${UPLOAD_TARGET}" ]]; then
   _print_upload_start
-  _upload_gh
-  _ota_info
-  _push_ota_info
-  _print_upload_success
-elif [[ "${UPLOAD_TARGET}" = "sf" ]]; then
-  _print_upload_start
-  _upload_sf
+  _upload
   _ota_info
   _push_ota_info
   _print_upload_success
 fi
-_telegram_separator
+_print_done

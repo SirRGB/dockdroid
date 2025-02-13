@@ -5,7 +5,7 @@ source "${SCRIPT_DIR}"/print.sh
 # Drop old builds
 _cleanup() {
   set +eu
-  m installclean
+  m installclean | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   set -eu
 }
 
@@ -13,7 +13,7 @@ _cleanup() {
 _determine_signing() {
   local SDK_VERSION
   set +eu
-  m target-files-package otatools
+  m target-files-package otatools | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   set -eu
   # Read SDK Version, version_defaults doesnt exist on A14+
   if [[ -f "${ANDROID_BUILD_TOP}"/build/make/core/version_defaults.mk ]]; then
@@ -45,7 +45,7 @@ _sign_old() {
   croot
   sign_target_files_apks -o -d "${KEYS_DIR}" \
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip \
-      "${OUT}"/signed-target_files.zip
+      "${OUT}"/signed-target_files.zip | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign-legacy.txt
   set -eu
 }
 
@@ -176,7 +176,7 @@ _sign_new() {
       --extra_apex_payload_key com.google.pixel.vibrator.hal.apex="${KEYS_DIR}"/com.google.pixel.vibrator.hal.pem \
       --extra_apex_payload_key com.qorvo.uwb.apex="${KEYS_DIR}"/com.qorvo.uwb.pem \
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files*.zip \
-      "${OUT}"/signed-target_files.zip
+      "${OUT}"/signed-target_files.zip | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign.txt
   set -eu
 }
 
@@ -214,7 +214,7 @@ _packaging() {
   set +eu
   ota_from_target_files -k "${KEYS_DIR}"/releasekey \
       "${OUT}"/signed-target_files.zip \
-      "${OUT}"/"${PACKAGE_NAME}"
+      "${OUT}"/"${PACKAGE_NAME}" | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/packaging.txt
   set -eu
 }
 
@@ -226,7 +226,6 @@ _extract_recovery() {
 
 cleanup() {
   _print_build_fail
-  _telegram_separator
 }
 trap cleanup ERR
 

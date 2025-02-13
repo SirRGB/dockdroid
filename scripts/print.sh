@@ -50,6 +50,7 @@ _telegram_sync_success() {
 
 _telegram_sync_fail() {
   telegram -M "Sync failed successfully"
+  _telegram_separator
 }
 
 # Print build success
@@ -96,6 +97,7 @@ _telegram_build_success() {
 
 _telegram_build_fail() {
   telegram -M "Build failed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
+  _telegram_separator
 }
 
 _print_upload_start() {
@@ -121,6 +123,11 @@ ROM:
 ${custom_ota_url}
 Recovery:
 ${custom_recovery_url}"
+}
+
+_print_done() {
+  echo "Completed successfully"
+  _telegram_separator
 }
 
 _telegram_separator() {
