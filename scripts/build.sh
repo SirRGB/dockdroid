@@ -220,8 +220,7 @@ _packaging() {
 
 # Extract signed recovery from signed target files
 _extract_recovery() {
-  RECOVERY_NAME="${PACKAGE_NAME//.zip/-recovery.img}"
-  unzip -p "${OUT}"/signed-target_files.zip IMAGES/recovery.img > "${OUT}"/"${RECOVERY_NAME}"
+  unzip -p "${OUT}"/signed-target_files.zip IMAGES/recovery.img > "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}"
 }
 
 cleanup() {

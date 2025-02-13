@@ -43,11 +43,11 @@ _ota_info() {
   datetime=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut -d"=" -f2)
   custom_build_type="UNOFFICIAL"
   if [[ "${UPLOAD_TARGET}" = "gh" ]]; then
-    custom_ota_url="https://github.com/${GH_RELEASES_REPO}/releases/download/${TAG}/${PACKAGE_NAME}"
+    CUSTOM_OTA_URL="https://github.com/${GH_RELEASES_REPO}/releases/download/${TAG}/${PACKAGE_NAME}"
   elif [[ "${UPLOAD_TARGET}" = "sf" ]]; then
-    custom_ota_url="https://sourceforge.net/projects/${SF_RELEASES_REPO}/files/${DEVICE}/${ROM_PREFIX}/${PACKAGE_NAME}/download"
+    CUSTOM_OTA_URL="https://sourceforge.net/projects/${SF_RELEASES_REPO}/files/${DEVICE}/${ROM_PREFIX}/${PACKAGE_NAME}/download"
   fi
-  echo -e "{\n  \"response\": [\n    {\n      \"datetime\": ${datetime},\n      \"filename\": \"${PACKAGE_NAME}\",\n      \"id\": \"${id}\",\n      \"romtype\": \"${custom_build_type}\",\n      \"size\": ${file_size},\n      \"url\": \"${custom_ota_url}\",\n      \"version\": \"${ROM_VERSION}\"\n    }\n  ]\n}" > "${OUT}"/"${PACKAGE_NAME}".json
+  echo -e "{\n  \"response\": [\n    {\n      \"datetime\": ${datetime},\n      \"filename\": \"${PACKAGE_NAME}\",\n      \"id\": \"${id}\",\n      \"romtype\": \"${custom_build_type}\",\n      \"size\": ${file_size},\n      \"url\": \"${CUSTOM_OTA_URL}\",\n      \"version\": \"${ROM_VERSION}\"\n    }\n  ]\n}" > "${OUT}"/"${PACKAGE_NAME}".json
   echo "OTA JSON: ${OUT}/${PACKAGE_NAME}.json"
 }
 
