@@ -26,6 +26,7 @@ ENV OTA_DIR "${ROM_DIR}"_ota
 ENV KEYS_DIR "${ROOT_DIR}"/keys
 ENV BIN_DIR "${ROOT_DIR}"/bin
 ENV SECRETS_DIR "${ROOT_DIR}"/secrets
+ENV LOGS_DIR "${ROOT_DIR}"/logs
 
 # Switch to Root for Setup
 USER root
