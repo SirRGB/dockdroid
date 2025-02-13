@@ -1,5 +1,8 @@
 #!/bin/bash
 
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+
 _telegram_check_token() {
   TELEGRAM_SET="false"
   set +u
@@ -10,6 +13,7 @@ _telegram_check_token() {
 }
 
 _print_sync_start() {
+  _telegram_check_token
   SYNC_START=$(date +"%s")
   if [[ "${TELEGRAM_SET}" = "true" ]]; then
     _telegram_sync_start
@@ -17,8 +21,6 @@ _print_sync_start() {
 }
 
 _print_sync_success() {
-  local GREEN='\033[0;32m'
-
   SYNC_END=$(date +"%s")
   SYNC_DIFF=$((SYNC_END - SYNC_START))
   echo -e "${GREEN}Sync completed successfully in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
@@ -29,8 +31,6 @@ _print_sync_success() {
 }
 
 _print_sync_fail() {
-  local RED='\033[0;31m'
-
   SYNC_END=$(date +"%s")
   SYNC_DIFF=$((SYNC_END - SYNC_START))
   echo -e "${RED}Sync failed in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
@@ -55,8 +55,6 @@ _telegram_sync_fail() {
 
 # Print build success
 _print_build_success() {
-  local GREEN='\033[0;32m'
-
   BUILD_END=$(date +"%s")
   BUILD_DIFF=$((BUILD_END - BUILD_START))
   echo -e "${GREEN}Build completed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
@@ -76,8 +74,6 @@ _print_build_start() {
 
 # Print build success
 _print_build_fail() {
-  local RED='\033[0;31m'
-
   BUILD_END=$(date +"%s")
   BUILD_DIFF=$((BUILD_END - BUILD_START))
   echo -e "${RED}Build failed in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
@@ -107,6 +103,7 @@ _print_upload_start() {
 }
 
 _print_upload_success() {
+  echo -e "${GREEN}Upload completed successfully"
   if [[ "${TELEGRAM_SET}" = "true" ]]; then
     _telegram_upload_success
   fi
@@ -126,7 +123,7 @@ ${custom_recovery_url}"
 }
 
 _print_done() {
-  echo "Completed successfully"
+  echo -e "${GREEN}Completed successfully"
   _telegram_separator
 }
 

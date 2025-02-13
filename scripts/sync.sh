@@ -30,7 +30,6 @@ cleanup() {
 trap cleanup ERR
 
 _setup_logs
-_telegram_check_token
 _print_sync_start
 _sync
 _print_sync_success

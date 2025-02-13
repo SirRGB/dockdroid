@@ -4,12 +4,11 @@ source "${SCRIPT_DIR}"/print.sh
 
 _upload_check() {
   set +u
+  UPLOAD_TARGET=
   if [[ -n "${GITHUB_TOKEN}" ]] && [[ -n "${GH_RELEASES_REPO}" ]]; then
     UPLOAD_TARGET="gh"
   elif [[ -n $(ls .ssh/id_*) ]] && [[ -n "${SF_USER}" ]] && [[ -n "${SF_RELEASES_REPO}" ]]; then
     UPLOAD_TARGET="sf"
-  else
-    UPLOAD_TARGET="no"
   fi
   set -u
 }

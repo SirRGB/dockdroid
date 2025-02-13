@@ -11,26 +11,26 @@ _cleanup() {
 
 # Decide for signing method
 _determine_signing() {
-  local SDK_VERSION
+  local sdk_version
   set +eu
   m target-files-package otatools | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   set -eu
   # Read SDK Version, version_defaults doesnt exist on A14+
   if [[ -f "${ANDROID_BUILD_TOP}"/build/make/core/version_defaults.mk ]]; then
-    SDK_VERSION=$(grep -E "PLATFORM_SDK_VERSION :=" "${ANDROID_BUILD_TOP}"/build/make/core/version_defaults.mk | tr -d "A-z:= ")
+    sdk_version=$(grep -E "PLATFORM_SDK_VERSION :=" "${ANDROID_BUILD_TOP}"/build/make/core/version_defaults.mk | tr -d "A-z:= ")
   # Android 14 fallback
   elif [[ -n $(ls "${ANDROID_BUILD_TOP}"/build/release/build_config/ap*a.scl) ]]; then
-    SDK_VERSION=34
+    sdk_version=34
   # Android 15 fallback
   elif [[ -n $(ls "${ANDROID_BUILD_TOP}"/build/release/flag_values/ap*a/RELEASE_PLATFORM_SDK_VERSION.textproto) ]]; then
-    SDK_VERSION=$(grep -E "string_value: " "${ANDROID_BUILD_TOP}"/build/release/flag_values/ap*a/RELEASE_PLATFORM_SDK_VERSION.textproto | tr -d "a-z_:\"() ")
+    sdk_version=$(grep -E "string_value: " "${ANDROID_BUILD_TOP}"/build/release/flag_values/ap*a/RELEASE_PLATFORM_SDK_VERSION.textproto | tr -d "a-z_:\"() ")
   # Future fallback, lets hope signing wont change again
   else
-    SDK_VERSION=36
+    sdk_version=36
   fi
 
   # If Android version greater than 11, use apex signing
-  if [[ "${SDK_VERSION}" -gt 30 ]]; then
+  if [[ "${sdk_version}" -gt 30 ]]; then
     echo "APEX Signing"
     _sign_new
   else

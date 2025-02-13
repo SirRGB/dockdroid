@@ -27,6 +27,7 @@ _keysgen() {
       make_key "${KEYS_DIR}"/"${apex}" "${subject}"; \
       openssl pkcs8 -in "${KEYS_DIR}"/"${apex}".pk8 -inform DER -nocrypt -out "${KEYS_DIR}"/"${apex}".pem; \
     done
+  unset KEYS_SUBJECT
   fi
 }
 
