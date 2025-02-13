@@ -1,0 +1,12 @@
+name: "ShellCheck"
+on: [push, pull_request]
+
+jobs:
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Run ShellCheck
+      run: find ./scripts -type f -name "*.sh" -exec shellcheck --exclude=SC1091,SC2164 \
+        --enable require-double-brackets,require-variable-braces,avoid-nullary-conditions {} +
