@@ -12,3 +12,4 @@ services:
       - ~/docker_droid/dotfiles/.ssh:/droid_workdir/.ssh:ro
       - ~/docker_droid/dotfiles/.gnupg:/droid_workdir/.gnupg:ro
       - ~/docker_droid/secrets:/droid_workdir/secrets:ro
+      - /etc/localtime:/etc/localtime:ro
