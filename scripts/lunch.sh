@@ -59,4 +59,4 @@ _keysgen
 _lunch
 _print_build_start
 
-source "${SCRIPT_DIR}"/build.sh
+source "${SCRIPT_DIR}"/sign.sh
