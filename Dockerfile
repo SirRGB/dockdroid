@@ -20,13 +20,12 @@ USER root
 
 # Android build dependencies
 RUN install_packages bc bison build-essential ca-certificates ccache curl flex g++-multilib gcc-multilib git git-lfs gnupg \
-    gperf imagemagick lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libncurses5 libsdl1.2-dev libssl-dev libxml2 \
+    gperf imagemagick jq lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libncurses5 libsdl1.2-dev libssl-dev libxml2 \
     libxml2-utils lzop pngcrush python3 python-is-python3 rsync schedtool ssh squashfs-tools unzip xsltproc zip zlib1g-dev
 
 # Create dirs and copy scripts
 RUN mkdir -p "${SCRIPT_DIR}" "${ROM_DIR}" "${BIN_DIR}" "${SECRETS_DIR}" "${KEYS_DIR}"
 COPY scripts/ "${SCRIPT_DIR}"/
-COPY bin/ "${BIN_DIR}"/
 
 # Set up user and work directories
 RUN groupadd -g "${groupid}" "${username}" \
@@ -43,9 +42,8 @@ RUN curl https://storage.googleapis.com/git-repo-downloads/repo.asc | gpg --veri
 # Provide make_key to create signing keys
 RUN curl https://raw.githubusercontent.com/LineageOS/android_development/refs/heads/lineage-22.2/tools/make_key > "${BIN_DIR}"/make_key
 # Patch for longer key size and drop input
-RUN sed -i "s/2048/4096/g" "${BIN_DIR}"/make_key
 RUN sed -i "s/read -p \"Enter password for '\$1' (blank for none\; password will be visible): \" \\\//g" "${BIN_DIR}"/make_key
-RUN sed -i "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g" "${BIN_DIR}"/make_key
+RUN sed -i "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g; s/2048/4096/g" "${BIN_DIR}"/make_key
 # Install Telegram script
 RUN curl https://raw.githubusercontent.com/fabianonline/telegram.sh/refs/heads/master/telegram > "${BIN_DIR}"/telegram
 RUN chmod -R 500 "${BIN_DIR}" "${SCRIPT_DIR}"

@@ -84,7 +84,7 @@ sudo rm -rf ~/docker_droid/src/Los14/
 ## Variables (secrets)
 
 - [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
-- GH_RELEASES_REPO
+- OTA_REPO_URL: either as git@github.com:user/ota_config or git@gitlab.com:user/ota_config
 - SF_USER
 - SF_RELEASES_REPO
 - [TELEGRAM_TOKEN](https://core.telegram.org/bots/features#botfather)
@@ -133,6 +133,3 @@ You can further speed up build times by using tmpfs as described [here](https://
 - [LineageOS4MicroG](https://github.com/lineageos4microg/docker-lineage-cicd)
 - [amyROM](https://github.com/amyROM/vendor_amy/blob/207d5e32c3fba38b9fe1ab9cd12c71ca6b81d653/scripts/generate_json_build_info.sh)
 - [LineageOS Infra](https://github.com/lineageos-infra/build-config/tree/main/android)
-
-github release binary taken from
-- [Jarlpenguin/releases](https://github.com/Jarlpenguin/releases/raw/main/bin/github-release)
