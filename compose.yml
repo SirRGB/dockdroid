@@ -2,14 +2,23 @@ services:
   dockdroid:
     build: .
     volumes:
-      #rw
+      #RW
+      # ROM source
       - ~/docker_droid/src:/droid_workdir/src
+      # Log files
       - ~/docker_droid/logs:/droid_workdir/logs
+      # CCache to speed up builds
       - ~/docker_droid/ccache:/mnt/ccache
+      # Keys for signing
       - ~/docker_droid/keys:/droid_workdir/keys # aosp does weird chmod stuff in here
-      #ro
+      #RO
+      # Gitconfig for repo
       - ~/docker_droid/dotfiles/.gitconfig:/droid_workdir/.gitconfig:ro
+      # SSH keys for git authentification
       - ~/docker_droid/dotfiles/.ssh:/droid_workdir/.ssh:ro
+      # GPG keys for verified commits (optional)
       - ~/docker_droid/dotfiles/.gnupg:/droid_workdir/.gnupg:ro
+      # Tokens for Telegram and Github (optional)
       - ~/docker_droid/secrets:/droid_workdir/secrets:ro
+      # Time for file naming
       - /etc/localtime:/etc/localtime:ro
