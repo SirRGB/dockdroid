@@ -5,18 +5,6 @@ ARG userid=1000
 ARG groupid=1000
 ARG username=droid
 
-# ROM
-ENV LOCAL_MANIFEST https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/cheeseburgerdumpling/A14Lineage.xml
-ENV DEVICE cheeseburger
-ENV BUILD_TYPE userdebug
-ENV ROM_MANIFEST https://github.com/LineageOS/android
-ENV ROM_BRANCH lineage-21.0
-ENV KEYS_SUBJECT '/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
-
-# Extra
-ENV CCACHE_SIZE 80
-ENV OTA_REPO_URL git@github.com:SirRGB/ota_config
-
 # Dirs
 ENV ROOT_DIR /droid_workdir
 ENV SCRIPT_DIR "${ROOT_DIR}"/scripts
@@ -62,5 +50,17 @@ RUN sed -i "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g
 # Install Telegram script
 RUN curl https://raw.githubusercontent.com/fabianonline/telegram.sh/refs/heads/master/telegram > "${BIN_DIR}"/telegram
 RUN chmod -R 500 "${BIN_DIR}" "${SCRIPT_DIR}"
+
+# ROM
+ENV LOCAL_MANIFEST https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/cheeseburgerdumpling/A14Lineage.xml
+ENV DEVICE cheeseburger
+ENV BUILD_TYPE userdebug
+ENV ROM_MANIFEST https://github.com/LineageOS/android
+ENV ROM_BRANCH lineage-21.0
+
+# Extra
+ENV CCACHE_SIZE 80
+ENV OTA_REPO_URL git@github.com:SirRGB/ota_config
+ENV KEYS_SUBJECT '/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
 
 ENTRYPOINT "${SCRIPT_DIR}"/init.sh
