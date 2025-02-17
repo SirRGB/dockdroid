@@ -45,7 +45,7 @@ _lunch() {
 
   # Extract lunch prefix from AndroidProducts
   local product
-  product=$(grep -E "${DEVICE}" "${ANDROID_BUILD_TOP}"/device/*/"${DEVICE}"/AndroidProducts.mk | cut -d"/" -f2 | cut -d"." -f1)
+  product=$(grep -E "${DEVICE}" "${ANDROID_BUILD_TOP}"/device/*/"${DEVICE}"/AndroidProducts.mk | cut -d"/" -f2 | cut -d"." -f1 | head -n1)
 
   # It's all coming together
   set +eu
