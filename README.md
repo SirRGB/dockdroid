@@ -3,8 +3,7 @@ WIP
 
 ## Why Docker?
 
-Docker provides a uniform build environment, without external dependencies,  
-that you have to set up manually.  
+Docker provides a uniform build environment, without external dependencies, that you have to set up manually.  
 The goal is to make building properly with ota and signing easy for everyone.
 
 
