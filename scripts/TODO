@@ -1,4 +1,3 @@
-A10 lunch currently fails
 gitlab/sf/... support
 remove prebuilt binaries in favour of functions
 find a way to pass env vars more easily
