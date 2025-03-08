@@ -12,11 +12,10 @@ _setup_logs() {
 _sync() {
   cd "${ROM_DIR}"
   repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 --git-lfs | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
-  mkdir -p .repo/local_manifests
   if [[ -n $(ls .repo/local_manifests/) ]]; then
     rm .repo/local_manifests/*
   fi
-  curl "${LOCAL_MANIFEST}" > .repo/local_manifests/manifest.xml
+  curl "${LOCAL_MANIFEST}" --create-dirs --output .repo/local_manifests/manifest.xml
   local threads
   threads=$(nproc)
   repo forall -c 'git reset --hard; git clean -fdx' > /dev/null || true
