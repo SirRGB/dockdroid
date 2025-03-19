@@ -40,7 +40,8 @@ _lunch() {
   local release_codename
   release_codename=
   if [[ -d "${ANDROID_BUILD_TOP}"/build/release/aconfig/ ]]; then
-    release_codename=-$(find "${ANDROID_BUILD_TOP}"/build/release/aconfig/ -mindepth 1 -maxdepth 1 ! -name "trunk*" ! -name "root" ! -name "user*" ! -name "eng" -type d | rev | cut -d"/" -f1 | rev | tail -n1)
+    # shellcheck disable=SC2012
+    release_codename=-$(ls "${ANDROID_BUILD_TOP}"/build/release/aconfig/ -I "trunk*" -I "root" -I "user*" -I "eng" | tail -n1)
   fi
 
   # Extract lunch prefix from AndroidProducts
