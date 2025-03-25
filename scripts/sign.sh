@@ -19,15 +19,9 @@ _determine_signing() {
   # Read SDK Version, version_defaults doesnt exist on A14+
   if [[ -f "${ANDROID_BUILD_TOP}"/build/make/core/version_defaults.mk ]]; then
     sdk_version=$(grep -E "PLATFORM_SDK_VERSION :=" "${ANDROID_BUILD_TOP}"/build/make/core/version_defaults.mk | tr -d "A-z:= ")
-  # Android 14 fallback
-  elif [[ -n $(ls "${ANDROID_BUILD_TOP}"/build/release/build_config/ap*a.scl) ]]; then
-    sdk_version=34
-  # Android 15 fallback
-  elif [[ -n $(ls "${ANDROID_BUILD_TOP}"/build/release/flag_values/ap*a/RELEASE_PLATFORM_SDK_VERSION.textproto) ]]; then
-    sdk_version=$(grep -E "string_value: " "${ANDROID_BUILD_TOP}"/build/release/flag_values/ap*a/RELEASE_PLATFORM_SDK_VERSION.textproto | tr -d "a-z_:\"() ")
-  # Future fallback, lets hope signing wont change again
+  # Android 14+ fallback
   else
-    sdk_version=36
+    sdk_version=34
   fi
 
   # If Android version greater than 11, use apex signing
