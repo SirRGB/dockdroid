@@ -8,7 +8,7 @@ _upload_check() {
   UPLOAD_TARGET=
   if [[ -n "${GITHUB_TOKEN}" ]] && [[ -n "${GH_RELEASES_REPO}" ]]; then
     UPLOAD_TARGET="gh"
-  elif [[ -n $(ls .ssh/id_*) ]] && [[ -n "${SF_USER}" ]] && [[ -n "${SF_RELEASES_REPO}" ]]; then
+  elif [[ -n $(ls "${HOME}"/.ssh/id_*) ]] && [[ -n "${SF_USER}" ]] && [[ -n "${SF_RELEASES_REPO}" ]]; then
     UPLOAD_TARGET="sf"
   fi
   set -u
@@ -86,7 +86,15 @@ _push_ota_info() {
 
   cp "${OUT}"/"${PACKAGE_NAME}".json ./"${DEVICE}".json
   git add .
-  git commit -m "${DEVICE}: automated ${ROM_BRANCH} update"
+  # Sign
+  if [[ -n "${GPG_PASSPHRASE}" ]] && [[ -n $(ls "${HOME}"/.gnupg/) ]] ; then
+    git commit -m -S "${DEVICE}: ${BUILD_DATE} update" --passphrase "${GPG_PASSPHRASE}"
+  elif [[ -n $(ls "${HOME}"/.gnupg/) ]]; then
+    git commit -m -S "${DEVICE}: ${BUILD_DATE} update"
+  else
+    git commit -m "${DEVICE}: ${BUILD_DATE} update"
+  fi
+
   git push origin HEAD:"${ROM_BRANCH}"
 }
 

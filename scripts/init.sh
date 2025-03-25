@@ -4,7 +4,7 @@ set -eEuo pipefail #-x
 
 export PATH="${PATH}":"${BIN_DIR}"
 
-# Fetch Tokens for Telegram/GitHub/GitLab/SourceForge
+# Fetch Tokens for Telegram/GitHub/SourceForge
 if [[ -f "${SECRETS_DIR}"/tokens.sh ]]; then
   # We check if this exists above this
   # shellcheck source=/dev/null

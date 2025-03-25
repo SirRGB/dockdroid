@@ -81,14 +81,19 @@ sudo rm -rf ~/docker_droid/src/Los14/
 ```
 
 
-## Variables (secrets)
+## Variables (optional)
 
-- [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+- GitHub Upload
+  - [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
 - OTA_REPO_URL: either as git@github.com:user/ota_config or git@gitlab.com:user/ota_config
-- SF_USER
-- SF_RELEASES_REPO
-- [TELEGRAM_TOKEN](https://core.telegram.org/bots/features#botfather)
-- TELEGRAM_CHAT
+- SourceForge Upload
+  - SF_USER
+  - SF_RELEASES_REPO
+- Telegram logging
+  - [TELEGRAM_TOKEN](https://core.telegram.org/bots/features#botfather)
+  - TELEGRAM_CHAT
+- GPG signing with passphrase
+  - GPG_PASSPHRASE
 
 Authentication:
 while github releases relies on the token, ota info pushing to a github repo and the sourceforge upload require ssh keys, that are added in your account and gitconfig.
