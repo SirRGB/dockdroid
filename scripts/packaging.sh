@@ -39,6 +39,7 @@ _packaging() {
       "${OUT}"/signed-target_files.zip \
       "${OUT}"/"${PACKAGE_NAME}" | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/packaging.txt
   set -eu
+  unset BUILD_DATE KEYS_DIR LOGS_DIR
 }
 
 # Extract signed recovery from signed target files

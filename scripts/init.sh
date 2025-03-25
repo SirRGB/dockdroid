@@ -11,6 +11,6 @@ if [[ -f "${SECRETS_DIR}"/tokens.sh ]]; then
   source "${SECRETS_DIR}"/tokens.sh
 fi
 
-unset SECRETS_DIR BIN_DIR
+unset ROOT_DIR SECRETS_DIR BIN_DIR
 # shellcheck source=scripts/sync.sh
 source "${SCRIPT_DIR}"/sync.sh
