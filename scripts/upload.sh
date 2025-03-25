@@ -24,7 +24,7 @@ _upload() {
 
 _upload_gh() {
   local DESC
-  TAG=$(echo "$(date +%Y%m%d%H%M)"-"${PACKAGE_NAME//.zip/}")
+  TAG="$(date +%Y%m%d%H%M)"-"${PACKAGE_NAME//.zip/}"
   DESC="${ROM_PREFIX}-${ROM_VERSION} for ${DEVICE}"
 
   github-release "${OTA_REPO_URL//git@github.com:/}" "${TAG}" "main" "${DESC}" "${OUT}"/"${PACKAGE_NAME}"
