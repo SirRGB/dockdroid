@@ -117,6 +117,13 @@ docker compose up --force-recreate --build
 You can further speed up build times by using tmpfs as described [here](https://github.com/alsutton/aosp-build-docker-images/tree/main?tab=readme-ov-file#improving-performance-on-linux)
 
 
+## Limitations
+
+- GitHub releases enforces a maximum file size of [2 GiB](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github#distributing-large-binaries) in their releases
+- SourceForge restricts project size to [5-30 GiB](https://sourceforge.net/p/forge/documentation/Disk%20Quotas) depending on the download throughput
+- GitLab releases might not be feasable due to their [100 MiB](https://docs.gitlab.com/user/gitlab_com/#gitlab-cicd) attachment size limit
+
+
 ## Credits/Reference
 
 - [alsutton/aosp-build-docker-images](https://github.com/alsutton/aosp-build-docker-images/blob/main/debian-12-aosp.dockerfile)
