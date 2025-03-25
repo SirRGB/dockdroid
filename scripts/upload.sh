@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# shellcheck source=scripts/print.sh
 source "${SCRIPT_DIR}"/print.sh
 
 _upload_check() {
@@ -55,11 +56,10 @@ _ota_info() {
 _push_ota_info() {
   if [[ ! -d "${OTA_DIR}" ]]; then
     git clone "${OTA_REPO_URL}" "${OTA_DIR}" -b "${ROM_BRANCH}"
-    cd "${OTA_DIR}"
-  else
-    cd "${OTA_DIR}"
-    git checkout "${ROM_BRANCH}"
   fi
+
+  cd "${OTA_DIR}" || exit
+  git checkout "${ROM_BRANCH}"
 
   cp "${OUT}"/"${PACKAGE_NAME}".json ./"${DEVICE}".json
   git add .

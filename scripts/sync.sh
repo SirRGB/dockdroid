@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# shellcheck source=scripts/print.sh
 source "${SCRIPT_DIR}"/print.sh
 
 # Logs
@@ -10,7 +11,7 @@ _setup_logs() {
 
 # Pull manifest, local manifest and sync
 _sync() {
-  cd "${ROM_DIR}"
+  cd "${ROM_DIR}" || exit
   repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 --git-lfs | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
   if [[ -n $(ls .repo/local_manifests/) ]]; then
     rm .repo/local_manifests/*

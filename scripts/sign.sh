@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# shellcheck source=scripts/print.sh
 source "${SCRIPT_DIR}"/print.sh
 
 # Drop old builds

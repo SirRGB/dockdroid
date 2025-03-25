@@ -2,6 +2,7 @@
 
 #set -x
 
+# shellcheck source=scripts/print.sh
 source "${SCRIPT_DIR}"/print.sh
 
 # Set up ccache

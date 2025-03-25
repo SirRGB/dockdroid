@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# shellcheck source=scripts/print.sh
 source "${SCRIPT_DIR}"/print.sh
 
 # Only works for PRODUCT_VERSION_MAJOR|MINOR
@@ -54,4 +55,5 @@ _packaging # _version
 _extract_recovery
 _print_build_success
 
+# shellcheck source=scripts/upload.sh
 source "${SCRIPT_DIR}"/upload.sh
