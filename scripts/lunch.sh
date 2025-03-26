@@ -41,7 +41,7 @@ _lunch() {
   local release_codename
   release_codename=
   if [[ -d "${ANDROID_BUILD_TOP}"/build/release/aconfig/ ]]; then
-    release_codename=-$(find "${ANDROID_BUILD_TOP}"/build/release/aconfig/ -maxdepth 1 -type d -regextype egrep -iregex "${ANDROID_BUILD_TOP}/build/release/aconfig/[a-z]{2}[0-9][a-z]" -printf '%f\n' | sort | tail -n1)
+    release_codename=-$(find "${ANDROID_BUILD_TOP}"/build/release/aconfig/* -maxdepth 0 -type d -name "[a-z][a-z][0-9][a-z]" -printf '%f\n' | tail -n1)
   fi
 
   # Extract lunch prefix from AndroidProducts
