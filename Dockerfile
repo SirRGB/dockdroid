@@ -42,7 +42,7 @@ RUN gpg --recv-key 8BB9AD793E8E6153AF0F9A4416530D5E920F5C65
 RUN curl -o "${BIN_DIR}"/repo https://storage.googleapis.com/git-repo-downloads/repo
 RUN curl https://storage.googleapis.com/git-repo-downloads/repo.asc | gpg --verify - "${BIN_DIR}"/repo
 # Provide make_key to create signing keys
-RUN curl https://raw.githubusercontent.com/LineageOS/android_development/refs/heads/lineage-22.1/tools/make_key > "${BIN_DIR}"/make_key
+RUN curl https://raw.githubusercontent.com/LineageOS/android_development/refs/heads/lineage-22.2/tools/make_key > "${BIN_DIR}"/make_key
 # Patch for longer key size and drop input
 RUN sed -i "s/2048/4096/g" "${BIN_DIR}"/make_key
 RUN sed -i "s/read -p \"Enter password for '\$1' (blank for none\; password will be visible): \" \\\//g" "${BIN_DIR}"/make_key
