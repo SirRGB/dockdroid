@@ -12,7 +12,7 @@ _version() {
   readonly major_version_regex minor_version_regex
 
   # Search for line containing the regex inside *[V|v]ersion.mk|common.mk, cut that number and set points in between
-  ROM_PREFIX=$(grep -E '_TARGET_PACKAGE[[:space:]]:=' "${ANDROID_BUILD_TOP}"/vendor/*/build/tasks/* | cut -d"=" -f2 | cut -d"/" -f2 | cut -d"-" -f1)
+  ROM_PREFIX=$(grep -E '_TARGET_PACKAGE[[:space:]]:=' "${ANDROID_BUILD_TOP}"/vendor/*/build/tasks/* | cut -d"=" -f2 | cut -d"/" -f2 | cut -d"$" -f1)
   if [[ -n $(ls "${ANDROID_BUILD_TOP}"/vendor/*/config/*[vV]ersion.mk) ]]; then
     ROM_VERSION=$(grep -E "${major_version_regex}" "${ANDROID_BUILD_TOP}"/vendor/*/config/*[vV]ersion.mk | tr -d 'A-z:= \n').\
 $(grep -E "${minor_version_regex}" "${ANDROID_BUILD_TOP}"/vendor/*/config/*[vV]ersion.mk | tr -d 'A-z:= ')
@@ -28,7 +28,7 @@ $(grep -E "${minor_version_regex}" "${ANDROID_BUILD_TOP}"/vendor/*/config/common
     rom_extraversion="MICROG-"
   fi
   set -u
-  PACKAGE_NAME="${ROM_PREFIX}"-"${ROM_VERSION}"-"${rom_extraversion}"$(date +%Y%m%d)-"${DEVICE}"-signed.zip
+  PACKAGE_NAME="${ROM_PREFIX}""${ROM_VERSION}"-"${rom_extraversion}"$(date +%Y%m%d)-"${DEVICE}"-signed.zip
 }
 
 # Create flashable zip from target files
