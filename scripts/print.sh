@@ -58,7 +58,6 @@ _print_build_success() {
   BUILD_END=$(date +"%s")
   BUILD_DIFF=$((BUILD_END - BUILD_START))
   echo -e "${GREEN}Build completed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
-  echo -e "${GREEN}Package: ~/docker_droid/src/${SRC_SUBDIR}/out/target/product/${DEVICE}/${PACKAGE_NAME}"
 
   if [[ "${TELEGRAM_SET}" = "true" ]]; then
     _telegram_build_success

@@ -8,8 +8,7 @@ ARG username=droid
 # Dirs
 ENV ROOT_DIR /droid_workdir
 ENV SCRIPT_DIR "${ROOT_DIR}"/scripts
-ENV SRC_SUBDIR Los14
-ENV ROM_DIR "${ROOT_DIR}"/src/"${SRC_SUBDIR}"
+ENV ROM_DIR "${ROOT_DIR}"/src/Los14
 ENV OTA_DIR "${ROM_DIR}"_ota
 ENV KEYS_DIR "${ROOT_DIR}"/keys
 ENV BIN_DIR "${ROOT_DIR}"/bin
