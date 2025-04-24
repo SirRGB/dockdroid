@@ -19,9 +19,8 @@ _sync() {
   curl "${LOCAL_MANIFEST}" --create-dirs --output .repo/local_manifests/manifest.xml
   local threads
   threads=$(nproc)
-  repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) |
-    tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
-  repo forall -c "git lfs pull"
+  repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
+  repo forall -c "git lfs pull" || true
   unset ROM_DIR ROM_BRANCH ROM_MANIFEST LOCAL_MANIFEST
 }
 
