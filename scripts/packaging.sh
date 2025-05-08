@@ -35,7 +35,12 @@ $(grep -E "${minor_version_regex}" "${ANDROID_BUILD_TOP}"/vendor/*/config/common
 _packaging() {
   _version
   set +eu
-  ota_from_target_files -k "${KEYS_DIR}"/releasekey \
+  local RELEASETOOLS_PREFIX=""
+  # A10 and below need this prepended for signing to work
+  if [[ "${SDK_VERSION}" -lt 30 ]]; then
+    RELEASETOOLS_PREFIX="${ANDROID_BUILD_TOP}"/build/tools/releasetools/
+  fi
+  "${RELEASETOOLS_PREFIX}"ota_from_target_files -k "${KEYS_DIR}"/releasekey \
       "${OUT}"/signed-target_files.zip \
       "${OUT}"/"${PACKAGE_NAME}" | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/packaging.txt
   set -eu

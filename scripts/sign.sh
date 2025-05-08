@@ -12,20 +12,20 @@ _cleanup() {
 
 # Decide for signing method
 _determine_signing() {
-  local sdk_version
+  export SDK_VERSION
   set +eu
   m target-files-package otatools | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   set -eu
   # Read SDK Version, version_defaults doesnt exist on A14+
   if [[ -f "${ANDROID_BUILD_TOP}"/build/make/core/version_defaults.mk ]]; then
-    sdk_version=$(grep -E "PLATFORM_SDK_VERSION :=" "${ANDROID_BUILD_TOP}"/build/make/core/version_defaults.mk | tr -d "A-z:= ")
+    SDK_VERSION=$(grep -E "PLATFORM_SDK_VERSION :=" "${ANDROID_BUILD_TOP}"/build/make/core/version_defaults.mk | tr -d "A-z:= ")
   # Android 14+ fallback
   else
-    sdk_version=34
+    SDK_VERSION=34
   fi
 
   # If Android version greater than 11, use apex signing
-  if [[ "${sdk_version}" -gt 30 ]]; then
+  if [[ "${SDK_VERSION}" -gt 30 ]]; then
     echo "APEX Signing"
     _sign_new
   else
@@ -38,7 +38,7 @@ _determine_signing() {
 _sign_old() {
   set +eu
   croot
-  sign_target_files_apks -o -d "${KEYS_DIR}" \
+  "${ANDROID_BUILD_TOP}"/build/tools/releasetools/sign_target_files_apks -o -d "${KEYS_DIR}" \
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip \
       "${OUT}"/signed-target_files.zip | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign-legacy.txt
   set -eu
