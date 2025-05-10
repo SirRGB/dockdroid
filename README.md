@@ -126,12 +126,13 @@ You can further speed up build times by using tmpfs as described [here](https://
 
 ## Credits/Reference
 
-- [alsutton/aosp-build-docker-images](https://github.com/alsutton/aosp-build-docker-images/blob/main/debian-12-aosp.dockerfile)
-- [Jarlpenguin/releases](https://github.com/Jarlpenguin/releases)
-- [ederevx/android_scripts](https://github.com/ederevx/android_scripts)
-- [LeafOS-Project/leaf_build](https://github.com/LeafOS-Project/leaf_build)
-- [lineageos4microg/docker-lineage-cicd](https://github.com/lineageos4microg/docker-lineage-cicd)
-- [amyROM/vendor_amy](https://github.com/amyROM/vendor_amy/blob/207d5e32c3fba38b9fe1ab9cd12c71ca6b81d653/scripts/generate_json_build_info.sh)
+- [alsutton](https://github.com/alsutton/aosp-build-docker-images/blob/main/debian-12-aosp.dockerfile)
+- [Jarlpenguin](https://github.com/Jarlpenguin/releases)
+- [ederevx](https://github.com/ederevx/android_scripts)
+- [LeafOS](https://github.com/LeafOS-Project/leaf_build)
+- [LineageOS4MicroG](https://github.com/lineageos4microg/docker-lineage-cicd)
+- [amyROM](https://github.com/amyROM/vendor_amy/blob/207d5e32c3fba38b9fe1ab9cd12c71ca6b81d653/scripts/generate_json_build_info.sh)
+- [LineageOS Infra](https://github.com/lineageos-infra/build-config/tree/main/android)
 
 github release binary taken from
 - [Jarlpenguin/releases](https://github.com/Jarlpenguin/releases/raw/main/bin/github-release)
