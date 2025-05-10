@@ -99,7 +99,7 @@ while github releases relies on the token, ota info pushing to a github repo and
 - dotfiles: .gitconfig for syncing and .ssh for authentification. Needs to be copied from the host manually.
 - keys: Contains keys for signing the build. Will be generated automatically if not provided.
 - logs: Contains logs and error messages.
-- ccache: Used for build caching to speed up compilation. Set to 80GB by default. Can be disabled by overwriting the value with 0 for space saving.
+- ccache: Used for build caching to speed up compilation. Set to 80GB by default. Can be disabled by overwriting the value with 0 for space-saving.
 - secrets: If token.sh is provided (optional), it will be read. You can specify GITHUB_TOKEN, TELEGRAM_TOKEN and TELEGRAM_CHAT here.
 
 
@@ -121,7 +121,7 @@ You can further speed up build times by using tmpfs as described [here](https://
 
 - GitHub releases enforces a maximum file size of [2 GiB](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github#distributing-large-binaries) in their releases
 - SourceForge restricts project size to [5-30 GiB](https://sourceforge.net/p/forge/documentation/Disk%20Quotas) depending on the download throughput
-- GitLab releases might not be feasable due to their [100 MiB](https://docs.gitlab.com/user/gitlab_com/#gitlab-cicd) attachment size limit
+- GitLab releases might not be feasible due to their [100 MiB](https://docs.gitlab.com/user/gitlab_com/#gitlab-cicd) attachment size limit
 
 
 ## Credits/Reference

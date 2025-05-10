@@ -16,7 +16,7 @@ _determine_signing() {
   set +eu
   m target-files-package otatools | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   set -eu
-  # Read SDK Version, version_defaults doesnt exist on A14+
+  # Read SDK Version, version_defaults does not exist on A14+
   if [[ -f "${ANDROID_BUILD_TOP}"/build/make/core/version_defaults.mk ]]; then
     SDK_VERSION=$(grep -E "PLATFORM_SDK_VERSION :=" "${ANDROID_BUILD_TOP}"/build/make/core/version_defaults.mk | tr -d "A-z:= ")
   # Android 14+ fallback
