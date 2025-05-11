@@ -13,7 +13,7 @@ The goal is to make building properly with ota and signing easy for everyone.
 - [Docker Rootless (recommended)](https://docs.docker.com/engine/security/rootless/)
 - [SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - [GitConfig](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
-- ZRam: [Debian](https://wiki.debian.org/ZRam), [Fedora](https://github.com/systemd/zram-generator), [Ubuntu](https://wiki.ubuntuusers.de/zRam)
+- ZRam (highly recommended): [Debian](https://wiki.debian.org/ZRam), [Fedora](https://github.com/systemd/zram-generator), [Ubuntu](https://wiki.ubuntuusers.de/zRam)
 
 
 ## Setup
@@ -53,7 +53,7 @@ sudo chown -R 52587:52587 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_dr
 
 #### Other
 (If you know a smarter way to do this please tell me,  
-I know the available suibuids can be found with `cat /etc/subuid | grep $USER | cut -d":" -f2`  
+I know the available subuids can be found with `cat /etc/subuid | grep $USER | cut -d":" -f2`  
 I just do not know if the container uid is predictable,  
 it seems to be 1000 for debian/ubuntu and 100 for fedora)
 
@@ -77,7 +77,7 @@ sudo chown -R UID:UID ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/
 ```
 And remove the incomplete sync
 ```
-sudo rm -rf ~/docker_droid/src/Los14/
+sudo rm -rf ~/docker_droid/src/Los15/
 ```
 
 

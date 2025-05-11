@@ -3,6 +3,15 @@
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 
+_telegram() {
+  if [[ -n "${TELEGRAM_TOKEN}" ]]; then
+    curl -s "https://api.telegram.org/bot\"${TELEGRAM_TOKEN}\"/sendMessage" \
+      -d "chat_id=\"${TELEGRAM_CHAT}\"" \
+      -d "parse_mode=Markdown" \
+      -d "text=\"$1\""
+  fi
+}
+
 _telegram_check_token() {
   TELEGRAM_SET="false"
   set +u
@@ -41,15 +50,15 @@ _print_sync_fail() {
 }
 
 _telegram_sync_start() {
-  telegram -M "Sync started for ${ROM_MANIFEST}/tree/${ROM_BRANCH}"
+  _telegram "Sync started for ${ROM_MANIFEST}/tree/${ROM_BRANCH}"
 }
 
 _telegram_sync_success() {
-  telegram -M "Sync completed successfully in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
+  _telegram "Sync completed successfully in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
 }
 
 _telegram_sync_fail() {
-  telegram -M "Sync failed successfully"
+  _telegram "Sync failed successfully"
   _telegram_separator
 }
 
@@ -83,15 +92,15 @@ _print_build_fail() {
 }
 
 _telegram_build_start() {
-  telegram -M "Build started for ${DEVICE}"
+  _telegram "Build started for ${DEVICE}"
 }
 
 _telegram_build_success() {
-  telegram -M "Build completed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
+  _telegram "Build completed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
 }
 
 _telegram_build_fail() {
-  telegram -M "Build failed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
+  _telegram "Build failed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
   _telegram_separator
 }
 
@@ -109,11 +118,11 @@ _print_upload_success() {
 }
 
 _telegram_upload_start() {
-  telegram -M "Upload started"
+  _telegram "Upload started"
 }
 
 _telegram_upload_success() {
-  telegram -M "Build successfully uploaded:
+  _telegram "Build successfully uploaded:
 ROM:
 ${CUSTOM_OTA_URL}
 Recovery:

@@ -44,8 +44,7 @@ RUN curl https://raw.githubusercontent.com/LineageOS/android_development/refs/he
 # Patch for longer key size and drop input
 RUN sed -i "s/read -p \"Enter password for '\$1' (blank for none\; password will be visible): \" \\\//g" "${BIN_DIR}"/make_key
 RUN sed -i "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g; s/2048/4096/g" "${BIN_DIR}"/make_key
-# Install Telegram script
-RUN curl https://raw.githubusercontent.com/fabianonline/telegram.sh/refs/heads/master/telegram > "${BIN_DIR}"/telegram
+# Make scripts executable
 RUN chmod -R 500 "${BIN_DIR}" "${SCRIPT_DIR}"
 
 # ROM
