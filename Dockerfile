@@ -8,7 +8,7 @@ ARG username=droid
 # Dirs
 ENV ROOT_DIR /droid_workdir
 ENV SCRIPT_DIR "${ROOT_DIR}"/scripts
-ENV ROM_DIR "${ROOT_DIR}"/src/Los14
+ENV ROM_DIR "${ROOT_DIR}"/src/Los15
 ENV OTA_DIR "${ROM_DIR}"_ota
 ENV KEYS_DIR "${ROOT_DIR}"/keys
 ENV BIN_DIR "${ROOT_DIR}"/bin
@@ -48,11 +48,11 @@ RUN sed -i "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g
 RUN chmod -R 500 "${BIN_DIR}" "${SCRIPT_DIR}"
 
 # ROM
-ENV LOCAL_MANIFEST https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/cheeseburgerdumpling/A14Lineage.xml
+ENV LOCAL_MANIFEST https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/cheeseburgerdumpling/A15Lineage.xml
 ENV DEVICE cheeseburger
 ENV BUILD_TYPE userdebug
 ENV ROM_MANIFEST https://github.com/LineageOS/android
-ENV ROM_BRANCH lineage-21.0
+ENV ROM_BRANCH lineage-22.2
 
 # Extra
 ENV CCACHE_SIZE 80

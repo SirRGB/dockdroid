@@ -27,7 +27,7 @@ which should be $subUID+$containerUID-1 according to the [docker forums](https:/
 
 We need to manually create the required folders, because Docker does not run as Root (assuming you did choose the Rootless Setup).
 ```
-mkdir -p ~/docker_droid/src/Los14/.repo ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+mkdir -p ~/docker_droid/src/Los15/.repo ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
 ```
 Copy the required dotfiles from the host machines
 ```
@@ -59,7 +59,7 @@ it seems to be 1000 for debian/ubuntu and 100 for fedora)
 
 Let other users read the directory
 ```
-sudo chmod -R 507 ~/docker_droid/src/Los14/.repo ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+sudo chmod -R 507 ~/docker_droid/src/Los15/.repo ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
 ```
 Run the first docker build
 ```
@@ -68,7 +68,7 @@ docker compose up --force-recreate --build
 Wait until it starts syncing and stop using ctrl + c  
 Find out the uid by running:
 ```
-ls -n ~/docker_droid/src/Los14/.repo
+ls -n ~/docker_droid/src/Los15/.repo
 ```
 Give ownership to the uid you found out:
 ```

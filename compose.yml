@@ -22,3 +22,6 @@ services:
       - ~/docker_droid/secrets:/droid_workdir/secrets:ro
       # Time for file naming
       - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - path: ./example.env
+        required: false
