@@ -19,7 +19,7 @@ ENV LOGS_DIR "${ROOT_DIR}"/logs
 USER root
 
 # Android build dependencies
-RUN install_packages bc bison build-essential ca-certificates ccache curl flex g++-multilib gcc-multilib git git-lfs gnupg \
+RUN install_packages bc bison build-essential ca-certificates ccache curl file flex g++-multilib gcc-multilib git git-lfs gnupg \
     gperf imagemagick jq lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libncurses5 libsdl1.2-dev libssl-dev libxml2 \
     libxml2-utils lzop pngcrush python3 python-is-python3 rsync schedtool ssh squashfs-tools unzip xsltproc zip zlib1g-dev
 
