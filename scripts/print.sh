@@ -2,6 +2,7 @@
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
+NC='\033[0m'
 
 _telegram() {
   if [[ -n "${TELEGRAM_TOKEN}" ]]; then
@@ -32,7 +33,7 @@ _print_sync_start() {
 _print_sync_success() {
   SYNC_END=$(date +"%s")
   SYNC_DIFF=$((SYNC_END - SYNC_START))
-  echo -e "${GREEN}Sync completed successfully in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
+  echo -e "${GREEN}Sync completed successfully in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds${NC}"
 
   if [[ "${TELEGRAM_SET}" = "true" ]]; then
     _telegram_sync_success
@@ -42,7 +43,7 @@ _print_sync_success() {
 _print_sync_fail() {
   SYNC_END=$(date +"%s")
   SYNC_DIFF=$((SYNC_END - SYNC_START))
-  echo -e "${RED}Sync failed in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
+  echo -e "${RED}Sync failed in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds${NC}"
 
   if [[ "${TELEGRAM_SET}" = "true" ]]; then
     _telegram_sync_fail
@@ -66,7 +67,7 @@ _telegram_sync_fail() {
 _print_build_success() {
   BUILD_END=$(date +"%s")
   BUILD_DIFF=$((BUILD_END - BUILD_START))
-  echo -e "${GREEN}Build completed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
+  echo -e "${GREEN}Build completed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds${NC}"
 
   if [[ "${TELEGRAM_SET}" = "true" ]]; then
     _telegram_build_success
@@ -84,7 +85,7 @@ _print_build_start() {
 _print_build_fail() {
   BUILD_END=$(date +"%s")
   BUILD_DIFF=$((BUILD_END - BUILD_START))
-  echo -e "${RED}Build failed in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
+  echo -e "${RED}Build failed in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds${NC}"
 
   if [[ "${TELEGRAM_SET}" = "true" ]]; then
     _telegram_build_fail
@@ -111,7 +112,7 @@ _print_upload_start() {
 }
 
 _print_upload_success() {
-  echo -e "${GREEN}Upload completed successfully"
+  echo -e "${GREEN}Upload completed successfully${NC}"
   if [[ "${TELEGRAM_SET}" = "true" ]]; then
     _telegram_upload_success
   fi
@@ -130,7 +131,7 @@ ${CUSTOM_OTA_URL//.zip/-recovery.img}"
 }
 
 _print_done() {
-  echo -e "${GREEN}Completed successfully"
+  echo -e "${GREEN}Completed successfully${NC}"
   _telegram_separator
 }
 
