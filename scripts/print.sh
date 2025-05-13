@@ -7,9 +7,9 @@ NC='\033[0m'
 _telegram() {
   if [[ -n "${TELEGRAM_TOKEN}" ]]; then
     curl -s https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendMessage \
-      -d "chat_id=\"${TELEGRAM_CHAT}\"" \
-      -d "parse_mode=Markdown" \
-      -d "text=\"$1\""
+      -d chat_id="${TELEGRAM_CHAT}" \
+      -d parse_mode="Markdown" \
+      -d text="$1"
   fi
 }
 
@@ -51,7 +51,7 @@ _print_sync_fail() {
 }
 
 _telegram_sync_start() {
-  _telegram "Sync started for ${ROM_MANIFEST//.git//}/tree/${ROM_BRANCH}"
+  _telegram "Sync started for ${ROM_MANIFEST//.git/}/tree/${ROM_BRANCH}"
 }
 
 _telegram_sync_success() {
