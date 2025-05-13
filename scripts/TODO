@@ -1,3 +1,4 @@
+move to token for ota commits
+fix sync reporting error
 device/flavor list, for loop
 legacy compat i.e. py2, jdk8 + TLSv1, TLSv1.1 (https://stackoverflow.com/questions/67363030/rebuild-android-code-with-error-ssl-error-when-connecting-to-the-jack-server-t)
-error handling with $?
