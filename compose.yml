@@ -16,8 +16,6 @@ services:
       - ~/docker_droid/dotfiles/.gitconfig:/droid_workdir/.gitconfig:ro
       # SSH keys for git authentification
       - ~/docker_droid/dotfiles/.ssh:/droid_workdir/.ssh:ro
-      # GPG keys for verified commits (optional)
-      - ~/docker_droid/dotfiles/.gnupg:/droid_workdir/.gnupg:ro
       # Tokens for Telegram and GitHub (optional)
       - ~/docker_droid/secrets:/droid_workdir/secrets:ro
       # Time for file naming

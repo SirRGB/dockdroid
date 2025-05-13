@@ -85,17 +85,7 @@ _push_ota_info() {
 
   cp "${OUT}"/"${PACKAGE_NAME}".json "${OTA_DIR}"/"${DEVICE}".json
   git add "${OTA_DIR}"/"${DEVICE}".json
-  # Sign
-  set +u
-  if [[ -n "${GPG_PASSPHRASE}" ]] && [[ -n $(ls "${HOME}"/.gnupg/) ]] ; then
-    git commit -m -S "${DEVICE}: ${BUILD_DATE} update" --passphrase "${GPG_PASSPHRASE}"
-  elif [[ -n $(ls "${HOME}"/.gnupg/) ]]; then
-    git commit -m -S "${DEVICE}: ${BUILD_DATE} update"
-  else
-    git commit -m "${DEVICE}: ${BUILD_DATE} update"
-  fi
-  set -u
-
+  git commit -m "${DEVICE}: ${BUILD_DATE} update"
   git push origin HEAD:"${ROM_BRANCH}"
 }
 

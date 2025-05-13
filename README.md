@@ -92,8 +92,6 @@ sudo rm -rf ~/docker_droid/src/Los15/
 - Telegram logging
   - [TELEGRAM_TOKEN](https://core.telegram.org/bots/features#botfather)
   - TELEGRAM_CHAT
-- GPG signing with passphrase
-  - GPG_PASSPHRASE
 
 Authentication:
 while github releases relies on the token, ota info pushing to a github repo and the sourceforge upload require ssh keys, that are added in your account and gitconfig.
