@@ -85,7 +85,7 @@ sudo rm -rf ~/docker_droid/src/Los15/
 
 - GitHub Upload
   - [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
-- OTA_REPO_URL: either as git@github.com:user/ota_config or git@gitlab.com:user/ota_config
+- OTA_REPO_URL: either as git@github.com:user/ota_config
 - SourceForge Upload
   - SF_USER
   - SF_RELEASES_REPO
@@ -124,7 +124,7 @@ You can further speed up build times by using tmpfs as described [here](https://
 
 - GitHub releases enforces a maximum file size of [2 GiB](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github#distributing-large-binaries) in their releases
 - SourceForge restricts project size to [5-30 GiB](https://sourceforge.net/p/forge/documentation/Disk%20Quotas) depending on the download throughput
-- GitLab releases might not be feasible due to their [100 MiB](https://docs.gitlab.com/user/gitlab_com/#gitlab-cicd) attachment size limit
+- GitLab releases are not feasible due to their [100 MiB](https://docs.gitlab.com/user/gitlab_com/#gitlab-cicd) attachment size limit
 
 
 ## Credits/Reference
