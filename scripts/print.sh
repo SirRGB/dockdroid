@@ -125,9 +125,9 @@ _telegram_upload_start() {
 _telegram_upload_success() {
   _telegram "Build successfully uploaded:
 ROM:
-${CUSTOM_OTA_URL}
+${DL_OTA_URL}
 Recovery:
-${CUSTOM_OTA_URL//.zip/-recovery.img}"
+${DL_OTA_URL//.zip/-recovery.img}"
 }
 
 _print_done() {

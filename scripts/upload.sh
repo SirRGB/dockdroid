@@ -39,7 +39,7 @@ _upload_gh() {
     | cut -d"{" -f1)
 
   # Upload ROM
-  DL_OTA_URL=$(curl -L \
+  export DL_OTA_URL=$(curl -L \
     -X POST \
     -H "Authorization: Bearer ${GITHUB_TOKEN}" \
     -H "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME}")" \
@@ -59,7 +59,7 @@ _upload_gh() {
 _upload_sf() {
   scp "${OUT}"/"${PACKAGE_NAME}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/"${DEVICE}"/"${ROM_PREFIX}"
   scp "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/"${DEVICE}"/"${ROM_PREFIX}"
-  DL_OTA_URL=https://sourceforge.net/projects/"${SF_RELEASES_REPO}"/files/"${DEVICE}"/"${ROM_PREFIX}"/"${PACKAGE_NAME}"/download
+  export DL_OTA_URL=https://sourceforge.net/projects/"${SF_RELEASES_REPO}"/files/"${DEVICE}"/"${ROM_PREFIX}"/"${PACKAGE_NAME}"/download
 }
 
 # Create/print ota json
