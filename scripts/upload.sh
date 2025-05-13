@@ -75,7 +75,6 @@ _ota_info() {
 
 # Push OTA info
 # TODO create branch conditionally
-# TODO only add device json
 _push_ota_info() {
   if [[ ! -d "${OTA_DIR}" ]]; then
     git clone "${OTA_REPO_URL}" "${OTA_DIR}" -b "${ROM_BRANCH}"
@@ -84,8 +83,8 @@ _push_ota_info() {
   cd "${OTA_DIR}" || exit
   git checkout "${ROM_BRANCH}"
 
-  cp "${OUT}"/"${PACKAGE_NAME}".json ./"${DEVICE}".json
-  git add .
+  cp "${OUT}"/"${PACKAGE_NAME}".json "${OTA_DIR}"/"${DEVICE}".json
+  git add "${OTA_DIR}"/"${DEVICE}".json
   # Sign
   if [[ -n "${GPG_PASSPHRASE}" ]] && [[ -n $(ls "${HOME}"/.gnupg/) ]] ; then
     git commit -m -S "${DEVICE}: ${BUILD_DATE} update" --passphrase "${GPG_PASSPHRASE}"
