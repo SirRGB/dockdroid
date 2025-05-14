@@ -33,6 +33,21 @@ _keysgen() {
   unset KEYS_SUBJECT
 }
 
+_get_sdk_version() {
+  export SDK_VERSION
+  # Read SDK Version, version_defaults does not exist on A14+
+  if [[ -f "${ROM_DIR}"/build/core/version_defaults.mk ]]; then
+    SDK_VERSION=$(grep -E "PLATFORM_SDK_VERSION :=" "${ROM_DIR}"/build/core/version_defaults.mk | tr -d "A-z:= ")
+  elif [[ -f "${ROM_DIR}"/build/make/core/version_defaults.mk ]]; then
+    SDK_VERSION=$(grep -E "PLATFORM_SDK_VERSION :=" "${ROM_DIR}"/build/make/core/version_defaults.mk | tr -d "A-z:= ")
+  # Android 14+ fallback
+  else
+    SDK_VERSION=34
+  fi
+  echo -e "${GREEN}SDK VERSION: ${SDK_VERSION}${NC}"
+  unset ROM_DIR
+}
+
 _lunch() {
   set +eu
   source build/envsetup.sh
@@ -47,7 +62,12 @@ _lunch() {
 
   # Extract lunch prefix from AndroidProducts
   local product
-  product=$(grep -E "${DEVICE}" "${ANDROID_BUILD_TOP}"/device/*/"${DEVICE}"/AndroidProducts.mk | cut -d"/" -f2 | cut -d"." -f1 | head -n1)
+  if [[ -n "${ROM_PREFIX_FALLBACK}" ]]; then
+    product="${ROM_PREFIX_FALLBACK}"_"${DEVICE}"
+    unset ROM_PREFIX_FALLBACK
+  else
+    product=$(grep -E "${DEVICE}" "${ANDROID_BUILD_TOP}"/device/*/"${DEVICE}"/AndroidProducts.mk | cut -d"/" -f2 | cut -d"." -f1 | head -n1)
+  fi
 
   # It's all coming together
   set +eu
@@ -58,6 +78,10 @@ _lunch() {
 
 _ccache
 _keysgen
+_get_sdk_version
+if [[ "${SDK_VERSION}" -lt 29 ]]; then
+  source "${SCRIPT_DIR}"/compat.sh
+fi
 _lunch
 _print_build_start
 
