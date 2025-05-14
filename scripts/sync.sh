@@ -24,7 +24,7 @@ _sync() {
   set +e
   repo forall -c "git lfs pull"
   set -e
-  unset ROM_DIR ROM_MANIFEST LOCAL_MANIFEST
+  unset ROM_MANIFEST LOCAL_MANIFEST
 }
 
 cleanup() {

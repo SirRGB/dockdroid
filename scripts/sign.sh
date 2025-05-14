@@ -6,23 +6,15 @@ source "${SCRIPT_DIR}"/print.sh
 # Drop old builds
 _cleanup() {
   set +eu
-  m installclean | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
+  m installclean -j"$(nproc)" | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   set -eu
 }
 
 # Decide for signing method
 _determine_signing() {
-  export SDK_VERSION
   set +eu
-  m target-files-package otatools | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
+  m target-files-package otatools -j"$(nproc)" | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   set -eu
-  # Read SDK Version, version_defaults does not exist on A14+
-  if [[ -f "${ANDROID_BUILD_TOP}"/build/make/core/version_defaults.mk ]]; then
-    SDK_VERSION=$(grep -E "PLATFORM_SDK_VERSION :=" "${ANDROID_BUILD_TOP}"/build/make/core/version_defaults.mk | tr -d "A-z:= ")
-  # Android 14+ fallback
-  else
-    SDK_VERSION=34
-  fi
 
   # If Android version greater than 11, use apex signing
   if [[ "${SDK_VERSION}" -gt 30 ]]; then
