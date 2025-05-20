@@ -2,7 +2,8 @@
 
 set -eEuo pipefail #-x
 
-export PATH="${PATH}":"${BIN_DIR}"
+# Add our functions
+export PATH="${BIN_DIR}":"${PATH}"
 
 # Fetch Tokens for Telegram/GitHub/SourceForge
 if [[ -f "${SECRETS_DIR}"/tokens.sh ]]; then

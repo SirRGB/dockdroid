@@ -5,14 +5,13 @@ source "${SCRIPT_DIR}"/print.sh
 
 # Logs
 _setup_logs() {
-  BUILD_DATE=$(date -u +%Y%m%d-%H%M%S)
+  BUILD_DATE=$(env tz="${TIME_ZONE}" date +%Y%m%d-%H%M%S)
   mkdir "${LOGS_DIR}"/"${BUILD_DATE}"
 }
 
 # Pull manifest, local manifest and sync
 _sync() {
   if [[ ! -d "${ROM_DIR}" ]]; then
-    echo "creating dir"
     mkdir -p "${ROM_DIR}"
   fi
   cd "${ROM_DIR}" || exit
@@ -29,7 +28,7 @@ _sync() {
   set +e
   repo forall -c "git lfs pull"
   set -e
-  unset ROM_MANIFEST LOCAL_MANIFEST
+  unset ROM_MANIFEST LOCAL_MANIFEST TIME_ZONE
 }
 
 cleanup() {

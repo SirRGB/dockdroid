@@ -85,13 +85,14 @@ sudo rm -rf ~/docker_droid/src/Los15/
 
 - GitHub Upload
   - [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
-- OTA_REPO_URL: either as git@github.com:user/ota_config
+- OTA_REPO_URL: for example git@github.com:user/ota_config
 - SourceForge Upload
   - SF_USER
   - SF_RELEASES_REPO
 - Telegram logging
   - [TELEGRAM_TOKEN](https://core.telegram.org/bots/features#botfather)
   - TELEGRAM_CHAT
+- TIME_ZONE: either as in the format UTC+2 or CET
 
 Authentication:
 while github releases relies on the token, ota info pushing to a github repo and the sourceforge upload require ssh keys, that are added in your account and gitconfig.
