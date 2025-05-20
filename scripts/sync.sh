@@ -5,7 +5,7 @@ source "${SCRIPT_DIR}"/print.sh
 
 # Logs
 _setup_logs() {
-  BUILD_DATE=$(date -u +%Y%m%d-%H%M)
+  BUILD_DATE=$(date -u +%Y%m%d-%H%M%S)
   mkdir "${LOGS_DIR}"/"${BUILD_DATE}"
 }
 
