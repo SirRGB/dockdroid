@@ -10,10 +10,7 @@ _sync() {
   fi
   cd "${ROM_DIR}" || exit
   repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 -g default,-darwin --git-lfs --no-clone-bundle 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
-  if test -f .repo/local_manifests/* ; then
-    rm .repo/local_manifests/*
-  fi
-
+  find "${ROM_DIR}"/.repo/local_manifests/ -type f -exec rm {} \;
   curl "${LOCAL_MANIFEST}" --create-dirs --output .repo/local_manifests/manifest.xml
   local threads
   threads=$(nproc)
