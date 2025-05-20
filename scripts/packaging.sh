@@ -42,7 +42,7 @@ _packaging() {
   fi
   "${releasetools_prefix}"ota_from_target_files -k "${KEYS_DIR}"/releasekey \
       "${OUT}"/signed-target_files.zip \
-      "${OUT}"/"${PACKAGE_NAME}" | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/packaging.txt
+      "${OUT}"/"${PACKAGE_NAME}" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/packaging.txt
   set -eu
   unset KEYS_DIR LOGS_DIR
 }

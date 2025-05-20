@@ -6,14 +6,14 @@ source "${SCRIPT_DIR}"/print.sh
 # Drop old builds
 _cleanup() {
   set +eu
-  m installclean -j"$(nproc)" | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
+  m installclean -j"$(nproc)" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   set -eu
 }
 
 # Decide for signing method
 _determine_signing() {
   set +eu
-  m target-files-package otatools -j"$(nproc)" | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
+  m target-files-package otatools -j"$(nproc)" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   set -eu
 
   # If Android version greater than 11, use apex signing
@@ -32,7 +32,7 @@ _sign_old() {
   croot
   "${ANDROID_BUILD_TOP}"/build/tools/releasetools/sign_target_files_apks -o -d "${KEYS_DIR}" \
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip \
-      "${OUT}"/signed-target_files.zip | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign-legacy.txt
+      "${OUT}"/signed-target_files.zip 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign-legacy.txt
   set -eu
 }
 
@@ -163,7 +163,7 @@ _sign_new() {
       --extra_apex_payload_key com.google.pixel.vibrator.hal.apex="${KEYS_DIR}"/com.google.pixel.vibrator.hal.pem \
       --extra_apex_payload_key com.qorvo.uwb.apex="${KEYS_DIR}"/com.qorvo.uwb.pem \
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files*.zip \
-      "${OUT}"/signed-target_files.zip | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign.txt
+      "${OUT}"/signed-target_files.zip 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign.txt
   set -eu
 }
 

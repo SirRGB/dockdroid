@@ -15,7 +15,7 @@ _sync() {
     mkdir -p "${ROM_DIR}"
   fi
   cd "${ROM_DIR}" || exit
-  repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 -g default,-darwin --git-lfs --no-clone-bundle | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
+  repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 -g default,-darwin --git-lfs --no-clone-bundle 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
   if test -f .repo/local_manifests/* ; then
     rm .repo/local_manifests/*
   fi
@@ -24,7 +24,7 @@ _sync() {
   local threads
   threads=$(nproc)
   repo forall -c "rm .git/*.lock" || true
-  repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
+  repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
   set +e
   repo forall -c "git lfs pull"
   set -e
