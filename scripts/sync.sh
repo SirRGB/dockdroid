@@ -13,7 +13,7 @@ _setup_logs() {
 _sync() {
   cd "${ROM_DIR}" || exit
   repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 -g default,-darwin --git-lfs --no-clone-bundle | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
-  if [[ -n $(ls .repo/local_manifests/) ]]; then
+  if test -f .repo/local_manifests/* ; then
     rm .repo/local_manifests/*
   fi
   curl "${LOCAL_MANIFEST}" --create-dirs --output .repo/local_manifests/manifest.xml

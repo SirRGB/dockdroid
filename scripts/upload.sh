@@ -4,14 +4,14 @@
 source "${SCRIPT_DIR}"/print.sh
 
 _upload_check() {
-  set +eu
+  set +u
   UPLOAD_TARGET=
   if [[ -n "${GITHUB_TOKEN}" ]] && [[ -n "${GH_RELEASES_REPO}" ]]; then
     UPLOAD_TARGET="gh"
-  elif [[ -n $(ls "${HOME}"/.ssh/id_*) ]] && [[ -n "${SF_USER}" ]] && [[ -n "${SF_RELEASES_REPO}" ]]; then
+  elif test -f "${HOME}"/.ssh/id_* && [[ -n "${SF_USER}" ]] && [[ -n "${SF_RELEASES_REPO}" ]]; then
     UPLOAD_TARGET="sf"
   fi
-  set -eu
+  set -u
 }
 
 _upload() {
