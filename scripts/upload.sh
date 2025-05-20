@@ -78,13 +78,13 @@ _ota_info() {
 # Push OTA info
 # TODO create branch conditionally
 _push_ota_info() {
-  if [[ ! -d "${OTA_DIR}" ]]; then
-    git clone "${OTA_REPO_URL}" "${OTA_DIR}" -b "${ROM_BRANCH}"
+  if [[ ! -d "${ROM_DIR}"_ota ]]; then
+    git clone "${OTA_REPO_URL}" "${ROM_DIR}"_ota -b "${ROM_BRANCH}"
   fi
-  cd "${OTA_DIR}" || exit
+  cd "${ROM_DIR}"_ota || exit
 
-  cp "${OUT}"/"${PACKAGE_NAME}".json "${OTA_DIR}"/"${DEVICE}".json
-  git add "${OTA_DIR}"/"${DEVICE}".json
+  cp "${OUT}"/"${PACKAGE_NAME}".json "${ROM_DIR}"_ota/"${DEVICE}".json
+  git add "${ROM_DIR}"_ota/"${DEVICE}".json
   git commit -m "${DEVICE}: ${BUILD_DATE} update"
   git push origin HEAD:"${ROM_BRANCH}"
 }

@@ -10,7 +10,6 @@ ENV USER="${username}"
 ENV ROOT_DIR /droid_workdir
 ENV SCRIPT_DIR "${ROOT_DIR}"/scripts
 ENV ROM_DIR "${ROOT_DIR}"/src/Los15
-ENV OTA_DIR "${ROM_DIR}"_ota
 ENV KEYS_DIR "${ROOT_DIR}"/keys
 ENV BIN_DIR "${ROOT_DIR}"/bin
 ENV SECRETS_DIR "${ROOT_DIR}"/secrets
