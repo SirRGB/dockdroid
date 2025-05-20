@@ -26,7 +26,7 @@ RUN install_packages bc bison build-essential ca-certificates ccache curl file f
     pngcrush python3 python-is-python3 rsync schedtool ssh squashfs-tools tk-dev unzip xsltproc xz-utils zip zlib1g-dev
 
 # Create dirs and copy scripts
-RUN mkdir -p "${SCRIPT_DIR}" "${ROM_DIR}" "${BIN_DIR}" "${SECRETS_DIR}" "${KEYS_DIR}"
+RUN mkdir -p "${SCRIPT_DIR}" "${BIN_DIR}" "${SECRETS_DIR}" "${KEYS_DIR}"
 COPY scripts/ "${SCRIPT_DIR}"/
 
 # Set up user and work directories

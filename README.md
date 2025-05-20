@@ -25,30 +25,30 @@ For Debian/Ubuntu this seems to be 100999 and on Fedora 52587,
 which should be $subUID+$containerUID-1 according to the [docker forums](https://forums.docker.com/t/map-more-uid-on-rootless-docker-and-mount-volume/102928/8).
 
 
-We need to manually create the required folders, because Docker does not run as Root (assuming you did choose the Rootless Setup).
+We need to manually create the required folders for the respective volumes
 ```
-mkdir -p ~/docker_droid/src/Los15/.repo ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+mkdir -p ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
 ```
 Copy the required dotfiles from the host machines
 ```
-cp ~/.gitconfig ~/docker_droid/dotfiles
-cp -r ~/.ssh ~/docker_droid/dotfiles
+cp ~/.gitconfig ~/docker_droid/dotfiles/
+cp -r ~/.ssh ~/docker_droid/dotfiles/
 ```
 and clone this repo
 ```
-git clone https://github.com/SirRGB/dockdroid ~/docker_droid/dockdroid
+git clone https://github.com/SirRGB/dockdroid ~/docker_droid/minideb
 ```
 
 Then we need to chown that directory to the Docker user:
 
 #### Debian/Ubuntu
 ```
-sudo chown -R 100999:100999 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+sudo chown -R 100999:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
 ```
 
 #### Fedora
 ```
-sudo chown -R 52587:52587 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+sudo chown -R 52587:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
 ```
 
 #### Other
@@ -59,7 +59,7 @@ it seems to be 1000 for debian/ubuntu and 100 for fedora)
 
 Let other users read the directory
 ```
-sudo chmod -R 507 ~/docker_droid/src/Los15/.repo ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+sudo chmod -R 507 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
 ```
 Run the first docker build
 ```
@@ -72,8 +72,8 @@ ls -n ~/docker_droid/src/Los15/.repo
 ```
 Give ownership to the uid you found out:
 ```
-(replace UID)
-sudo chown -R UID:UID ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+(replace the 1st UID)
+sudo chown -R UID:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
 ```
 And remove the incomplete sync
 ```
@@ -108,7 +108,7 @@ while github releases relies on the token, ota info pushing to a github repo and
 
 ## Run the build
 
-- After setting everything up you should do a test build with the default variables for testing. (Be sure to be in ~/docker_droid/dockdroid)
+- After setting everything up you should do a test build with the default variables for testing. (Be sure to be in ~/docker_droid/minideb)
 ```
 docker compose up --force-recreate --build
 ```

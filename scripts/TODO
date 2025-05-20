@@ -2,3 +2,5 @@ move to token for ota commits/ota for non-ssh users
 fix sync/build reporting error
 device/flavor list, for loop
 proper keys check
+fully move printing to print.sh, printf
+keep logs for 1d, delete on conflicts
