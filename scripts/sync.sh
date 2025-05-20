@@ -3,12 +3,6 @@
 # shellcheck source=scripts/print.sh
 source "${SCRIPT_DIR}"/print.sh
 
-# Logs
-_setup_logs() {
-  BUILD_DATE=$(env tz="${TIME_ZONE}" date +%Y%m%d-%H%M%S)
-  mkdir "${LOGS_DIR}"/"${BUILD_DATE}"
-}
-
 # Pull manifest, local manifest and sync
 _sync() {
   if [[ ! -d "${ROM_DIR}" ]]; then
@@ -28,7 +22,7 @@ _sync() {
   set +e
   repo forall -c "git lfs pull"
   set -e
-  unset ROM_MANIFEST LOCAL_MANIFEST TIME_ZONE
+  unset ROM_MANIFEST LOCAL_MANIFEST
 }
 
 cleanup() {
@@ -36,7 +30,6 @@ cleanup() {
 }
 trap cleanup ERR
 
-_setup_logs
 _print_sync_start
 _sync
 _print_sync_success

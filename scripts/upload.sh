@@ -24,7 +24,7 @@ _upload() {
 
 _upload_gh() {
   local tag desc release_repo upload_url
-  tag="$(date +%Y%m%d%H%M)"-"${PACKAGE_NAME//.zip/}"
+  tag=$(env tz="${TIME_ZONE}" date +%Y%m%d%H%M)-"${PACKAGE_NAME//.zip/}"
   desc="${ROM_PREFIX}-${ROM_VERSION} for ${DEVICE}"
   release_repo="${OTA_REPO_URL//git@github.com:/}"
 

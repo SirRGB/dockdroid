@@ -28,7 +28,7 @@ $(grep -E "${minor_version_regex}" "${ANDROID_BUILD_TOP}"/vendor/*/config/common
     rom_extraversion="MICROG-"
   fi
   set -u
-  PACKAGE_NAME="${ROM_PREFIX}""${ROM_VERSION}"-"${rom_extraversion}"$(date +%Y%m%d)-"${DEVICE}"-signed.zip
+  PACKAGE_NAME="${ROM_PREFIX}""${ROM_VERSION}"-"${rom_extraversion}"$(env tz="${TIME_ZONE}" date +%Y%m%d)-"${DEVICE}"-signed.zip
 }
 
 # Create flashable zip from target files
