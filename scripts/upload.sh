@@ -81,9 +81,7 @@ _push_ota_info() {
   if [[ ! -d "${OTA_DIR}" ]]; then
     git clone "${OTA_REPO_URL}" "${OTA_DIR}" -b "${ROM_BRANCH}"
   fi
-
   cd "${OTA_DIR}" || exit
-  git checkout "${ROM_BRANCH}"
 
   cp "${OUT}"/"${PACKAGE_NAME}".json "${OTA_DIR}"/"${DEVICE}".json
   git add "${OTA_DIR}"/"${DEVICE}".json
