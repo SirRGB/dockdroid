@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#set -x
-
 # shellcheck source=scripts/print.sh
 source "${SCRIPT_DIR}"/print.sh
 
@@ -33,18 +31,10 @@ _keysgen() {
   unset KEYS_SUBJECT
 }
 
-_get_sdk_version() {
-  export SDK_VERSION
-  # Read SDK Version, version_defaults does not exist on A14+
-  if [[ -f "${ROM_DIR}"/build/core/version_defaults.mk ]]; then
-    SDK_VERSION=$(grep -E "PLATFORM_SDK_VERSION :=" "${ROM_DIR}"/build/core/version_defaults.mk | tr -d "A-z:= ")
-  elif [[ -f "${ROM_DIR}"/build/make/core/version_defaults.mk ]]; then
-    SDK_VERSION=$(grep -E "PLATFORM_SDK_VERSION :=" "${ROM_DIR}"/build/make/core/version_defaults.mk | tr -d "A-z:= ")
-  # Android 14+ fallback
-  else
-    SDK_VERSION=34
-  fi
-  echo -e "${GREEN}SDK VERSION: ${SDK_VERSION}${NC}"
+_get_android_version() {
+  export ANDROID_VERSION
+  ANDROID_VERSION=$(< "${ROM_DIR}"/cts/tests/tests/os/assets/platform_versions.txt head -n1 | tr -d "A-z" | cut -d"." -f1)
+  echo -e "${GREEN}ANDROID VERSION: ${ANDROID_VERSION}${NC}"
 }
 
 _lunch() {
@@ -77,8 +67,8 @@ _lunch() {
 
 _ccache
 _keysgen
-_get_sdk_version
-if [[ "${SDK_VERSION}" -lt 29 ]]; then
+_get_android_version
+if [[ "${ANDROID_VERSION}" -lt 10 ]]; then
   source "${SCRIPT_DIR}"/compat.sh
 fi
 _lunch

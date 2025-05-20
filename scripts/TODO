@@ -1,3 +1,4 @@
-move to token for ota commits
-fix sync reporting error
+move to token for ota commits/ota for non-ssh users
+fix sync/build reporting error
 device/flavor list, for loop
+proper keys check

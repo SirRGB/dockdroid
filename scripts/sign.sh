@@ -17,7 +17,7 @@ _determine_signing() {
   set -eu
 
   # If Android version greater than 11, use apex signing
-  if [[ "${SDK_VERSION}" -gt 30 ]]; then
+  if [[ "${ANDROID_VERSION}" -gt 11 ]]; then
     echo "APEX Signing"
     _sign_new
   else

@@ -37,7 +37,7 @@ _packaging() {
   set +eu
   local releasetools_prefix=""
   # A10 and below need this prepended for signing to work
-  if [[ "${SDK_VERSION}" -lt 30 ]]; then
+  if [[ "${ANDROID_VERSION}" -lt 11 ]]; then
     releasetools_prefix="${ANDROID_BUILD_TOP}"/build/tools/releasetools/
   fi
   "${releasetools_prefix}"ota_from_target_files -k "${KEYS_DIR}"/releasekey \

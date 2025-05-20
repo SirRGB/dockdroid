@@ -45,11 +45,11 @@ _key_size_recovery() {
 }
 
 _setup_py2
-if [[ "${SDK_VERSION}" -lt 28 ]]; then
+if [[ "${ANDROID_VERSION}" -lt 9 ]]; then
   _setup_jdk8
 fi
 
-if [[ "${SDK_VERSION}" -lt 29 ]] && [[ "${SDK_VERSION}" -gt 25 ]]; then
+if [[ "${ANDROID_VERSION}" -gt 7 ]]; then
   _key_size_recovery
 else
   _key_size_sys_core
