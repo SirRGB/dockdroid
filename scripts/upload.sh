@@ -25,7 +25,7 @@ _upload() {
 _upload_gh() {
   local tag desc release_repo upload_url
   tag=$(env tz="${TIME_ZONE}" date +%Y%m%d%H%M)-"${PACKAGE_NAME//.zip/}"
-  desc="${ROM_PREFIX}-${ROM_VERSION} for ${DEVICE}"
+  desc="${ROM_PREFIX}${ROM_VERSION} for ${DEVICE}"
   release_repo="${OTA_REPO_URL//git@github.com:/}"
 
   # Create a release and get url
@@ -72,7 +72,6 @@ _ota_info() {
   datetime=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut -d"=" -f2)
   custom_build_type="UNOFFICIAL"
   jq -n "{\"response\": [{\"datetime\": ${datetime},\"filename\": \"${PACKAGE_NAME}\",\"id\": \"${id}\",\"romtype\": \"${custom_build_type}\", \"size\": ${file_size}, \"url\": \"${DL_OTA_URL}\", \"version\": \"${ROM_VERSION}\"}]}" > "${OUT}"/"${PACKAGE_NAME}".json
-  echo "OTA JSON: ${OUT}/${PACKAGE_NAME}.json"
 }
 
 # Push OTA info

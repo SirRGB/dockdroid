@@ -59,7 +59,7 @@ _telegram_sync_success() {
 }
 
 _telegram_sync_fail() {
-  _telegram "Sync failed successfully"
+  _telegram "Sync failed"
   _telegram_separator
 }
 
@@ -101,7 +101,7 @@ _telegram_build_success() {
 }
 
 _telegram_build_fail() {
-  _telegram "Build failed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
+  _telegram "Build failed in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
   _telegram_separator
 }
 
@@ -124,10 +124,8 @@ _telegram_upload_start() {
 
 _telegram_upload_success() {
   _telegram "Build successfully uploaded:
-ROM:
-${DL_OTA_URL}
-Recovery:
-${DL_OTA_URL//.zip/-recovery.img}"
+[ROM](${DL_OTA_URL})
+[Recovery](${DL_OTA_URL//.zip/-recovery.img})"
 }
 
 _print_done() {
