@@ -70,9 +70,9 @@ Find out the uid by running:
 ```
 ls -n ~/docker_droid/src/Los15/.repo
 ```
-Give ownership to the uid you found out:
-```
+Give ownership to the uid you found out:  
 (replace the 1st UID)
+```
 sudo chown -R UID:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
 ```
 And remove the incomplete sync
@@ -85,17 +85,16 @@ sudo rm -rf ~/docker_droid/src/Los15/
 
 - GitHub Upload
   - [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
-- OTA_REPO_URL: for example git@github.com:user/ota_config
+  - OTA_REPO_URL: for example git@github.com:user/ota_config, will also be used for uploading
+  - Requires passwordless ssh keys [added to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 - SourceForge Upload
-  - SF_USER
-  - SF_RELEASES_REPO
+  - SF_USER: Username of your account
+  - SF_RELEASES_REPO: Project name
+  - Requires passwordless ssh keys added to your [SourceForge account](https://sourceforge.net/p/forge/documentation/SSH%20Keys)
 - Telegram logging
   - [TELEGRAM_TOKEN](https://core.telegram.org/bots/features#botfather)
-  - TELEGRAM_CHAT
+  - TELEGRAM_CHAT: either as @xyz or the id
 - TIME_ZONE: either as in the format UTC+2 or CET
-
-Authentication:
-while github releases relies on the token, ota info pushing to a github repo and the sourceforge upload require ssh keys, that are added in your account and gitconfig.
 
 
 ## Directories
