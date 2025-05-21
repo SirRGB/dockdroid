@@ -62,7 +62,7 @@ _lunch() {
   set +eu
   lunch "${product}""${release_codename}"-"${BUILD_TYPE}"
   set -eu
-  unset BUILD_TYPE ROM_DIR
+  unset BUILD_TYPE
 }
 
 _ccache
