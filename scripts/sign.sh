@@ -29,8 +29,12 @@ _determine_signing() {
 
 # Old signing process, A11/below
 _sign_old() {
+  local releasetools_prefix=""
+  if [[ "${ANDROID_VERSION}" -lt 11 ]]; then
+    releasetools_prefix="${ANDROID_BUILD_TOP}"/build/tools/releasetools/
+  fi
   set +eu
-  "${ANDROID_BUILD_TOP}"/build/tools/releasetools/sign_target_files_apks -o -d "${KEYS_DIR}" \
+  "${releasetools_prefix}"sign_target_files_apks -o -d "${KEYS_DIR}" \
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip \
       "${OUT}"/signed-target_files.zip 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign-legacy.txt
   set -eu
