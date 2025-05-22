@@ -14,6 +14,7 @@ _cleanup() {
 _determine_signing() {
   set +eu
   m target-files-package otatools -j"$(nproc)" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
+  croot
   set -eu
 
   # If Android version greater than 11, use apex signing
@@ -29,7 +30,6 @@ _determine_signing() {
 # Old signing process, A11/below
 _sign_old() {
   set +eu
-  croot
   "${ANDROID_BUILD_TOP}"/build/tools/releasetools/sign_target_files_apks -o -d "${KEYS_DIR}" \
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip \
       "${OUT}"/signed-target_files.zip 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign-legacy.txt
@@ -39,7 +39,6 @@ _sign_old() {
 # New signing process (APEX), A12/up
 _sign_new() {
   set +eu
-  croot
   sign_target_files_apks -o -d "${KEYS_DIR}" \
       --extra_apks AdServicesApk.apk="${KEYS_DIR}"/releasekey \
       --extra_apks FederatedCompute.apk="${KEYS_DIR}"/releasekey \
