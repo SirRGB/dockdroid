@@ -1,4 +1,4 @@
-FROM bitnami/minideb:bookworm
+FROM docker.io/bitnami/minideb:bookworm
 
 # User
 ARG userid=1000
@@ -57,8 +57,8 @@ ENV ROM_BRANCH lineage-22.2
 ENV ROM_PREFIX_FALLBACK ""
 
 # Extra
-ENV CCACHE_SIZE 80
-ENV OTA_REPO_URL git@github.com:SirRGB/ota_config
+ENV CCACHE_SIZE 40
+ENV OTA_REPO_URL ""
 ENV KEYS_SUBJECT '/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
 ENV TIME_ZONE UTC
 
