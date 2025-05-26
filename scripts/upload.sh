@@ -6,7 +6,7 @@ source "${SCRIPT_DIR}"/print.sh
 _upload_check() {
   set +eu
   UPLOAD_TARGET=
-  if [[ -n "${GITHUB_TOKEN}" ]] && [[ -n "${GH_RELEASES_REPO}" ]]; then
+  if [[ -n "${GITHUB_TOKEN}" ]] && [[ -n "${OTA_REPO_URL}" ]]; then
     UPLOAD_TARGET="gh"
   elif [[ -n $(find "${HOME}"/.ssh -name "id_*") ]] && [[ -n "${SF_USER}" ]] && [[ -n "${SF_RELEASES_REPO}" ]]; then
     UPLOAD_TARGET="sf"
