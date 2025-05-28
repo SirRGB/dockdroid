@@ -51,9 +51,9 @@ _lunch() {
 
   # Extract lunch prefix from AndroidProducts
   local product
-  if [[ -n "${ROM_PREFIX_FALLBACK}" ]]; then
-    product="${ROM_PREFIX_FALLBACK}"_"${DEVICE}"
-    unset ROM_PREFIX_FALLBACK
+  if [[ -n "${LUNCH_PREFIX_FALLBACK}" ]]; then
+    product="${LUNCH_PREFIX_FALLBACK}"_"${DEVICE}"
+    unset LUNCH_PREFIX_FALLBACK
   else
     product=$(grep -E "${DEVICE}" "${ANDROID_BUILD_TOP}"/device/*/"${DEVICE}"/AndroidProducts.mk | cut -d"/" -f2 | cut -d"." -f1 | head -n1)
   fi
