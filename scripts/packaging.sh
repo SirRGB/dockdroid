@@ -33,7 +33,7 @@ $(find "${ANDROID_BUILD_TOP}"/vendor/*/config/ \( -name "*[vV]ersion.mk" -o -nam
     rom_extraversion="MICROG-"
   fi
   set -u
-  PACKAGE_NAME="${ROM_PREFIX}""${ROM_VERSION}"-"${rom_extraversion}"$(env tz="${TIME_ZONE}" date +%Y%m%d)-"${DEVICE}"-signed.zip
+  PACKAGE_NAME="${ROM_PREFIX}""${ROM_VERSION}"-"${rom_extraversion}"$(env TZ="${TIME_ZONE}" date -d @"${BUILD_DATE_UNIX}" +%Y%m%d)-"${DEVICE}"-signed.zip
 }
 
 # Create flashable zip from target files
