@@ -33,7 +33,7 @@ _keysgen() {
 
 _get_android_version() {
   export ANDROID_VERSION
-  ANDROID_VERSION=$(< "${ROM_DIR}"/cts/tests/tests/os/assets/platform_versions.txt head -n1 | tr -d "A-z" | cut -d"." -f1)
+  ANDROID_VERSION=$(< "${ROM_DIR}"/cts/tests/tests/os/assets/platform_versions.txt tr -d "A-z" | cut -d"." -f1 | sort | tail -n1)
   echo -e "${GREEN}ANDROID VERSION: ${ANDROID_VERSION}${NC}"
 }
 
