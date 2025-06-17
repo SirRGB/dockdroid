@@ -65,4 +65,10 @@ ENV OTA_REPO_URL ""
 ENV KEYS_SUBJECT '/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
 ENV TIME_ZONE UTC
 
+# Auth
+ENV TELEGRAM_TOKEN ""
+ENV GITHUB_TOKEN ""
+ENV SF_USER ""
+ENV SF_RELEASES_REPO ""
+
 ENTRYPOINT "${SCRIPT_DIR}"/init.sh
