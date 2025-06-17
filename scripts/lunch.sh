@@ -71,7 +71,14 @@ _get_android_version
 if [[ "${ANDROID_VERSION}" -lt 10 ]]; then
   source "${SCRIPT_DIR}"/compat.sh
 fi
-_lunch
-_print_build_start
 
-source "${SCRIPT_DIR}"/sign.sh
+IFS=',' read -r -a "DEVICE" <<< "${DEVICE}"
+for device in "${DEVICE[@]}"; do
+  # shellcheck disable=SC2178
+  export DEVICE="${device}"
+  echo "Building for ${DEVICE[0]}"
+  _lunch
+  _print_build_start
+
+  source "${SCRIPT_DIR}"/sign.sh
+done

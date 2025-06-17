@@ -6,7 +6,7 @@ source "${SCRIPT_DIR}"/print.sh
 # Only works for PRODUCT_VERSION_MAJOR|MINOR
 # Planned to work on Leaf OS/Lineage OS/CyanogenMOD/amyROM
 _version() {
-  local major_version_regex minor_version_regex rom_extraversion
+  local major_version_regex minor_version_regex rom_extraversion partition_search
   major_version_regex='^PRODUCT_VERSION_MAJOR[[:space:]]:?=[[:space:]][[:digit:]]{1,2}'
   minor_version_regex='^PRODUCT_VERSION_MINOR[[:space:]]:?=[[:space:]][[:digit:]]{1,2}'
   readonly major_version_regex minor_version_regex
@@ -25,14 +25,16 @@ $(find "${ANDROID_BUILD_TOP}"/vendor/*/config/ \( -name "*[vV]ersion.mk" -o -nam
     ROM_VERSION="${ROM_VERSION_FALLBACK}"
     unset ROM_VERSION_FALLBACK
   fi
-  rom_extraversion=
-  set +u
-  if [[ "${WITH_GMS}" = "true" ]]; then
-    rom_extraversion="GMS-"
-  elif [[ "${WITH_MICROG}" = "true" ]]; then
-    rom_extraversion="MICROG-"
+  partition_search="${OUT}"/system
+  if [[ "${ANDROID_VERSION}" -gt 8 ]]; then
+    partition_search[1]="${OUT}"/product
   fi
-  set -u
+  rom_extraversion=
+  if [[ -n $(find "${partition_search[@]}" -name "FakeStore") ]]; then
+    rom_extraversion="MICROG-"
+  elif [[ -n $(find "${partition_search[@]}" -name "GmsCore") ]]; then
+    rom_extraversion="GMS-"
+  fi
   PACKAGE_NAME="${ROM_PREFIX}""${ROM_VERSION}"-"${rom_extraversion}"$(env TZ="${TIME_ZONE}" date -d @"${BUILD_DATE_UNIX}" +%Y%m%d)-"${DEVICE}"-signed.zip
 }
 

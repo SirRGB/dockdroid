@@ -50,6 +50,7 @@ RUN chmod -R 500 "${BIN_DIR}" "${SCRIPT_DIR}"
 
 # ROM
 ENV LOCAL_MANIFEST https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/cheeseburgerdumpling/A15Lineage.xml
+ENV CLONE_REPOS ""
 ENV DEVICE cheeseburger
 ENV BUILD_TYPE userdebug
 ENV ROM_MANIFEST https://github.com/LineageOS/android
