@@ -6,16 +6,16 @@ NC='\033[0m'
 
 # Skelleton for posting to telegram
 _telegram() {
-  if [[ "${TELEGRAM_SET}" = "true" ]]; then
-    curl -s https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendMessage \
-      -d chat_id="${TELEGRAM_CHAT}" \
-      -d parse_mode="Markdown" \
-      -d text="$1"
+  if [[ -n "${TELEGRAM_TOKEN}" ]]; then
+    curl --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendMessage \
+      --data chat_id="${TELEGRAM_CHAT}" \
+      --data parse_mode="Markdown" \
+      --data text="$1"
   fi
 }
 
 _telegram_separator() {
-  if [[ "${TELEGRAM_SET}" = "true" ]]; then
+  if [[ -n "${TELEGRAM_TOKEN}" ]]; then
     curl --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendSticker \
       --data parse_mode=HTML \
       --data chat_id="${TELEGRAM_CHAT}" \
@@ -23,20 +23,8 @@ _telegram_separator() {
   fi
 }
 
-# Check for Token
-_telegram_check_token() {
-  TELEGRAM_SET="false"
-  set +u
-  if [[ -n "${TELEGRAM_TOKEN}" ]]; then
-    TELEGRAM_SET="true"
-  fi
-  set -u
-}
-
-
 # Syncing
 _print_sync_start() {
-  _telegram_check_token
   SYNC_START=$(date +"%s")
   _telegram "Sync started for ${ROM_MANIFEST//.git/}/tree/${ROM_BRANCH}"
 }
