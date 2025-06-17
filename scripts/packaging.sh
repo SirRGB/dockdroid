@@ -58,10 +58,10 @@ _extract_recovery() {
     unzip -p "${OUT}"/signed-target_files.zip IMAGES/boot.img > "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}"
 }
 
-cleanup() {
+_cleanup_fail() {
   _print_build_fail
 }
-trap cleanup ERR
+trap _cleanup_fail ERR
 
 _packaging # _version
 _extract_recovery

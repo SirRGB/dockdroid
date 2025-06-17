@@ -170,10 +170,10 @@ _sign_new() {
   set -eu
 }
 
-cleanup() {
+_cleanup_fail() {
   _print_build_fail
 }
-trap cleanup ERR
+trap _cleanup_fail ERR
 
 _cleanup
 _determine_signing # _sign_new, _sign_old

@@ -16,16 +16,14 @@ _sync() {
   threads=$(nproc)
   repo forall -c "rm .git/*.lock" || true
   repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
-  set +e
-  repo forall -c "git lfs pull"
-  set -e
+  repo forall -c "git lfs pull" || true
   unset ROM_MANIFEST LOCAL_MANIFEST
 }
 
-cleanup() {
+_cleanup_fail() {
   _print_sync_fail
 }
-trap cleanup ERR
+trap _cleanup_fail ERR
 
 _print_sync_start
 _sync
