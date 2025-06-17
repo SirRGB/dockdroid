@@ -1,6 +1,6 @@
-move to token for ota commits/ota for non-ssh users
+fix partition check for gms/microg
 fix sync/build reporting error
-device/flavor list, for loop
+move to token for ota commits/ota for non-ssh users
+flavor list, for loop
 proper keys check
 fully move printing to print.sh, printf
-keep logs for 1d

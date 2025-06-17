@@ -30,9 +30,9 @@ $(find "${ANDROID_BUILD_TOP}"/vendor/*/config/ \( -name "*[vV]ersion.mk" -o -nam
     partition_search[1]="${OUT}"/product
   fi
   rom_extraversion=
-  if [[ -n $(find "${partition_search[@]}" -name "FakeStore") ]]; then
+  if [[ -n $(find "${partition_search[@]}" -name "FakeStore" -quit) ]]; then
     rom_extraversion="MICROG-"
-  elif [[ -n $(find "${partition_search[@]}" -name "GmsCore") ]]; then
+  elif [[ -n $(find "${partition_search[@]}" -name "GmsCore" -quit) ]]; then
     rom_extraversion="GMS-"
   fi
   PACKAGE_NAME="${ROM_PREFIX}""${ROM_VERSION}"-"${rom_extraversion}"$(env TZ="${TIME_ZONE}" date -d @"${BUILD_DATE_UNIX}" +%Y%m%d)-"${DEVICE}"-signed.zip
