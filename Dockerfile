@@ -1,4 +1,4 @@
-FROM bitnami/minideb:bookworm
+FROM docker.io/bitnami/minideb:bookworm
 
 # User
 ARG userid=1000
@@ -50,16 +50,26 @@ RUN chmod -R 500 "${BIN_DIR}" "${SCRIPT_DIR}"
 
 # ROM
 ENV LOCAL_MANIFEST https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/cheeseburgerdumpling/A15Lineage.xml
+ENV CLONE_REPOS ""
 ENV DEVICE cheeseburger
 ENV BUILD_TYPE userdebug
 ENV ROM_MANIFEST https://github.com/LineageOS/android
 ENV ROM_BRANCH lineage-22.2
+
+ENV LUNCH_PREFIX_FALLBACK ""
 ENV ROM_PREFIX_FALLBACK ""
+ENV ROM_VERSION_FALLBACK ""
 
 # Extra
-ENV CCACHE_SIZE 80
-ENV OTA_REPO_URL git@github.com:SirRGB/ota_config
+ENV CCACHE_SIZE 40
+ENV OTA_REPO_URL ""
 ENV KEYS_SUBJECT '/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
 ENV TIME_ZONE UTC
+
+# Auth
+ENV TELEGRAM_TOKEN ""
+ENV GITHUB_TOKEN ""
+ENV SF_USER ""
+ENV SF_RELEASES_REPO ""
 
 ENTRYPOINT "${SCRIPT_DIR}"/init.sh

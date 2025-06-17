@@ -1,16 +1,19 @@
 WIP
 ----
 
-## Why Docker?
+## Why Docker/Podman?
 
-Docker provides a uniform build environment, without external dependencies, that you have to set up manually.  
+Docker/Podman provides a uniform build environment, without external dependencies, that you have to set up manually.  
 The goal is to make building properly with ota and signing easy for everyone.
 
 
 ## Prerequisites
 
-- [Docker](https://docs.docker.com/engine/install)
-- [Docker Rootless (recommended)](https://docs.docker.com/engine/security/rootless/)
+- [Podman](https://podman.io/docs/installation)
+  - [Python venv](https://docs.python.org/3/library/venv.html#creating-virtual-environments)
+  - [Podman compose](https://github.com/containers/podman-compose?tab=readme-ov-file#pip)
+- or [Docker](https://docs.docker.com/engine/install)
+  - [Docker Rootless](https://docs.docker.com/engine/security/rootless/)
 - [SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - [GitConfig](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
 - ZRam (highly recommended): [Debian](https://wiki.debian.org/ZRam), [Fedora](https://github.com/systemd/zram-generator), [Ubuntu](https://wiki.ubuntuusers.de/zRam)
@@ -18,9 +21,9 @@ The goal is to make building properly with ota and signing easy for everyone.
 
 ## Setup
 
-### Setting up permissions (rootless)
+### Setting up permissions
 
-First we need to find the UID, that is used for docker.  
+First we need to find the UID, that is used for Docker/Podman.  
 For Debian/Ubuntu this seems to be 100999 and on Fedora 52587,  
 which should be $subUID+$containerUID-1 according to the [docker forums](https://forums.docker.com/t/map-more-uid-on-rootless-docker-and-mount-volume/102928/8).
 
@@ -109,6 +112,9 @@ sudo rm -rf ~/docker_droid/src/Los15/
 ## Run the build
 
 - After setting everything up you should do a test build with the default variables for testing. (Be sure to be in ~/docker_droid/minideb)
+```
+podman compose up --force-recreate --build
+```
 ```
 docker compose up --force-recreate --build
 ```

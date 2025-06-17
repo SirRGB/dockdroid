@@ -13,7 +13,9 @@ if [[ -f "${SECRETS_DIR}"/tokens.sh ]]; then
 fi
 
 # Set up logs
-BUILD_DATE=$(env tz="${TIME_ZONE}" date +%Y%m%d-%H%M%S)
+find "${LOGS_DIR}"/ -type d -ctime +1 -exec rm -r {} \; || true
+BUILD_DATE_UNIX=$(date "+%s")
+BUILD_DATE=$(env TZ="${TIME_ZONE}" date -d @"${BUILD_DATE_UNIX}" "+%Y%m%d-%H%M%S")
 mkdir "${LOGS_DIR}"/"${BUILD_DATE}"
 
 unset ROOT_DIR SECRETS_DIR BIN_DIR

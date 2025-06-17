@@ -4,14 +4,12 @@
 source "${SCRIPT_DIR}"/print.sh
 
 _upload_check() {
-  set +eu
-  UPLOAD_TARGET=
-  if [[ -n "${GITHUB_TOKEN}" ]] && [[ -n "${GH_RELEASES_REPO}" ]]; then
+  UPLOAD_TARGET=""
+  if [[ -n "${GITHUB_TOKEN}" ]] && [[ -n "${OTA_REPO_URL}" ]]; then
     UPLOAD_TARGET="gh"
   elif [[ -n $(find "${HOME}"/.ssh -name "id_*") ]] && [[ -n "${SF_USER}" ]] && [[ -n "${SF_RELEASES_REPO}" ]]; then
     UPLOAD_TARGET="sf"
   fi
-  set -eu
 }
 
 _upload() {
@@ -24,7 +22,7 @@ _upload() {
 
 _upload_gh() {
   local tag desc release_repo upload_url
-  tag=$(env tz="${TIME_ZONE}" date +%Y%m%d%H%M)-"${PACKAGE_NAME//.zip/}"
+  tag=$(env TZ="${TIME_ZONE}" date -d @"${BUILD_DATE_UNIX}" "+%Y%m%d%H%M")-"${PACKAGE_NAME//.zip/}"
   desc="${ROM_PREFIX}${ROM_VERSION} for ${DEVICE}"
   release_repo="${OTA_REPO_URL//git@github.com:/}"
 
@@ -78,14 +76,16 @@ _ota_info() {
 # TODO create branch conditionally
 _push_ota_info() {
   if [[ ! -d "${ROM_DIR}"_ota ]]; then
-    git clone "${OTA_REPO_URL}" "${ROM_DIR}"_ota -b "${ROM_BRANCH}"
+    mkdir "${ROM_DIR}"_ota
+    git init
+    git pull "${OTA_REPO_URL}" "${ROM_BRANCH}"
   fi
   cd "${ROM_DIR}"_ota || exit
 
   cp "${OUT}"/"${PACKAGE_NAME}".json "${ROM_DIR}"_ota/"${DEVICE}".json
   git add "${ROM_DIR}"_ota/"${DEVICE}".json
   git commit -m "${DEVICE}: ${BUILD_DATE} update"
-  git push origin HEAD:"${ROM_BRANCH}"
+  git push "${OTA_REPO_URL}" HEAD:"${ROM_BRANCH}"
 }
 
 # Check for tokens before attempting upload

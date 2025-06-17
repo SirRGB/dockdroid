@@ -33,7 +33,7 @@ _keysgen() {
 
 _get_android_version() {
   export ANDROID_VERSION
-  ANDROID_VERSION=$(< "${ROM_DIR}"/cts/tests/tests/os/assets/platform_versions.txt head -n1 | tr -d "A-z" | cut -d"." -f1)
+  ANDROID_VERSION=$(< "${ROM_DIR}"/cts/tests/tests/os/assets/platform_versions.txt tr -d "A-z" | cut -d"." -f1 | sort | tail -n1)
   echo -e "${GREEN}ANDROID VERSION: ${ANDROID_VERSION}${NC}"
 }
 
@@ -51,9 +51,9 @@ _lunch() {
 
   # Extract lunch prefix from AndroidProducts
   local product
-  if [[ -n "${ROM_PREFIX_FALLBACK}" ]]; then
-    product="${ROM_PREFIX_FALLBACK}"_"${DEVICE}"
-    unset ROM_PREFIX_FALLBACK
+  if [[ -n "${LUNCH_PREFIX_FALLBACK}" ]]; then
+    product="${LUNCH_PREFIX_FALLBACK}"_"${DEVICE}"
+    unset LUNCH_PREFIX_FALLBACK
   else
     product=$(grep -E "${DEVICE}" "${ANDROID_BUILD_TOP}"/device/*/"${DEVICE}"/AndroidProducts.mk | cut -d"/" -f2 | cut -d"." -f1 | head -n1)
   fi
@@ -71,7 +71,14 @@ _get_android_version
 if [[ "${ANDROID_VERSION}" -lt 10 ]]; then
   source "${SCRIPT_DIR}"/compat.sh
 fi
-_lunch
-_print_build_start
 
-source "${SCRIPT_DIR}"/sign.sh
+IFS=',' read -r -a "DEVICE" <<< "${DEVICE}"
+for device in "${DEVICE[@]}"; do
+  # shellcheck disable=SC2178
+  export DEVICE="${device}"
+  echo "Building for ${DEVICE[0]}"
+  _lunch
+  _print_build_start
+
+  source "${SCRIPT_DIR}"/sign.sh
+done
