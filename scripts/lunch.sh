@@ -127,10 +127,10 @@ _lunch() {
   # Extract lunch prefix from AndroidProducts
   local product
   if [[ -n "${LUNCH_PREFIX_FALLBACK}" ]]; then
-    product="${LUNCH_PREFIX_FALLBACK}"_"${DEVICE}"
+    product="${LUNCH_PREFIX_FALLBACK}"_"${TARGET_DEVICE}"
     unset LUNCH_PREFIX_FALLBACK
   else
-    product=$(grep -E "${DEVICE}" "${ANDROID_BUILD_TOP}"/device/*/"${DEVICE}"/AndroidProducts.mk | cut -d"/" -f2 | cut -d"." -f1 | head -n1)
+    product=$(grep -E "${TARGET_DEVICE}" "${ANDROID_BUILD_TOP}"/device/*/"${TARGET_DEVICE}"/AndroidProducts.mk | cut -d"/" -f2 | cut -d"." -f1 | head -n1)
   fi
 
   # It's all coming together
@@ -149,9 +149,8 @@ fi
 
 IFS=',' read -r -a "DEVICE" <<< "${DEVICE}"
 for device in "${DEVICE[@]}"; do
-  # shellcheck disable=SC2178
-  export DEVICE="${device}"
-  echo "Building for ${DEVICE[0]}"
+  export TARGET_DEVICE="${device}"
+  echo "Building for ${TARGET_DEVICE}"
   _lunch
   _print_build_start
 

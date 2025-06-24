@@ -23,7 +23,7 @@ _upload() {
 _upload_gh() {
   local tag desc release_repo upload_url
   tag=$(env TZ="${TIME_ZONE}" date -d @"${BUILD_DATE_UNIX}" "+%Y%m%d%H%M")-"${PACKAGE_NAME//.zip/}"
-  desc="${ROM_PREFIX}${ROM_VERSION} for ${DEVICE}"
+  desc="${ROM_PREFIX}${ROM_VERSION} for ${TARGET_DEVICE}"
   release_repo="${OTA_REPO_URL//git@github.com:/}"
 
   # Create a release and get url
@@ -56,9 +56,9 @@ _upload_gh() {
 }
 
 _upload_sf() {
-  scp "${OUT}"/"${PACKAGE_NAME}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/"${DEVICE}"/"${ROM_PREFIX}"
-  scp "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/"${DEVICE}"/"${ROM_PREFIX}"
-  DL_OTA_URL=https://sourceforge.net/projects/"${SF_RELEASES_REPO}"/files/"${DEVICE}"/"${ROM_PREFIX}"/"${PACKAGE_NAME}"/download
+  scp "${OUT}"/"${PACKAGE_NAME}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/"${TARGET_DEVICE}"/"${ROM_PREFIX}"
+  scp "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/"${TARGET_DEVICE}"/"${ROM_PREFIX}"
+  DL_OTA_URL=https://sourceforge.net/projects/"${SF_RELEASES_REPO}"/files/"${TARGET_DEVICE}"/"${ROM_PREFIX}"/"${PACKAGE_NAME}"/download
   export DL_OTA_URL
 }
 
@@ -82,9 +82,9 @@ _push_ota_info() {
   fi
   cd "${ROM_DIR}"_ota || exit
 
-  cp "${OUT}"/"${PACKAGE_NAME}".json "${ROM_DIR}"_ota/"${DEVICE}".json
-  git add "${ROM_DIR}"_ota/"${DEVICE}".json
-  git commit -m "${DEVICE}: ${BUILD_DATE} update"
+  cp "${OUT}"/"${PACKAGE_NAME}".json "${ROM_DIR}"_ota/"${TARGET_DEVICE}".json
+  git add "${ROM_DIR}"_ota/"${TARGET_DEVICE}".json
+  git commit -m "${TARGET_DEVICE}: ${BUILD_DATE} update"
   git push "${OTA_REPO_URL}" HEAD:"${ROM_BRANCH}"
 }
 

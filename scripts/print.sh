@@ -47,7 +47,7 @@ _print_sync_fail() {
 # Building
 _print_build_start() {
   BUILD_START=$(date +"%s")
-  _telegram "Build started for ${DEVICE}"
+  _telegram "Build started for ${TARGET_DEVICE}"
 }
 
 _print_build_success() {
