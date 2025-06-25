@@ -5,6 +5,7 @@ source "${SCRIPT_DIR}"/print.sh
 
 # Drop old builds
 _cleanup() {
+  cd "${ROM_DIR}" || exit
   set +eu
   m installclean -j"$(nproc)" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   set -eu
@@ -14,7 +15,7 @@ _cleanup() {
 # Decide for signing method
 _determine_signing() {
   set +eu
-  m target-files-package otatools -j"$(nproc)" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
+  m target-files-package otatools -j"$(nproc)" "$@" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   croot
   set -eu
 
@@ -70,6 +71,15 @@ _sign_new() {
 trap _print_build_fail ERR
 
 _cleanup
-_determine_signing
-
-source "${SCRIPT_DIR}"/packaging.sh
+if [[ -n "${ROM_BUILD_FLAGS}" ]]; then
+  IFS=',' read -r -a "ROM_BUILD_FLAGS" <<< "${ROM_BUILD_FLAGS}"
+  for flags in "${ROM_BUILD_FLAGS[@]}"; do
+    IFS=' ' read -r -a "TARGET_BUILD_FLAGS" <<< "${flags}"
+    echo "Current build flags: ${flags}"
+    _determine_signing "${TARGET_BUILD_FLAGS[@]}"
+    source "${SCRIPT_DIR}"/packaging.sh
+  done
+else
+  _determine_signing
+  source "${SCRIPT_DIR}"/packaging.sh
+fi
