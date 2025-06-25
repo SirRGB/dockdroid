@@ -19,5 +19,7 @@ services:
       # Tokens for Telegram and GitHub (optional)
       - ~/docker_droid/secrets:/droid_workdir/secrets:ro
     env_file:
+      - path: ./target.env
+        required: false
       - path: ./example.env
         required: false

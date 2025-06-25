@@ -19,8 +19,8 @@ The goal is to make building properly with ota and signing easy for everyone.
 - ZRam (highly recommended): [Debian](https://wiki.debian.org/ZRam), [Fedora](https://github.com/systemd/zram-generator), [Ubuntu](https://wiki.ubuntuusers.de/zRam)
 
 
-## Setup
-
+<details>
+<summary>Setup</summary>
 ### Setting up permissions
 
 First we need to find the UID, that is used for Docker/Podman.  
@@ -82,9 +82,36 @@ And remove the incomplete sync
 ```
 sudo rm -rf ~/docker_droid/src/Los15/
 ```
+</details>
 
 
-## Variables (optional)
+<details>
+<summary>Variables</summary>
+## required
+
+- DEVICE: Codename(s) of your device(s)
+- ROM_DIR: Only change the last part after src/. Defines the source path within the container
+- ROM_MANIFEST: URL of the rom manifest you want to sync
+- ROM_BRANCH: Branch of the rom you want to sync
+- LOCAL_MANIFEST: Direct link to the local manifest(s)
+or
+- CLONE_REPOS: Links to the repo(s) to clone. Repo name MUST have the following pattern https://github.com/user/android_dir1_dir2_dir3/tree/branch or https://github.com/user/dir1_dir2_dir3/tree/branch. Not recommended.
+
+These variables should be defined in the target.env.
+
+```
+mv example.env target.env
+```
+
+```
+DEVICE=cheeseburger,dumpling,TP1803
+ROM_DIR=/droid_workdir/src/Los15
+ROM_MANIFEST=https://github.com/LineageOS/android.git
+ROM_BRANCH=lineage-22.2
+LOCAL_MANIFEST=https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/cheeseburgerdumpling/A15Lineage.xml,https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/TP1803/A15Lineage.xml
+```
+
+## optional
 
 - GitHub Upload
   - [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
@@ -99,13 +126,20 @@ sudo rm -rf ~/docker_droid/src/Los15/
   - TELEGRAM_CHAT: either as @xyz or the id
 - TIME_ZONE: either as in the format UTC+2 or CET
 
+These variables should be defined in ~/docker_droid/secrets/token.sh to prevent accidentally leaking tokens.
+
+```
+export GITHUB_TOKEN=thing1234
+export OTA_REPO_URL=git@github.com:user/ota_config
+```
+
 
 ## Directories
 
 - dotfiles: .gitconfig for syncing and .ssh for authentification. Needs to be copied from the host manually.
 - keys: Contains keys for signing the build. Will be generated automatically if not provided.
-- logs: Contains logs and error messages.
-- ccache: Used for build caching to speed up compilation. Set to 80GB by default. Can be disabled by overwriting the value with 0 for space-saving.
+- logs: Contains logs and error messages. Logs older than a day will be deleted on a rerun.
+- ccache: Used for build caching to speed up compilation. Set to 40GB by default. Can be disabled by overwriting the value with 0 for space-saving.
 - secrets: If token.sh is provided (optional), it will be read. You can specify GITHUB_TOKEN, TELEGRAM_TOKEN and TELEGRAM_CHAT here.
 
 

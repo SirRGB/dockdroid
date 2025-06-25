@@ -49,12 +49,12 @@ RUN sed -i "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g
 RUN chmod -R 500 "${BIN_DIR}" "${SCRIPT_DIR}"
 
 # ROM
-ENV LOCAL_MANIFEST https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/cheeseburgerdumpling/A15Lineage.xml
+ENV LOCAL_MANIFEST ""
 ENV CLONE_REPOS ""
-ENV DEVICE cheeseburger
-ENV BUILD_TYPE userdebug
-ENV ROM_MANIFEST https://github.com/LineageOS/android
-ENV ROM_BRANCH lineage-22.2
+ENV DEVICE ""
+ENV BUILD_TYPE ""
+ENV ROM_MANIFEST ""
+ENV ROM_BRANCH ""
 ENV ROM_BUILD_FLAGS ""
 
 ENV LUNCH_PREFIX_FALLBACK ""
