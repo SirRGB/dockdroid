@@ -1,4 +1,3 @@
 fix sync/build reporting error
 move to token for ota commits/ota for non-ssh users
-flavor list, for loop
 fully move printing to print.sh, printf

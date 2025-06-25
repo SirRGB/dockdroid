@@ -55,6 +55,7 @@ ENV DEVICE cheeseburger
 ENV BUILD_TYPE userdebug
 ENV ROM_MANIFEST https://github.com/LineageOS/android
 ENV ROM_BRANCH lineage-22.2
+ENV ROM_BUILD_FLAGS ""
 
 ENV LUNCH_PREFIX_FALLBACK ""
 ENV ROM_PREFIX_FALLBACK ""
