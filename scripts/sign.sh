@@ -14,7 +14,7 @@ _cleanup() {
 # Decide for signing method
 _determine_signing() {
   set +eu
-  "$@" m target-files-package otatools -j"$(nproc)" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
+  m target-files-package otatools -j"$(nproc)" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   croot
   set -eu
 
@@ -73,10 +73,6 @@ _cleanup_fail() {
 trap _cleanup_fail ERR
 
 _cleanup
-IFS=',' read -r -a "ROM_BUILD_FLAGS" <<< "${ROM_BUILD_FLAGS}"
-for flags in "${ROM_BUILD_FLAGS[@]}"; do
-  IFS=' ' read -r -a "TARGET_BUILD_FLAGS" <<< "${flags}"
-  _print_build_flags "${flags}"
-  _determine_signing "${TARGET_BUILD_FLAGS[@]}" # _sign_new, _sign_old
-  source "${SCRIPT_DIR}"/packaging.sh
-done
+_determine_signing # _sign_new, _sign_old
+
+source "${SCRIPT_DIR}"/packaging.sh

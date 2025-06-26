@@ -80,10 +80,6 @@ _print_signing_method() {
   _print_success "$* Signing"
 }
 
-_print_build_flags() {
-  _print_success "Current build flags: $*"
-}
-
 # Uploading
 _print_upload_start() {
   _print_success "Upload started$"
