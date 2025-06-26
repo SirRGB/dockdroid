@@ -19,10 +19,10 @@ _determine_signing() {
 
   # If Android version greater than 11, use apex signing
   if [[ "${ANDROID_VERSION}" -gt 11 ]]; then
-    echo "APEX Signing"
+    _print_signing_method "APEX"
     _sign_new
   else
-    echo "Legacy Signing"
+    _print_signing_method "Legacy"
     _sign_old
   fi
 }
@@ -75,7 +75,7 @@ _cleanup
 IFS=',' read -r -a "ROM_BUILD_FLAGS" <<< "${ROM_BUILD_FLAGS}"
 for flags in "${ROM_BUILD_FLAGS[@]}"; do
   IFS=' ' read -r -a "TARGET_BUILD_FLAGS" <<< "${flags}"
-  echo "Current build flags: ${flags}"
+  _print_build_flags "${flags}"
   _determine_signing "${TARGET_BUILD_FLAGS[@]}" # _sign_new, _sign_old
   source "${SCRIPT_DIR}"/packaging.sh
 done

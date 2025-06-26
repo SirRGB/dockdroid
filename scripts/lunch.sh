@@ -109,7 +109,6 @@ _keysgen() {
 _get_android_version() {
   export ANDROID_VERSION
   ANDROID_VERSION=$(< "${ROM_DIR}"/cts/tests/tests/os/assets/platform_versions.txt tr -d "A-z" | cut -d"." -f1 | sort | tail -n1)
-  echo -e "${GREEN}ANDROID VERSION: ${ANDROID_VERSION}${NC}"
 }
 
 _lunch() {
@@ -150,7 +149,6 @@ fi
 IFS=',' read -r -a "DEVICE" <<< "${DEVICE}"
 for device in "${DEVICE[@]}"; do
   export TARGET_DEVICE="${device}"
-  echo "Building for ${TARGET_DEVICE}"
   _lunch
   _print_build_start
 
