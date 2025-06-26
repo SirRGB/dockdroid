@@ -16,14 +16,12 @@ _version() {
     ROM_PREFIX=$(find "${ANDROID_BUILD_TOP}"/vendor/*/build/tasks/* "${ANDROID_BUILD_TOP}"/build/core/Makefile -exec grep '_TARGET_PACKAGE[[:space:]]:=' {} \; | cut -d"=" -f2 | cut -d"/" -f2 | cut -d"$" -f1)
   else
     ROM_PREFIX="${ROM_PREFIX_FALLBACK}"
-    unset ROM_PREFIX_FALLBACK
   fi
   if [[ -z "${ROM_VERSION_FALLBACK}" ]]; then
     ROM_VERSION=$(find "${ANDROID_BUILD_TOP}"/vendor/*/config/ \( -name "*[vV]ersion.mk" -o -name common.mk \) -exec grep -E "${major_version_regex}" {} \; | tr -d 'A-z:= \n').\
 $(find "${ANDROID_BUILD_TOP}"/vendor/*/config/ \( -name "*[vV]ersion.mk" -o -name common.mk \) -exec grep -E "${minor_version_regex}" {} \; | tr -d 'A-z:= \n')
   else
     ROM_VERSION="${ROM_VERSION_FALLBACK}"
-    unset ROM_VERSION_FALLBACK
   fi
   rom_extraversion=""
   if [[ -n $(find "${OUT}" -name "FakeStore.apk" -print -quit) ]]; then
@@ -47,7 +45,6 @@ _packaging() {
       "${OUT}"/signed-target_files.zip \
       "${OUT}"/"${PACKAGE_NAME}" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/packaging.txt
   set -eu
-  unset KEYS_DIR LOGS_DIR
 }
 
 # Extract signed recovery from signed target files

@@ -64,7 +64,7 @@ _sign_new() {
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files*.zip \
       "${OUT}"/signed-target_files.zip 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign.txt
   set -eu
-  unset APEX_KEYS APEX_ARGS
+  unset APEX_ARGS
 }
 
 _cleanup_fail() {

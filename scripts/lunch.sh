@@ -127,7 +127,6 @@ _lunch() {
   local product
   if [[ -n "${LUNCH_PREFIX_FALLBACK}" ]]; then
     product="${LUNCH_PREFIX_FALLBACK}"_"${TARGET_DEVICE}"
-    unset LUNCH_PREFIX_FALLBACK
   else
     product=$(grep -E "${TARGET_DEVICE}" "${ANDROID_BUILD_TOP}"/device/*/"${TARGET_DEVICE}"/AndroidProducts.mk | cut -d"/" -f2 | cut -d"." -f1 | head -n1)
   fi
@@ -136,7 +135,6 @@ _lunch() {
   set +eu
   lunch "${product}""${release_codename}"-"${BUILD_TYPE}"
   set -eu
-  unset BUILD_TYPE
 }
 
 _ccache
