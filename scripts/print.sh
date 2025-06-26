@@ -1,9 +1,5 @@
 #!/bin/bash
 
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-NC='\033[0m'
-
 # Skelleton for posting to telegram
 _telegram() {
   if [[ -n "${TELEGRAM_TOKEN}" ]]; then
@@ -25,12 +21,18 @@ _telegram_separator() {
 
 # Skelleton for printing to stdout
 _print_success() {
-  echo -e "${GREEN}$*${NC}"
+  local green normal
+  green=$(tput setaf 2)
+  normal=$(tput sgr0)
+  printf "${green}$*${normal}\n"
   _telegram "$*"
 }
 
 _print_error() {
-  echo -e "${RED}$*${NC}"
+  local red normal
+  red=$(tput setaf 1)
+  normal=$(tput sgr0)
+  printf "${red}$*${normal}\n"
   _telegram "$*"
   _telegram_separator
 }
