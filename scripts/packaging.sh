@@ -54,6 +54,7 @@ _extract_recovery() {
 }
 
 _cleanup_fail() {
+  # shellcheck disable=SC2317
   _print_build_fail
 }
 trap _cleanup_fail ERR
