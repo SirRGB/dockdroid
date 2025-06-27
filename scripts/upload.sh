@@ -13,6 +13,7 @@ _upload_check() {
 }
 
 _upload() {
+  DL_OTA_URL=""
   if [[ "${UPLOAD_TARGET}" = "gh" ]]; then
     _upload_gh
   elif [[ "${UPLOAD_TARGET}" = "sf" ]]; then
@@ -74,6 +75,7 @@ _ota_info() {
 
 # Push OTA info
 # TODO create branch conditionally
+# TODO fallback for clashing rom branches
 _push_ota_info() {
   if [[ ! -d "${ROM_DIR}"_ota ]]; then
     mkdir "${ROM_DIR}"_ota
@@ -92,9 +94,13 @@ _push_ota_info() {
 _upload_check
 if [[ -n "${UPLOAD_TARGET}" ]]; then
   _print_upload_start
-  _upload
-  _ota_info
+fi
+_upload
+_ota_info
+if [[ -n "${OTA_REPO_URL}" ]]; then
   _push_ota_info
+fi
+if [[ -n "${UPLOAD_TARGET}" ]]; then
   _print_upload_success
 fi
 _print_done
