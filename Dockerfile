@@ -53,10 +53,8 @@ RUN install_packages \
     squashfs-tools \
     xsltproc \
     zip \
-    zlib1g-dev
-
+    zlib1g-dev \
 # Python
-RUN install_packages \
     libffi-dev \
     libbz2-dev \
     libncursesw5-dev \
@@ -66,10 +64,8 @@ RUN install_packages \
     libxmlsec1-dev \
     liblzma-dev \
     tk-dev \
-    xz-utils
-
+    xz-utils \
 # Automation
-RUN install_packages \
     file \
     jq \
     unzip
