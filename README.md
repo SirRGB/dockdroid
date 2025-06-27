@@ -7,6 +7,10 @@ Docker/Podman provides a uniform build environment, without external dependencie
 The goal is to make building properly with ota and signing easy for everyone.
 
 
+<details>
+<summary>Setup</summary>
+<br>
+
 ## Prerequisites
 
 - [Podman](https://podman.io/docs/installation)
@@ -19,8 +23,6 @@ The goal is to make building properly with ota and signing easy for everyone.
 - ZRam (highly recommended): [Debian](https://wiki.debian.org/ZRam), [Fedora](https://github.com/systemd/zram-generator), [Ubuntu](https://wiki.ubuntuusers.de/zRam)
 
 
-<details>
-<summary>Setup</summary>
 ### Setting up permissions
 
 First we need to find the UID, that is used for Docker/Podman.  
@@ -87,6 +89,8 @@ sudo rm -rf ~/docker_droid/src/Los15/
 
 <details>
 <summary>Variables</summary>
+<br>
+
 ## required
 
 - DEVICE: Codename(s) of your device(s)
