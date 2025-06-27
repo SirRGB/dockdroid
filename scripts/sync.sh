@@ -11,6 +11,7 @@ _sync() {
   cd "${ROM_DIR}" || exit
   repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 -g default,-darwin --git-lfs --no-clone-bundle 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
   find "${ROM_DIR}"/.repo/local_manifests/ -type f -exec rm {} \;
+  ls "${ROM_DIR}"/.repo/local_manifests/
   if [[ -n "${LOCAL_MANIFEST}" ]]; then
     _merge_local_manifests
   fi
@@ -32,8 +33,8 @@ _merge_local_manifests() {
     _print_fetch_local_manifest "${url}"
     curl -fsSL "${url}" | sed "/<?xml version=\"1.0\" encoding=\"UTF-8\"?>/d; /<manifest>/d; /<\/manifest>/d; /<!--/d; /-->/d; /^$/d" >> "${ROM_DIR}"/.repo/local_manifests/.merge.txt
   done
-  sort < .repo/local_manifests/.merge.txt | uniq >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
-  rm "${ROM_DIR}"/.repo/local_manifests/.merge.txt # broken?
+  sort < "${ROM_DIR}"/.repo/local_manifests/.merge.txt | uniq >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+  find "${ROM_DIR}"/.repo/local_manifests/ -type f ! -name "*.xml" -exec rm -r {} \; || true
   echo "</manifest>" >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
 }
 
