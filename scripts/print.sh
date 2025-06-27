@@ -82,13 +82,17 @@ _print_signing_method() {
 
 # Uploading
 _print_upload_start() {
-  _print_success "Upload started$"
+  _print_success "Upload started to $*"
 }
 
 _print_upload_success() {
   _print_success "Build successfully uploaded:
 [ROM](${DL_OTA_URL})
 [Recovery](${DL_OTA_URL//.zip/-recovery.img})"
+}
+
+_print_upload_fail() {
+  _print_error "Upload failed"
 }
 
 _print_done() {

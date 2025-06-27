@@ -90,17 +90,22 @@ _push_ota_info() {
   git push "${OTA_REPO_URL}" HEAD:"${ROM_BRANCH}"
 }
 
+_cleanup_fail() {
+  _print_upload_fail
+}
+trap _cleanup_fail ERR
+
 # Check for tokens before attempting upload
 _upload_check
 if [[ -n "${UPLOAD_TARGET}" ]]; then
-  _print_upload_start
+  _print_upload_start "${UPLOAD_TARGET}"
 fi
 _upload
+if [[ -n "${UPLOAD_TARGET}" ]]; then
+  _print_upload_success
+fi
 _ota_info
 if [[ -n "${OTA_REPO_URL}" ]]; then
   _push_ota_info
-fi
-if [[ -n "${UPLOAD_TARGET}" ]]; then
-  _print_upload_success
 fi
 _print_done
