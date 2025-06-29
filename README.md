@@ -8,7 +8,7 @@ The goal is to make building properly with ota and signing easy for everyone.
 
 
 <details>
-<summary>Setup</summary>
+<summary>Initial Setup</summary>
 <br>
 
 ## Prerequisites
@@ -136,6 +136,7 @@ These variables should be defined in ~/docker_droid/secrets/token.sh to prevent 
 export GITHUB_TOKEN=thing1234
 export OTA_REPO_URL=git@github.com:user/ota_config
 ```
+</details>
 
 
 ## Directories
