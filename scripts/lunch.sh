@@ -112,8 +112,9 @@ _get_android_version() {
 }
 
 _lunch() {
+  cd "${ROM_DIR}" || exit
   set +eu
-  source build/envsetup.sh
+  source "${ROM_DIR}"/build/envsetup.sh
   set -eu
 
   # Append release codename, if exists (A14+)
