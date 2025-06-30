@@ -8,7 +8,7 @@ _cleanup() {
   set +eu
   m installclean -j"$(nproc)" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   set -eu
-  rm "${OUT}"/*.zip || true
+  rm "${OUT}"/*.zip "${OUT}"/*.zip.json || true
 }
 
 # Decide for signing method
