@@ -54,10 +54,6 @@ _print_sync_fail() {
   _print_error "Sync failed in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
 }
 
-_print_fetch_local_manifest() {
-  _print_success "Fetching: $*"
-}
-
 # Building
 _print_build_start() {
   BUILD_START=$(date +"%s")

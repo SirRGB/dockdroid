@@ -30,7 +30,6 @@ _merge_local_manifests() {
   echo -e "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<manifest>" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
   IFS=',' read -r -a "LOCAL_MANIFEST" <<< "${LOCAL_MANIFEST}"
   for url in "${LOCAL_MANIFEST[@]}"; do
-    _print_fetch_local_manifest "${url}"
     curl -fsSL "${url}" | sed "/<?xml version=\"1.0\" encoding=\"UTF-8\"?>/d; /<manifest>/d; /<\/manifest>/d; /<!--/d; /-->/d; /^$/d" >> "${ROM_DIR}"/.repo/local_manifests/.merge.txt
   done
   sort < "${ROM_DIR}"/.repo/local_manifests/.merge.txt | uniq >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
