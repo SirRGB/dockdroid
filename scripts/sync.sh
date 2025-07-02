@@ -10,6 +10,9 @@ _sync() {
   fi
   cd "${ROM_DIR}" || exit
   repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 -g default,-darwin --git-lfs --no-clone-bundle 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
+  cd "${ROM_DIR}"/.repo/repo || exit
+  git pull
+  cd "${ROM_DIR}" || exit
   find "${ROM_DIR}"/.repo/local_manifests/ -type f -exec rm {} \;
   ls "${ROM_DIR}"/.repo/local_manifests/
   if [[ -n "${LOCAL_MANIFEST}" ]]; then
