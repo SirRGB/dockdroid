@@ -30,7 +30,7 @@ _upload_gh() {
   # Create a release and get url
   upload_url=$(curl -L \
     -X POST \
-    -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+    -H "Authorization: token ${GITHUB_TOKEN}" \
     -H "content-type: application/json" \
     https://api.github.com/repos/"${release_repo}"/releases \
     -d "{ \"tag_name\": \"${tag}\", \"body\": \"${desc}\" }" \
@@ -39,20 +39,22 @@ _upload_gh() {
 
   # Upload ROM
   DL_OTA_URL=$(curl -L \
-    -X POST \
-    -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+    -H "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME}")" \
+    -H "Authorization: token ${GITHUB_TOKEN}" \
     -H "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME}")" \
-    --data-binary @"${OUT}"/"${PACKAGE_NAME}" \
+    -T "${OUT}"/"${PACKAGE_NAME}" \
+    -H "Accept: application/vnd.github.v3+json" \
     "${upload_url}"?name="${PACKAGE_NAME}" \
     | jq -r .browser_download_url)
   export DL_OTA_URL
 
   # Upload Recovery
   curl -L \
-    -X POST \
-    -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+    -H "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
+    -H "Authorization: token ${GITHUB_TOKEN}" \
     -H "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
-    --data-binary @"${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" \
+    -T "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" \
+    -H "Accept: application/vnd.github.v3+json" \
     "${upload_url}"?name="${PACKAGE_NAME//.zip/-recovery.img}"
 }
 
