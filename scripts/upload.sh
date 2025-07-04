@@ -59,9 +59,9 @@ _upload_gh() {
 }
 
 _upload_sf() {
-  scp "${OUT}"/"${PACKAGE_NAME}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/"${TARGET_DEVICE}"/"${ROM_PREFIX//-/}"/
-  scp "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/"${TARGET_DEVICE}"/"${ROM_PREFIX//-/}"/
-  DL_OTA_URL=https://sourceforge.net/projects/"${SF_RELEASES_REPO}"/files/"${TARGET_DEVICE}"/"${ROM_PREFIX//-/}"/"${PACKAGE_NAME}"/download
+  scp "${OUT}"/"${PACKAGE_NAME}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/"${TARGET_DEVICE}"/
+  scp "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/"${TARGET_DEVICE}"/
+  DL_OTA_URL=https://sourceforge.net/projects/"${SF_RELEASES_REPO}"/files/"${TARGET_DEVICE}"/"${PACKAGE_NAME}"/download
   export DL_OTA_URL
 }
 
