@@ -6,17 +6,17 @@ source "${SCRIPT_DIR}"/print.sh
 _upload_check() {
   UPLOAD_TARGET=""
   if [[ -n "${GITHUB_TOKEN}" ]] && [[ -n "${OTA_REPO_URL}" ]]; then
-    UPLOAD_TARGET="gh"
+    UPLOAD_TARGET="github"
   elif [[ -n $(find "${HOME}"/.ssh -name "id_*") ]] && [[ -n "${SF_USER}" ]] && [[ -n "${SF_RELEASES_REPO}" ]]; then
-    UPLOAD_TARGET="sf"
+    UPLOAD_TARGET="sourceforge"
   fi
 }
 
 _upload() {
   DL_OTA_URL=""
-  if [[ "${UPLOAD_TARGET}" = "gh" ]]; then
+  if [[ "${UPLOAD_TARGET}" = "github" ]]; then
     _upload_gh
-  elif [[ "${UPLOAD_TARGET}" = "sf" ]]; then
+  elif [[ "${UPLOAD_TARGET}" = "sourceforge" ]]; then
     _upload_sf
   fi
 }
