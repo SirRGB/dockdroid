@@ -3,20 +3,16 @@
 # shellcheck source=scripts/print.sh
 source "${SCRIPT_DIR}"/print.sh
 
-_upload_check() {
+_upload() {
   UPLOAD_TARGET=""
+  DL_OTA_URL=""
   if [[ -n "${GITHUB_TOKEN}" ]] && [[ -n "${OTA_REPO_URL}" ]]; then
     UPLOAD_TARGET="github"
+    _print_upload_start "${UPLOAD_TARGET}"
+    _upload_gh
   elif [[ -n $(find "${HOME}"/.ssh -name "id_*") ]] && [[ -n "${SF_USER}" ]] && [[ -n "${SF_RELEASES_REPO}" ]]; then
     UPLOAD_TARGET="sourceforge"
-  fi
-}
-
-_upload() {
-  DL_OTA_URL=""
-  if [[ "${UPLOAD_TARGET}" = "github" ]]; then
-    _upload_gh
-  elif [[ "${UPLOAD_TARGET}" = "sourceforge" ]]; then
+    _print_upload_start "${UPLOAD_TARGET}"
     _upload_sf
   fi
 }
@@ -97,11 +93,6 @@ _cleanup_fail() {
 }
 trap _cleanup_fail ERR
 
-# Check for tokens before attempting upload
-_upload_check
-if [[ -n "${UPLOAD_TARGET}" ]]; then
-  _print_upload_start "${UPLOAD_TARGET}"
-fi
 _upload
 if [[ -n "${UPLOAD_TARGET}" ]]; then
   _print_upload_success
