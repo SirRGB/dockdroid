@@ -1,6 +1,3 @@
-WIP
-----
-
 ## Why Docker/Podman?
 
 Docker/Podman provides a uniform build environment, without external dependencies, that you have to set up manually.  
@@ -91,7 +88,7 @@ sudo rm -rf ~/docker_droid/src/Los15/
 <summary>Variables</summary>
 <br>
 
-## required
+### required
 
 - DEVICE: Codename(s) of your device(s)
 - ROM_DIR: Only change the last part after src/. Defines the source path within the container
@@ -115,7 +112,7 @@ ROM_BRANCH=lineage-22.2
 LOCAL_MANIFEST=https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/cheeseburgerdumpling/A15Lineage.xml,https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/TP1803/A15Lineage.xml
 ```
 
-## optional
+### optional
 
 - GitHub Upload
   - [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
