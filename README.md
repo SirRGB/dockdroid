@@ -101,7 +101,7 @@ or
 These variables should be defined in the target.env.
 
 ```
-mv example.env target.env
+cp example.env target.env
 ```
 
 ```
