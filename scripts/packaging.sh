@@ -24,9 +24,9 @@ $(find "${ANDROID_BUILD_TOP}"/vendor/*/config/ \( -name "*[vV]ersion.mk" -o -nam
     ROM_VERSION="${ROM_VERSION_FALLBACK}"
   fi
   rom_extraversion=""
-  if [[ -n $(find "${OUT}" -name "FakeStore.apk" -print -quit) ]]; then
+  if [[ -n $(find "${OUT}" -mindepth 2 -name "FakeStore.apk" -print -quit) ]]; then
     rom_extraversion="MICROG-"
-  elif [[ -n $(find "${OUT}" -name "GmsCore.apk" -print -quit) ]]; then
+  elif [[ -n $(find "${OUT}" -mindepth 2 -name "GmsCore.apk" -print -quit) ]]; then
     rom_extraversion="GMS-"
   fi
   PACKAGE_NAME="${ROM_PREFIX}""${ROM_VERSION}"-"${rom_extraversion}"$(env TZ="${TIME_ZONE}" date -d @"${BUILD_DATE_UNIX}" +%Y%m%d)-"${TARGET_DEVICE}"-signed.zip
