@@ -1,6 +1,0 @@
-actually fix device array
-flavor list, for loop
-fix sync/build reporting error
-move printing to printf
-more verbose errors, error reporting curl
-move to token for ota commits/ota for non-ssh users
