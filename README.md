@@ -157,7 +157,6 @@ podman compose up --force-recreate --build
 ```
 docker compose up --force-recreate --build
 ```
-- You can set your own parameters within the [compose file](https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/#use-the-environment-attribute) or specifying an [env file](https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/#use-the-env_file-attribute) and rerunning the build
 
 
 ## Too much RAM
