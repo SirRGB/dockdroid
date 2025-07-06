@@ -77,10 +77,10 @@ _ota_info() {
 _push_ota_info() {
   if [[ ! -d "${ROM_DIR}"_ota ]]; then
     mkdir "${ROM_DIR}"_ota
-    git init
-    git pull "${OTA_REPO_URL}" "${ROM_BRANCH}"
   fi
   cd "${ROM_DIR}"_ota || exit
+  git init
+  git pull "${OTA_REPO_URL}" "${ROM_BRANCH}"
 
   cp "${OUT}"/"${PACKAGE_NAME}".json "${ROM_DIR}"_ota/"${TARGET_DEVICE}".json
   git add "${ROM_DIR}"_ota/"${TARGET_DEVICE}".json
