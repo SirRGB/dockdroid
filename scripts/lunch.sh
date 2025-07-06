@@ -5,7 +5,7 @@ source "${SCRIPT_DIR}"/print.sh
 
 # Set up ccache
 _ccache() {
-  if [[ -n "${CCACHE_SIZE}" ]] && [[ "${CCACHE_SIZE}" -gt 0 ]]; then
+  if [[ "${CCACHE_SIZE}" -gt 0 ]]; then
     export USE_CCACHE=1
     export CCACHE_EXEC=/usr/bin/ccache
     export CCACHE_DIR=/mnt/ccache
@@ -114,7 +114,7 @@ _get_android_version() {
 _lunch() {
   cd "${ROM_DIR}" || exit
   set +eu
-  source "${ROM_DIR}"/build/envsetup.sh
+  source "${ROM_DIR}"/build/envsetup.sh || true
   set -eu
 
   # Append release codename, if exists (A14+)
@@ -134,7 +134,7 @@ _lunch() {
 
   # It's all coming together
   set +eu
-  lunch "${product}""${release_codename}"-"${BUILD_TYPE}"
+  lunch "${product}""${release_codename}"-"${BUILD_TYPE}" || true
   set -eu
 }
 

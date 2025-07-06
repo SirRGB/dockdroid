@@ -22,7 +22,7 @@ _sync() {
   threads=$(nproc)
   repo forall -c "rm .git/*.lock" || true
   repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
-  repo forall -c "git lfs pull" || true
+  repo forall -c "git lfs pull"
   if [[ -n "${CLONE_REPOS}" ]]; then
    _clone_all
   fi
