@@ -88,7 +88,7 @@ RUN curl -o "${BIN_DIR}"/repo https://storage.googleapis.com/git-repo-downloads/
 RUN curl https://storage.googleapis.com/git-repo-downloads/repo.asc | gpg --verify - "${BIN_DIR}"/repo
 
 # Provide make_key to create signing keys
-RUN curl https://raw.githubusercontent.com/LineageOS/android_development/refs/heads/lineage-22.2/tools/make_key > "${BIN_DIR}"/make_key
+RUN curl https://raw.githubusercontent.com/LineageOS/android_development/refs/heads/lineage-23.0/tools/make_key > "${BIN_DIR}"/make_key
 
 # Patch for longer key size and drop input
 RUN sed -i "/read -p \"Enter password for '\$1' (blank for none\; password will be visible): \" \\\/d" "${BIN_DIR}"/make_key
