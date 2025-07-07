@@ -14,7 +14,6 @@ _sync() {
   git pull
   cd "${ROM_DIR}" || exit
   find "${ROM_DIR}"/.repo/local_manifests/ -type f -exec rm {} \;
-  ls "${ROM_DIR}"/.repo/local_manifests/
   if [[ -n "${LOCAL_MANIFEST}" ]]; then
     _merge_local_manifests
   fi
