@@ -18,6 +18,6 @@ BUILD_DATE_UNIX=$(date "+%s")
 BUILD_DATE=$(env TZ="${TIME_ZONE}" date -d @"${BUILD_DATE_UNIX}" "+%Y%m%d-%H%M%S")
 mkdir "${LOGS_DIR}"/"${BUILD_DATE}"
 
-unset ROOT_DIR SECRETS_DIR BIN_DIR
+unset SECRETS_DIR BIN_DIR
 # shellcheck source=scripts/sync.sh
 source "${SCRIPT_DIR}"/sync.sh

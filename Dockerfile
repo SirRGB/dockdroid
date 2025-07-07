@@ -4,10 +4,10 @@ FROM docker.io/bitnami/minideb:bookworm
 ARG userid=1000
 ARG groupid=1000
 ARG username=droid
-ENV USER="${username}"
+ARG USER="${username}"
 
 # Dirs
-ENV ROOT_DIR /droid_workdir
+ARG ROOT_DIR=/droid_workdir
 ENV SCRIPT_DIR "${ROOT_DIR}"/scripts
 ENV ROM_DIR "${ROOT_DIR}"/src/Los15
 ENV KEYS_DIR "${ROOT_DIR}"/keys
