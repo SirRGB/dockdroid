@@ -1,7 +1,3 @@
-## Known broken
-- actually fix device array
-
-
 ## ToDo
 - build flag list, for loop
   - 7a175f9c808d28788fddc525fe17287655806520

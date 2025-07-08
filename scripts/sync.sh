@@ -63,4 +63,4 @@ _print_sync_start
 _sync
 _print_sync_success
 
-source "${SCRIPT_DIR}"/lunch.sh
+source "${SCRIPT_DIR}"/setup.sh
