@@ -96,7 +96,7 @@ sudo rm -rf ~/docker_droid/src/Los15/
 - ROM_BRANCH: Branch of the rom you want to sync
 - LOCAL_MANIFEST: Direct link to the local manifest(s)
 or
-- CLONE_REPOS: Links to the repo(s) to clone. Repo name MUST have the following pattern https://github.com/user/android_dir1_dir2_dir3/tree/branch or https://github.com/user/dir1_dir2_dir3/tree/branch. Not recommended.
+- CLONE_REPOS: Links to the repo(s) to clone. Repo name MUST have the following pattern https://github.com/user/android_dir1_dir2_dir3/tree/branch, https://github.com/user/dir1_dir2_dir3/tree/branch or https://github.com/user/proprietary_dir1_dir2_dir3/tree/branch. Not recommended.
 
 These variables should be defined in the target.env.
 
