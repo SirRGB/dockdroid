@@ -10,6 +10,9 @@ _sync() {
   fi
   cd "${ROM_DIR}" || exit
   repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 -g default,-darwin --git-lfs --no-clone-bundle 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
+  cd "${ROM_DIR}"/.repo/repo || exit
+  git pull
+  cd "${ROM_DIR}" || exit
   find "${ROM_DIR}"/.repo/local_manifests/ -type f -exec rm {} \;
   if [[ -n "${LOCAL_MANIFEST}" ]]; then
     _merge_local_manifests
@@ -18,7 +21,7 @@ _sync() {
   threads=$(nproc)
   repo forall -c "rm .git/*.lock" || true
   repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
-  repo forall -c "git lfs pull" || true
+  repo forall -c "git lfs pull"
   if [[ -n "${CLONE_REPOS}" ]]; then
    _clone_all
   fi
@@ -29,11 +32,10 @@ _merge_local_manifests() {
   echo -e "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<manifest>" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
   IFS=',' read -r -a "LOCAL_MANIFEST" <<< "${LOCAL_MANIFEST}"
   for url in "${LOCAL_MANIFEST[@]}"; do
-    echo "Fetching: ${url}"
     curl -fsSL "${url}" | sed "/<?xml version=\"1.0\" encoding=\"UTF-8\"?>/d; /<manifest>/d; /<\/manifest>/d; /<!--/d; /-->/d; /^$/d" >> "${ROM_DIR}"/.repo/local_manifests/.merge.txt
   done
-  sort < .repo/local_manifests/.merge.txt | uniq >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
-  rm "${ROM_DIR}"/.repo/local_manifests/.merge.txt # broken?
+  sort < "${ROM_DIR}"/.repo/local_manifests/.merge.txt | uniq >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+  find "${ROM_DIR}"/.repo/local_manifests/ -type f ! -name "*.xml" -exec rm -r {} \; || true
   echo "</manifest>" >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
 }
 
@@ -61,4 +63,4 @@ _print_sync_start
 _sync
 _print_sync_success
 
-source "${SCRIPT_DIR}"/lunch.sh
+source "${SCRIPT_DIR}"/setup.sh

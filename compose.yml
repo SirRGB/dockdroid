@@ -16,8 +16,8 @@ services:
       - ~/docker_droid/dotfiles/.gitconfig:/droid_workdir/.gitconfig:ro
       # SSH keys for git authentification
       - ~/docker_droid/dotfiles/.ssh:/droid_workdir/.ssh:ro
-      # Tokens for Telegram and GitHub (optional)
-      - ~/docker_droid/secrets:/droid_workdir/secrets:ro
     env_file:
-      - path: ./example.env
+      - path: ./target.env
+        required: false
+      - path: ./config.env
         required: false

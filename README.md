@@ -1,11 +1,12 @@
-WIP
-----
-
 ## Why Docker/Podman?
 
 Docker/Podman provides a uniform build environment, without external dependencies, that you have to set up manually.  
 The goal is to make building properly with ota and signing easy for everyone.
 
+
+<details>
+<summary>Initial Setup</summary>
+<br>
 
 ## Prerequisites
 
@@ -19,8 +20,6 @@ The goal is to make building properly with ota and signing easy for everyone.
 - ZRam (highly recommended): [Debian](https://wiki.debian.org/ZRam), [Fedora](https://github.com/systemd/zram-generator), [Ubuntu](https://wiki.ubuntuusers.de/zRam)
 
 
-## Setup
-
 ### Setting up permissions
 
 First we need to find the UID, that is used for Docker/Podman.  
@@ -30,7 +29,7 @@ which should be $subUID+$containerUID-1 according to the [docker forums](https:/
 
 We need to manually create the required folders for the respective volumes
 ```
-mkdir -p ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+mkdir -p ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 Copy the required dotfiles from the host machines
 ```
@@ -46,12 +45,12 @@ Then we need to chown that directory to the Docker user:
 
 #### Debian/Ubuntu
 ```
-sudo chown -R 100999:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+sudo chown -R 100999:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 
 #### Fedora
 ```
-sudo chown -R 52587:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+sudo chown -R 52587:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 
 #### Other
@@ -62,7 +61,7 @@ it seems to be 1000 for debian/ubuntu and 100 for fedora)
 
 Let other users read the directory
 ```
-sudo chmod -R 507 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+sudo chmod -R 507 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 Run the first docker build
 ```
@@ -76,20 +75,49 @@ ls -n ~/docker_droid/src/Los15/.repo
 Give ownership to the uid you found out:  
 (replace the 1st UID)
 ```
-sudo chown -R UID:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+sudo chown -R UID:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 And remove the incomplete sync
 ```
 sudo rm -rf ~/docker_droid/src/Los15/
 ```
+</details>
 
 
-## Variables (optional)
+<details>
+<summary>Variables</summary>
+<br>
+
+### required
+
+- DEVICE: Codename(s) of your device(s)
+- ROM_DIR: Only change the last part after src/. Defines the source path within the container
+- ROM_MANIFEST: URL of the rom manifest you want to sync
+- ROM_BRANCH: Branch of the rom you want to sync
+- LOCAL_MANIFEST: Direct link to the local manifest(s)
+or
+- CLONE_REPOS: Links to the repo(s) to clone. Repo name MUST have the following pattern https://github.com/user/android_dir1_dir2_dir3/tree/branch or https://github.com/user/dir1_dir2_dir3/tree/branch. Not recommended.
+
+These variables should be defined in the target.env.
+
+```
+cp example.env target.env
+```
+
+```
+DEVICE=cheeseburger,dumpling,TP1803
+ROM_DIR=/droid_workdir/src/Los15
+ROM_MANIFEST=https://github.com/LineageOS/android.git
+ROM_BRANCH=lineage-22.2
+LOCAL_MANIFEST=https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/cheeseburgerdumpling/A15Lineage.xml,https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/TP1803/A15Lineage.xml
+```
+
+### optional
 
 - GitHub Upload
   - [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
   - OTA_REPO_URL: for example git@github.com:user/ota_config, will also be used for uploading
-  - Requires passwordless ssh keys [added to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+  - Requires GITHUB_TOKEN or passwordless ssh keys [added to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 - SourceForge Upload
   - SF_USER: Username of your account
   - SF_RELEASES_REPO: Project name
@@ -99,14 +127,21 @@ sudo rm -rf ~/docker_droid/src/Los15/
   - TELEGRAM_CHAT: either as @xyz or the id
 - TIME_ZONE: either as in the format UTC+2 or CET
 
+These variables should be defined in config.env.
+
+```
+GITHUB_TOKEN=thing1234
+OTA_REPO_URL=git@github.com:user/ota_config
+```
+</details>
+
 
 ## Directories
 
 - dotfiles: .gitconfig for syncing and .ssh for authentification. Needs to be copied from the host manually.
 - keys: Contains keys for signing the build. Will be generated automatically if not provided.
-- logs: Contains logs and error messages.
-- ccache: Used for build caching to speed up compilation. Set to 80GB by default. Can be disabled by overwriting the value with 0 for space-saving.
-- secrets: If token.sh is provided (optional), it will be read. You can specify GITHUB_TOKEN, TELEGRAM_TOKEN and TELEGRAM_CHAT here.
+- logs: Contains logs and error messages. Logs older than a day will be deleted on a rerun.
+- ccache: Used for build caching to speed up compilation. Set to 40GB by default. Can be disabled by overwriting the value with 0 for space-saving.
 
 
 ## Run the build
@@ -118,7 +153,12 @@ podman compose up --force-recreate --build
 ```
 docker compose up --force-recreate --build
 ```
-- You can set your own parameters within the [compose file](https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/#use-the-environment-attribute) or specifying an [env file](https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/#use-the-env_file-attribute) and rerunning the build
+
+
+## Debugging
+
+- Look up known issues in [TODO.md](TODO.md)
+- If the error is undocumented you can uncomment [this](https://github.com/SirRGB/dockdroid/blob/da9593dca1ced7932f7f4295d20fab7077104b73/scripts/init.sh#L3) and send the part of the logs, where things go overboard via the [issues](https://github.com/SirRGB/dockdroid/issues) or debug it on your own and send a pull request.
 
 
 ## Too much RAM

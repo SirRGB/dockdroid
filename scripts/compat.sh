@@ -10,7 +10,6 @@ _setup_py2() {
 
   pyenv install 2
   pyenv global 2
-  python --version
 }
 
 # Set up JDK8 and re-enable TLS 1/1.1
@@ -30,9 +29,6 @@ _setup_jdk8() {
   sed -i 's/TLSv1, TLSv1.1, //g' "${JAVA_HOME}"/jre/lib/security/java.security
   export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4G"
   export LC_ALL=C
-
-  java -version
-  javac -version
 }
 
 # Allow greater key sizes
