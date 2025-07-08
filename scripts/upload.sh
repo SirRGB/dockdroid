@@ -85,7 +85,11 @@ _push_ota_info() {
   cp "${OUT}"/"${PACKAGE_NAME}".json "${ROM_DIR}"_ota/"${TARGET_DEVICE}".json
   git add "${ROM_DIR}"_ota/"${TARGET_DEVICE}".json
   git commit -m "${TARGET_DEVICE}: ${BUILD_DATE} update"
-  git push "${OTA_REPO_URL}" HEAD:"${ROM_BRANCH}"
+  if [[ -n $(find "${HOME}"/.ssh -name "id_*") ]]; then
+    git push "${OTA_REPO_URL}" HEAD:"${ROM_BRANCH}"
+  elif [[ -n "${GITHUB_TOKEN}" ]]; then
+    git push "${OTA_REPO_URL//git@github.com:/https://${GITHUB_TOKEN}@github.com/}" HEAD:"${ROM_BRANCH}"
+  fi
 }
 
 _cleanup_fail() {

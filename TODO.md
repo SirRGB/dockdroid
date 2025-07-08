@@ -4,5 +4,3 @@
 - move printing to printf
   - 94fa96faf062de55062bb79909548e778b692bfb
 - more verbose errors, error reporting curl
-- move to token for ota commits/ota for non-ssh users
-  - https://www.geeksforgeeks.org/git/how-to-authenticate-git-push-with-github-using-a-token
