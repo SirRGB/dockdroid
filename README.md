@@ -29,7 +29,7 @@ which should be $subUID+$containerUID-1 according to the [docker forums](https:/
 
 We need to manually create the required folders for the respective volumes
 ```
-mkdir -p ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+mkdir -p ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 Copy the required dotfiles from the host machines
 ```
@@ -45,12 +45,12 @@ Then we need to chown that directory to the Docker user:
 
 #### Debian/Ubuntu
 ```
-sudo chown -R 100999:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+sudo chown -R 100999:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 
 #### Fedora
 ```
-sudo chown -R 52587:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+sudo chown -R 52587:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 
 #### Other
@@ -61,7 +61,7 @@ it seems to be 1000 for debian/ubuntu and 100 for fedora)
 
 Let other users read the directory
 ```
-sudo chmod -R 507 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+sudo chmod -R 507 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 Run the first docker build
 ```
@@ -75,7 +75,7 @@ ls -n ~/docker_droid/src/Los15/.repo
 Give ownership to the uid you found out:  
 (replace the 1st UID)
 ```
-sudo chown -R UID:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/secrets ~/docker_droid/logs ~/docker_droid/keys
+sudo chown -R UID:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 And remove the incomplete sync
 ```
@@ -127,11 +127,11 @@ LOCAL_MANIFEST=https://raw.githubusercontent.com/SirRGB/local_manifests/refs/hea
   - TELEGRAM_CHAT: either as @xyz or the id
 - TIME_ZONE: either as in the format UTC+2 or CET
 
-These variables should be defined in ~/docker_droid/secrets/token.sh to prevent accidentally leaking tokens.
+These variables should be defined in config.env.
 
 ```
-export GITHUB_TOKEN=thing1234
-export OTA_REPO_URL=git@github.com:user/ota_config
+GITHUB_TOKEN=thing1234
+OTA_REPO_URL=git@github.com:user/ota_config
 ```
 </details>
 
@@ -142,7 +142,6 @@ export OTA_REPO_URL=git@github.com:user/ota_config
 - keys: Contains keys for signing the build. Will be generated automatically if not provided.
 - logs: Contains logs and error messages. Logs older than a day will be deleted on a rerun.
 - ccache: Used for build caching to speed up compilation. Set to 40GB by default. Can be disabled by overwriting the value with 0 for space-saving.
-- secrets: If token.sh is provided (optional), it will be read. You can specify GITHUB_TOKEN, TELEGRAM_TOKEN and TELEGRAM_CHAT here.
 
 
 ## Run the build

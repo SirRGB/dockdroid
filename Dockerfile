@@ -12,7 +12,6 @@ ENV SCRIPT_DIR "${ROOT_DIR}"/scripts
 ENV ROM_DIR "${ROOT_DIR}"/src/Los15
 ENV KEYS_DIR "${ROOT_DIR}"/keys
 ENV BIN_DIR "${ROOT_DIR}"/bin
-ENV SECRETS_DIR "${ROOT_DIR}"/secrets
 ENV LOGS_DIR "${ROOT_DIR}"/logs
 
 # Switch to Root for Setup
@@ -71,7 +70,7 @@ RUN install_packages \
     unzip
 
 # Create dirs and copy scripts
-RUN mkdir -p "${SCRIPT_DIR}" "${BIN_DIR}" "${SECRETS_DIR}" "${KEYS_DIR}"
+RUN mkdir -p "${SCRIPT_DIR}" "${BIN_DIR}" "${KEYS_DIR}"
 COPY scripts/ "${SCRIPT_DIR}"/
 
 # Set up user and work directories
