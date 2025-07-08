@@ -28,6 +28,8 @@ _sync() {
   unset ROM_MANIFEST LOCAL_MANIFEST CLONE_REPOS
 }
 
+# Merge local manifests into one
+# to avoid conflicts with duplicate dependencies
 _merge_local_manifests() {
   echo -e "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<manifest>" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
   IFS=',' read -r -a "LOCAL_MANIFEST" <<< "${LOCAL_MANIFEST}"
@@ -39,6 +41,7 @@ _merge_local_manifests() {
   echo "</manifest>" >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
 }
 
+# Clone repos one by one
 _clone() {
   full_repo_name="$1"
   repo_name=$(echo "${full_repo_name}" | rev | cut -d"/" -f3- | rev)
@@ -54,10 +57,7 @@ _clone_all() {
   done
 }
 
-_cleanup_fail() {
-  _print_sync_fail
-}
-trap _cleanup_fail ERR
+trap _print_sync_fail ERR
 
 _print_sync_start
 _sync

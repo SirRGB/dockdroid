@@ -53,11 +53,7 @@ _extract_recovery() {
     unzip -p "${OUT}"/signed-target_files.zip IMAGES/boot.img > "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}"
 }
 
-_cleanup_fail() {
-  # shellcheck disable=SC2317
-  _print_build_fail
-}
-trap _cleanup_fail ERR
+trap _print_build_fail ERR
 
 _packaging # _version
 _extract_recovery

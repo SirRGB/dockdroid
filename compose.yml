@@ -10,7 +10,7 @@ services:
       # CCache to speed up builds
       - ~/docker_droid/ccache:/mnt/ccache
       # Keys for signing
-      - ~/docker_droid/keys:/droid_workdir/keys # aosp does weird chmod stuff in here
+      - ~/docker_droid/keys:/droid_workdir/keys
       #RO
       # Gitconfig for repo
       - ~/docker_droid/dotfiles/.gitconfig:/droid_workdir/.gitconfig:ro

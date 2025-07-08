@@ -3,6 +3,7 @@
 # shellcheck source=scripts/print.sh
 source "${SCRIPT_DIR}"/print.sh
 
+# Check for tokens to decide the upload target
 _upload() {
   UPLOAD_TARGET=""
   DL_OTA_URL=""
@@ -17,6 +18,7 @@ _upload() {
   fi
 }
 
+# Upload to GitHub
 _upload_gh() {
   local tag desc release_repo upload_url
   tag=$(env TZ="${TIME_ZONE}" date -d @"${BUILD_DATE_UNIX}" "+%Y%m%d%H%M")-"${PACKAGE_NAME//.zip/}"
@@ -54,6 +56,7 @@ _upload_gh() {
     "${upload_url}"?name="${PACKAGE_NAME//.zip/-recovery.img}"
 }
 
+# Upload to SourceForge
 _upload_sf() {
   scp "${OUT}"/"${PACKAGE_NAME}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/
   scp "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/
@@ -72,7 +75,6 @@ _ota_info() {
 }
 
 # Push OTA info
-# TODO create branch conditionally
 # TODO fallback for clashing rom branches
 _push_ota_info() {
   if [[ ! -d "${ROM_DIR}"_ota ]]; then
@@ -92,10 +94,7 @@ _push_ota_info() {
   fi
 }
 
-_cleanup_fail() {
-  _print_upload_fail
-}
-trap _cleanup_fail ERR
+trap _print_upload_fail ERR
 
 _upload
 if [[ -n "${UPLOAD_TARGET}" ]]; then

@@ -112,7 +112,7 @@ ENV ROM_VERSION_FALLBACK ""
 ENV CCACHE_SIZE 40
 ENV OTA_REPO_URL ""
 ENV KEYS_SUBJECT '/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
-ENV TIME_ZONE UTC
+ENV TIME_ZONE "UTC"
 
 # Auth
 ENV TELEGRAM_TOKEN ""

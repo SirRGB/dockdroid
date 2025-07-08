@@ -67,12 +67,9 @@ _sign_new() {
   unset APEX_ARGS
 }
 
-_cleanup_fail() {
-  _print_build_fail
-}
-trap _cleanup_fail ERR
+trap _print_build_fail ERR
 
 _cleanup
-_determine_signing # _sign_new, _sign_old
+_determine_signing
 
 source "${SCRIPT_DIR}"/packaging.sh
