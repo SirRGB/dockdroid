@@ -26,7 +26,7 @@ _upload_gh() {
   release_repo="${OTA_REPO_URL//git@github.com:/}"
 
   # Create a release and get url
-  upload_url=$(curl -L \
+  upload_url=$(curl -fsSL \
     -X POST \
     -H "Authorization: token ${GITHUB_TOKEN}" \
     -H "content-type: application/json" \
@@ -36,7 +36,7 @@ _upload_gh() {
     | cut -d"{" -f1)
 
   # Upload ROM
-  DL_OTA_URL=$(curl -L \
+  DL_OTA_URL=$(curl -fSL \
     -H "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME}")" \
     -H "Authorization: token ${GITHUB_TOKEN}" \
     -H "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME}")" \
@@ -46,7 +46,7 @@ _upload_gh() {
     | jq -r .browser_download_url)
 
   # Upload Recovery
-  curl -L \
+  curl -fSL \
     -H "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
     -H "Authorization: token ${GITHUB_TOKEN}" \
     -H "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
