@@ -73,7 +73,6 @@ _ota_info() {
 }
 
 # Push OTA info
-# TODO fallback for clashing rom branches
 _push_ota_info() {
   local target_ota_repo_url target_ota_branch
   if [[ ! -d "${ROM_DIR}"_ota ]]; then
@@ -95,9 +94,14 @@ _push_ota_info() {
   fi
 
   # Append extraversion to avoid collision of different flavours
-  target_ota_branch="${ROM_BRANCH}"
+  if [[ -n "${ROM_OTA_BRANCH_FALLBACK}" ]]; then
+    target_ota_branch="${ROM_OTA_BRANCH_FALLBACK}"
+  else
+    target_ota_branch="${ROM_BRANCH}"
+  fi
+
   if [[ -n "${ROM_EXTRAVERSION}" ]]; then
-    target_ota_branch="${ROM_BRANCH-${ROM_EXTRAVERSION,,}}"
+    target_ota_branch="${target_ota_branch}"-"${ROM_EXTRAVERSION,,}"
   fi
 
   if [[ -n "${target_ota_repo_url}" ]]; then
