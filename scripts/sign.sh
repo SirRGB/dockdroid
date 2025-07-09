@@ -75,7 +75,7 @@ if [[ -n "${ROM_BUILD_FLAGS}" ]]; then
   IFS=',' read -r -a "ROM_BUILD_FLAGS" <<< "${ROM_BUILD_FLAGS}"
   for flags in "${ROM_BUILD_FLAGS[@]}"; do
     IFS=' ' read -r -a "TARGET_BUILD_FLAGS" <<< "${flags}"
-    echo "Current build flags: ${flags}"
+    _print_success "Current build flags: ${flags}"
     _determine_signing "${TARGET_BUILD_FLAGS[@]}"
     source "${SCRIPT_DIR}"/packaging.sh
   done
