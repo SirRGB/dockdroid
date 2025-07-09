@@ -6,7 +6,7 @@ source "${SCRIPT_DIR}"/print.sh
 # Only works for PRODUCT_VERSION_MAJOR|MINOR
 # Planned to work on Leaf OS/Lineage OS/CyanogenMOD/amyROM
 _version() {
-  local major_version_regex minor_version_regex rom_extraversion
+  local major_version_regex minor_version_regex
   major_version_regex='^PRODUCT_VERSION_MAJOR[[:space:]]:?=[[:space:]][[:digit:]]{1,2}'
   minor_version_regex='^PRODUCT_VERSION_MINOR[[:space:]]:?=[[:space:]][[:digit:]]{1,2}'
   readonly major_version_regex minor_version_regex
@@ -23,13 +23,13 @@ $(find "${ANDROID_BUILD_TOP}"/vendor/*/config/ \( -name "*[vV]ersion.mk" -o -nam
   else
     ROM_VERSION="${ROM_VERSION_FALLBACK}"
   fi
-  rom_extraversion=""
+  ROM_EXTRAVERSION=""
   if [[ -n $(find "${OUT}" -mindepth 2 -name "FakeStore.apk" -print -quit) ]]; then
-    rom_extraversion="MICROG-"
+    ROM_EXTRAVERSION="MICROG-"
   elif [[ -n $(find "${OUT}" -mindepth 2 -name "GmsCore.apk" -print -quit) ]]; then
-    rom_extraversion="GMS-"
+    ROM_EXTRAVERSION="GMS-"
   fi
-  PACKAGE_NAME="${ROM_PREFIX}""${ROM_VERSION}"-"${rom_extraversion}"$(env TZ="${TIME_ZONE}" date -d @"${BUILD_DATE_UNIX}" +%Y%m%d)-"${TARGET_DEVICE}"-signed.zip
+  PACKAGE_NAME="${ROM_PREFIX}""${ROM_VERSION}"-"${ROM_EXTRAVERSION}"$(env TZ="${TIME_ZONE}" date -d @"${BUILD_DATE_UNIX}" +%Y%m%d)-"${TARGET_DEVICE}"-signed.zip
 }
 
 # Create flashable zip from target files
@@ -55,7 +55,7 @@ _extract_recovery() {
 
 trap _print_build_fail ERR
 
-_packaging # _version
+_packaging
 _extract_recovery
 _print_build_success
 

@@ -77,6 +77,7 @@ _ota_info() {
 # Push OTA info
 # TODO fallback for clashing rom branches
 _push_ota_info() {
+  local target_ota_repo_url target_ota_branch
   if [[ ! -d "${ROM_DIR}"_ota ]]; then
     mkdir "${ROM_DIR}"_ota
   fi
@@ -87,10 +88,22 @@ _push_ota_info() {
   cp "${OUT}"/"${PACKAGE_NAME}".json "${ROM_DIR}"_ota/"${TARGET_DEVICE}".json
   git add "${ROM_DIR}"_ota/"${TARGET_DEVICE}".json
   git commit -m "${TARGET_DEVICE}: ${BUILD_DATE} update"
+
+  # Use ssh primarely, fallback to github tokens
   if [[ -n $(find "${HOME}"/.ssh -name "id_*") ]]; then
-    git push "${OTA_REPO_URL}" HEAD:"${ROM_BRANCH}"
+    target_ota_repo_url="${OTA_REPO_URL}"
   elif [[ -n "${GITHUB_TOKEN}" ]]; then
-    git push "${OTA_REPO_URL//git@github.com:/https://${GITHUB_TOKEN}@github.com/}" HEAD:"${ROM_BRANCH}"
+    target_ota_repo_url="${OTA_REPO_URL//git@github.com:/https://${GITHUB_TOKEN}@github.com/}"
+  fi
+
+  # Append extraversion to avoid collision of different flavours
+  target_ota_branch="${ROM_BRANCH}"
+  if [[ -n "${ROM_EXTRAVERSION}" ]]; then
+    target_ota_branch="${ROM_BRANCH-${ROM_EXTRAVERSION,,}}"
+  fi
+
+  if [[ -n "${target_ota_repo_url}" ]]; then
+    git push "${target_ota_repo_url}" HEAD:"${target_ota_branch}"
   fi
 }
 
