@@ -125,6 +125,9 @@ LOCAL_MANIFEST=https://raw.githubusercontent.com/SirRGB/local_manifests/refs/hea
   - ```TELEGRAM_CHAT```: either as @xyz or the id
 - ```TIME_ZONE```: either as in the format UTC+2 or CET
 - ```ROM_BUILD_FLAGS```: if you want to define values like ```WITH_GMS=true``` you can do this in here, even with multiple of them separated by comma for separate builds or space for the same build
+- OTA Updates
+  - At least one file provider mentioned above
+  - ```OTA_REPO_URL```: Any git hoster using ssh authentification i.e. GitHub, GitLab, CodeBerg,...
 
 These variables should be defined in config.env.
 
