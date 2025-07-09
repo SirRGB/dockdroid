@@ -31,7 +31,7 @@ _lunch() {
 # Iterate over device array
 IFS=',' read -r -a "DEVICE" <<< "${DEVICE}"
 for device in "${DEVICE[@]}"; do
-  export TARGET_DEVICE="${device}"
+  TARGET_DEVICE="${device}"
   _lunch
   _print_build_start
 

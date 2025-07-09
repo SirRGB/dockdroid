@@ -20,7 +20,6 @@ _keysgen() {
     fi
   done
 
-  export APEX_KEYS
   APEX_KEYS=(
     com.android.adbd
     com.android.adservices
@@ -105,7 +104,6 @@ _keysgen() {
 
 # Get android version for legacy workarounds and signing
 _get_android_version() {
-  export ANDROID_VERSION
   ANDROID_VERSION=$(< "${ROM_DIR}"/cts/tests/tests/os/assets/platform_versions.txt tr -d "A-z" | cut -d"." -f1 | sort | tail -n1)
 }
 

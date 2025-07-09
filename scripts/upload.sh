@@ -44,7 +44,6 @@ _upload_gh() {
     -H "Accept: application/vnd.github.v3+json" \
     "${upload_url}"?name="${PACKAGE_NAME}" \
     | jq -r .browser_download_url)
-  export DL_OTA_URL
 
   # Upload Recovery
   curl -L \
@@ -61,7 +60,6 @@ _upload_sf() {
   scp "${OUT}"/"${PACKAGE_NAME}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/
   scp "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/
   DL_OTA_URL=https://sourceforge.net/projects/"${SF_RELEASES_REPO}"/files/"${PACKAGE_NAME}"/download
-  export DL_OTA_URL
 }
 
 # Create/print ota json
