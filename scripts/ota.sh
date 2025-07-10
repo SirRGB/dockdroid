@@ -50,7 +50,12 @@ _push_ota_info() {
   fi
 }
 
-trap _print_ota_fail ERR
+_cleanup_fail() {
+  _print_ota_fail
+  exit 1
+}
+
+trap _cleanup_fail ERR
 
 _ota_info
 if [[ -n "${OTA_REPO_URL}" ]]; then

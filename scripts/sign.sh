@@ -7,7 +7,10 @@ source "${SCRIPT_DIR}"/print.sh
 _cleanup() {
   cd "${ROM_DIR}" || exit
   set +eu
-  m installclean -j"$(nproc)" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
+  if ! m installclean -j"$(nproc)" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
+  then
+    _cleanup_fail
+  fi
   set -eu
   rm "${OUT}"/*.zip "${OUT}"/*.zip.json || true
 }
@@ -15,9 +18,12 @@ _cleanup() {
 # Decide for signing method
 _determine_signing() {
   set +eu
-  m target-files-package otatools -j"$(nproc)" "$@" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
-  croot
+  if ! m target-files-package otatools -j"$(nproc)" "$@" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
+  then
+    _cleanup_fail
+  fi
   set -eu
+  croot
 
   # If Android version greater than 11, use apex signing
   if [[ "${ANDROID_VERSION}" -gt 11 ]]; then
@@ -36,9 +42,12 @@ _sign_old() {
     releasetools_prefix="${ANDROID_BUILD_TOP}"/build/tools/releasetools/
   fi
   set +eu
-  "${releasetools_prefix}"sign_target_files_apks -o -d "${KEYS_DIR}" \
+  if ! "${releasetools_prefix}"sign_target_files_apks -o -d "${KEYS_DIR}" \
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip \
       "${OUT}"/signed-target_files.zip 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign-legacy.txt
+  then
+    _cleanup_fail
+  fi
   set -eu
 }
 
@@ -49,7 +58,7 @@ _sign_new() {
   done
 
   set +eu
-  sign_target_files_apks -o -d "${KEYS_DIR}" \
+  if ! sign_target_files_apks -o -d "${KEYS_DIR}" \
       --extra_apks AdServicesApk.apk="${KEYS_DIR}"/releasekey \
       --extra_apks FederatedCompute.apk="${KEYS_DIR}"/releasekey \
       --extra_apks HalfSheetUX.apk="${KEYS_DIR}"/releasekey \
@@ -64,11 +73,19 @@ _sign_new() {
       "${APEX_ARGS[@]}" \
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files*.zip \
       "${OUT}"/signed-target_files.zip 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign.txt
+  then
+    _cleanup_fail
+  fi
   set -eu
   unset APEX_ARGS
 }
 
-trap _print_build_fail ERR
+_cleanup_fail() {
+  _print_build_fail
+  exit 1
+}
+
+trap _cleanup_fail ERR
 
 _cleanup
 if [[ -n "${ROM_BUILD_FLAGS}" ]]; then

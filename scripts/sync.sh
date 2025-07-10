@@ -58,7 +58,12 @@ _clone_all() {
   done
 }
 
-trap _print_sync_fail ERR
+_cleanup_fail() {
+  _print_sync_fail
+  exit 1
+}
+
+trap _cleanup_fail ERR
 
 _print_sync_start
 _sync

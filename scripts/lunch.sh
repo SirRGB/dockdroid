@@ -24,7 +24,10 @@ _lunch() {
 
   # It's all coming together
   set +eu
-  lunch "${product}""${release_codename}"-"${BUILD_TYPE}"
+  if ! lunch "${product}""${release_codename}"-"${BUILD_TYPE}"
+  then
+    exit 1
+  fi
   set -eu
 }
 

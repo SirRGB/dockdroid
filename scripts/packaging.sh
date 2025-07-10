@@ -41,9 +41,12 @@ _packaging() {
     releasetools_prefix="${ANDROID_BUILD_TOP}"/build/tools/releasetools/
   fi
   set +eu
-  "${releasetools_prefix}"ota_from_target_files -k "${KEYS_DIR}"/releasekey \
+  if ! "${releasetools_prefix}"ota_from_target_files -k "${KEYS_DIR}"/releasekey \
       "${OUT}"/signed-target_files.zip \
       "${OUT}"/"${PACKAGE_NAME}" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/packaging.txt
+  then
+    _cleanup_fail
+  fi
   set -eu
 }
 
@@ -53,7 +56,12 @@ _extract_recovery() {
     unzip -p "${OUT}"/signed-target_files.zip IMAGES/boot.img > "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}"
 }
 
-trap _print_build_fail ERR
+_cleanup_fail() {
+  _print_build_fail
+  exit 1
+}
+
+trap _cleanup_fail ERR
 
 _packaging
 _extract_recovery

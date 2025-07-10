@@ -62,7 +62,12 @@ _upload_sf() {
   DL_OTA_URL=https://sourceforge.net/projects/"${SF_RELEASES_REPO}"/files/"${PACKAGE_NAME}"/download
 }
 
-trap _print_upload_fail ERR
+_cleanup_fail() {
+  _print_upload_fail
+  exit 1
+}
+
+trap _cleanup_fail ERR
 
 _upload
 if [[ -n "${UPLOAD_TARGET}" ]]; then
