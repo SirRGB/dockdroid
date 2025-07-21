@@ -84,7 +84,7 @@ sudo rm -rf ~/docker_droid/src/Los15/
 
 
 <details>
-<summary>```Variables```</summary>
+<summary>Variables</summary>
 
 ### required
 
