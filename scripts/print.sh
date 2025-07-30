@@ -7,7 +7,8 @@ NC='\033[0m'
 # Skelleton for posting to telegram
 _telegram() {
   if [[ -n "${TELEGRAM_TOKEN}" ]]; then
-    curl --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendMessage \
+    curl -fsSL \
+      --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendMessage \
       --data chat_id="${TELEGRAM_CHAT}" \
       --data parse_mode="Markdown" \
       --data text="$1"
@@ -16,7 +17,8 @@ _telegram() {
 
 _telegram_separator() {
   if [[ -n "${TELEGRAM_TOKEN}" ]]; then
-    curl --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendSticker \
+    curl -fsSL \
+      --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendSticker \
       --data chat_id="${TELEGRAM_CHAT}" \
       --data parse_mode=HTML \
       --data sticker=CAADBQADGgEAAixuhBPbSa3YLUZ8DBYE
@@ -54,6 +56,7 @@ _print_sync_fail() {
   _print_error "Sync failed in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
 }
 
+
 # Building
 _print_build_start() {
   BUILD_START=$(date +"%s")
@@ -76,9 +79,10 @@ _print_signing_method() {
   _print_success "$* Signing"
 }
 
+
 # Uploading
 _print_upload_start() {
-  _print_success "Upload started to $*"
+  _print_success "$* Upload started"
 }
 
 _print_upload_success() {
@@ -90,6 +94,12 @@ _print_upload_success() {
 _print_upload_fail() {
   _print_error "Upload failed"
 }
+
+# Ota
+_print_ota_fail() {
+  _print_error "Ota info failed"
+}
+
 
 _print_done() {
   _print_success "Completed successfully"

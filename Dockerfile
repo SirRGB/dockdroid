@@ -4,7 +4,7 @@ FROM docker.io/bitnami/minideb:bookworm
 ARG userid=1000
 ARG groupid=1000
 ARG username=droid
-ARG USER="${username}"
+ENV USER "${username}"
 
 # Dirs
 ARG ROOT_DIR=/droid_workdir
@@ -103,16 +103,18 @@ ENV DEVICE ""
 ENV BUILD_TYPE ""
 ENV ROM_MANIFEST ""
 ENV ROM_BRANCH ""
+ENV ROM_BUILD_FLAGS ""
 
 ENV LUNCH_PREFIX_FALLBACK ""
 ENV ROM_PREFIX_FALLBACK ""
 ENV ROM_VERSION_FALLBACK ""
+ENV ROM_OTA_BRANCH_FALLBACK ""
 
 # Extra
 ENV CCACHE_SIZE 40
 ENV OTA_REPO_URL ""
 ENV KEYS_SUBJECT '/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
-ENV TIME_ZONE UTC
+ENV TIME_ZONE "UTC"
 
 # Auth
 ENV TELEGRAM_TOKEN ""

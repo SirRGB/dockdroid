@@ -3,6 +3,7 @@
 # shellcheck source=scripts/print.sh
 source "${SCRIPT_DIR}"/print.sh
 
+# Define build target
 _lunch() {
   cd "${ROM_DIR}" || exit
 
@@ -23,13 +24,17 @@ _lunch() {
 
   # It's all coming together
   set +eu
-  lunch "${product}""${release_codename}"-"${BUILD_TYPE}" || true
+  if ! lunch "${product}""${release_codename}"-"${BUILD_TYPE}"
+  then
+    exit 1
+  fi
   set -eu
 }
 
+# Iterate over device array
 IFS=',' read -r -a "DEVICE" <<< "${DEVICE}"
 for device in "${DEVICE[@]}"; do
-  export TARGET_DEVICE="${device}"
+  TARGET_DEVICE="${device}"
   _lunch
   _print_build_start
 

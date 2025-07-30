@@ -14,16 +14,17 @@ _setup_py2() {
 
 # Set up JDK8 and re-enable TLS 1/1.1
 _setup_jdk8() {
-  local jdk_dir jdk_name
+  local jdk_dir jdk_tag jdk_name
   jdk_dir="${HOME}"/java/jdk
-  jdk_name=OpenJDK8U-jdk_x64_linux_hotspot_8u452b09.tar.gz
+  jdk_tag=jdk8u462-b08
+  jdk_name=OpenJDK8U-jdk_x64_linux_hotspot_"$(echo ${jdk_tag//jdk/} | tr -d -)".tar.gz
   mkdir -p "${jdk_dir}"
-  curl -fsSOL https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u452-b09/OpenJDK8U-jdk_x64_linux_hotspot_8u452b09.tar.gz --output-dir "${jdk_dir}"
-  echo 9448308a21841960a591b47927cf2d44fdc4c0533a5f8111a4b243a6bafb5d27 "${jdk_dir}"/"${jdk_name}" | sha256sum --check
+  curl -fsSOL https://github.com/adoptium/temurin8-binaries/releases/download/"${jdk_tag}"/"${jdk_name}" --output-dir "${jdk_dir}"
+  echo 5d64ae542b59a962b3caadadd346f4b1c3010879a28bb02d928326993de16e79 "${jdk_dir}"/"${jdk_name}" | sha256sum --check
   tar xvf "${jdk_dir}"/"${jdk_name}" --directory="${jdk_dir}"
   rm "${jdk_dir}"/"${jdk_name}"
 
-  export JAVA_HOME="${jdk_dir}"/jdk8u452-b09
+  export JAVA_HOME="${jdk_dir}"/"${jdk_tag}"
   export PATH="${JAVA_HOME}"/bin:"${PATH}"
 
   sed -i 's/TLSv1, TLSv1.1, //g' "${JAVA_HOME}"/jre/lib/security/java.security

@@ -6,7 +6,6 @@ The goal is to make building properly with ota and signing easy for everyone.
 
 <details>
 <summary>Initial Setup</summary>
-<br>
 
 ## Prerequisites
 
@@ -86,17 +85,16 @@ sudo rm -rf ~/docker_droid/src/Los15/
 
 <details>
 <summary>Variables</summary>
-<br>
 
 ### required
 
-- DEVICE: Codename(s) of your device(s)
-- ROM_DIR: Only change the last part after src/. Defines the source path within the container
-- ROM_MANIFEST: URL of the rom manifest you want to sync
-- ROM_BRANCH: Branch of the rom you want to sync
-- LOCAL_MANIFEST: Direct link to the local manifest(s)
+- ```DEVICE```: Codename(s) of your device(s)
+- ```ROM_DIR```: Only change the last part after src/. Defines the source path within the container
+- ```ROM_MANIFEST```: URL of the rom manifest you want to sync
+- ```ROM_BRANCH```: Branch of the rom you want to sync
+- ```LOCAL_MANIFEST```: Direct link to the local manifest(s)
 or
-- CLONE_REPOS: Links to the repo(s) to clone. Repo name MUST have the following pattern https://github.com/user/android_dir1_dir2_dir3/tree/branch or https://github.com/user/dir1_dir2_dir3/tree/branch. Not recommended.
+- ```CLONE_REPOS```: Links to the repo(s) to clone. Repo name MUST have the following pattern https://github.com/user/android_dir1_dir2_dir3/tree/branch, https://github.com/user/dir1_dir2_dir3/tree/branch or https://github.com/user/proprietary_dir1_dir2_dir3/tree/branch. Not recommended.
 
 These variables should be defined in the target.env.
 
@@ -115,17 +113,21 @@ LOCAL_MANIFEST=https://raw.githubusercontent.com/SirRGB/local_manifests/refs/hea
 ### optional
 
 - GitHub Upload
-  - [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
-  - OTA_REPO_URL: for example git@github.com:user/ota_config, will also be used for uploading
-  - Requires GITHUB_TOKEN or passwordless ssh keys [added to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+  - ```[GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)```
+  - ```OTA_REPO_URL```: for example git@github.com:user/ota_config, will also be used for uploading
+  - Requires ```GITHUB_TOKEN``` or passwordless ssh keys [added to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 - SourceForge Upload
-  - SF_USER: Username of your account
-  - SF_RELEASES_REPO: Project name
+  - ```SF_USER```: Username of your account
+  - ```SF_RELEASES_REPO```: Project name
   - Requires passwordless ssh keys added to your [SourceForge account](https://sourceforge.net/p/forge/documentation/SSH%20Keys)
 - Telegram logging
-  - [TELEGRAM_TOKEN](https://core.telegram.org/bots/features#botfather)
-  - TELEGRAM_CHAT: either as @xyz or the id
-- TIME_ZONE: either as in the format UTC+2 or CET
+  - ```[TELEGRAM_TOKEN](https://core.telegram.org/bots/features#botfather)```
+  - ```TELEGRAM_CHAT```: either as @xyz or the id
+- ```TIME_ZONE```: either as in the format UTC+2 or CET
+- ```ROM_BUILD_FLAGS```: if you want to define values like ```WITH_GMS=true``` you can do this in here, even with multiple of them separated by comma for separate builds or space for the same build
+- OTA Updates
+  - At least one file provider mentioned above
+  - ```OTA_REPO_URL```: Any git hoster using ssh authentification i.e. GitHub, GitLab, CodeBerg,...
 
 These variables should be defined in config.env.
 
@@ -138,10 +140,10 @@ OTA_REPO_URL=git@github.com:user/ota_config
 
 ## Directories
 
-- dotfiles: .gitconfig for syncing and .ssh for authentification. Needs to be copied from the host manually.
-- keys: Contains keys for signing the build. Will be generated automatically if not provided.
-- logs: Contains logs and error messages. Logs older than a day will be deleted on a rerun.
-- ccache: Used for build caching to speed up compilation. Set to 40GB by default. Can be disabled by overwriting the value with 0 for space-saving.
+- ```dotfiles```: .gitconfig for syncing and .ssh for authentification. Needs to be copied from the host manually.
+- ```keys```: Contains keys for signing the build. Will be generated automatically if not provided.
+- ```logs```: Contains logs and error messages. Logs older than a day will be deleted on a rerun.
+- ```ccache```: Used for build caching to speed up compilation. Set to 40GB by default. Can be disabled by overwriting the value with 0 for space-saving.
 
 
 ## Run the build
@@ -171,6 +173,7 @@ You can further speed up build times by using tmpfs as described [here](https://
 - GitHub releases enforces a maximum file size of [2 GiB](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github#distributing-large-binaries) in their releases
 - SourceForge restricts project size to [5-30 GiB](https://sourceforge.net/p/forge/documentation/Disk%20Quotas) depending on the download throughput
 - GitLab releases are not feasible due to their [100 MiB](https://docs.gitlab.com/user/gitlab_com/#gitlab-cicd) attachment size limit
+- CodeBerg releases are not feasible due to their [100 MiB](https://codeberg.org/Codeberg-e.V./requests/issues/129) size limit as well
 
 
 ## Credits/Reference
