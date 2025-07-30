@@ -22,8 +22,11 @@ _determine_signing() {
   then
     _cleanup_fail
   fi
+  if ! croot
+  then
+    _cleanup_fail
+  fi
   set -eu
-  croot
 
   # If Android version greater than 11, use apex signing
   if [[ "${ANDROID_VERSION}" -gt 11 ]]; then
