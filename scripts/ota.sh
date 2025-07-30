@@ -42,7 +42,7 @@ _push_ota_info() {
   fi
 
   if [[ -n "${ROM_EXTRAVERSION}" ]]; then
-    target_ota_branch="${target_ota_branch}"-"${ROM_EXTRAVERSION,,}"
+    target_ota_branch="${target_ota_branch}"-"$(tr -d - <<< "${ROM_EXTRAVERSION,,}")"
   fi
 
   if [[ -n "${target_ota_repo_url}" ]]; then
