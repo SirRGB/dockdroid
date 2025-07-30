@@ -4,7 +4,7 @@ FROM docker.io/bitnami/minideb:bookworm
 ARG userid=1000
 ARG groupid=1000
 ARG username=droid
-ARG USER="${username}"
+ENV USER "${username}"
 
 # Dirs
 ARG ROOT_DIR=/droid_workdir
