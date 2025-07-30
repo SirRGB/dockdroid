@@ -1,7 +1,8 @@
 ## Why Docker/Podman?
 
 Docker/Podman provides a uniform build environment, without external dependencies, that you have to set up manually.  
-The goal is to make building properly with ota and signing easy for everyone.
+The goal is to make building properly with ota and signing easy for everyone.  
+This project targets Android 7 up to the most recent version.
 
 
 <details>

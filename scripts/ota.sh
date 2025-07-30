@@ -34,13 +34,14 @@ _push_ota_info() {
     target_ota_repo_url="${OTA_REPO_URL//git@github.com:/https://${GITHUB_TOKEN}@github.com/}"
   fi
 
-  # Append extraversion to avoid collision of different flavours
+  # Specify a fallback, so that roms, that purely rely on android numbers dont collide
   if [[ -n "${ROM_OTA_BRANCH_FALLBACK}" ]]; then
     target_ota_branch="${ROM_OTA_BRANCH_FALLBACK}"
   else
     target_ota_branch="${ROM_BRANCH}"
   fi
 
+  # Append extraversion to avoid collision of different flavours
   if [[ -n "${ROM_EXTRAVERSION}" ]]; then
     target_ota_branch="${target_ota_branch}"-"$(tr -d - <<< "${ROM_EXTRAVERSION,,}")"
   fi

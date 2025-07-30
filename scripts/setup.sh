@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Set up ccache
+# Set up ccache for build caching
 _ccache() {
   if [[ "${CCACHE_SIZE}" -gt 0 ]]; then
     export USE_CCACHE=1

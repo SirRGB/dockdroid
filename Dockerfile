@@ -94,7 +94,7 @@ RUN sed -i "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g
 # Make scripts executable
 RUN chmod -R 500 "${BIN_DIR}" "${SCRIPT_DIR}"
 
-# ROM
+# ROM variables
 ENV LOCAL_MANIFEST=""
 ENV CLONE_REPOS=""
 ENV DEVICE=""
@@ -103,18 +103,19 @@ ENV ROM_MANIFEST=""
 ENV ROM_BRANCH=""
 ENV ROM_BUILD_FLAGS=""
 
+# Fallbacks (required for non-standard naming and conflicts)
 ENV LUNCH_PREFIX_FALLBACK=""
 ENV ROM_PREFIX_FALLBACK=""
 ENV ROM_VERSION_FALLBACK=""
 ENV ROM_OTA_BRANCH_FALLBACK=""
 
-# Extra
+# Extra variables
 ENV CCACHE_SIZE=40
 ENV OTA_REPO_URL=""
 ENV KEYS_SUBJECT='/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
 ENV TIME_ZONE="UTC"
 
-# Auth
+# Authentification
 ENV TELEGRAM_TOKEN=""
 ENV GITHUB_TOKEN=""
 ENV SF_USER=""

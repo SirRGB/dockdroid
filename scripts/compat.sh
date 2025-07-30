@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Set up PyEnv
+# Initialize PyEnv
 _setup_pyenv() {
   curl -fsSL https://pyenv.run | bash
   export PYENV_ROOT="${HOME}"/.pyenv
@@ -9,19 +9,21 @@ _setup_pyenv() {
   "${SHELL}"
 }
 
+# Set up PyEnv with Python 2.7
 _init_py2() {
   _setup_pyenv
   pyenv install 2
   pyenv global 2
 }
 
+# Set up PyEnv with Python 3.11
 _init_py3() {
   _setup_pyenv
   pyenv install 3.11
   pyenv global 3.11
 }
 
-# Set up JDK8 and re-enable TLS 1/1.1
+# Set up Temurin 8 and re-enable TLS 1/1.1
 _setup_jdk8() {
   local jdk_dir jdk_tag jdk_name
   jdk_dir="${HOME}"/java/jdk

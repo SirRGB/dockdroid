@@ -10,9 +10,11 @@ _sync() {
   fi
   cd "${ROM_DIR}" || exit
   repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 -g default,-darwin --git-lfs --no-clone-bundle 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
+  # Pull the latest repo tool
   cd "${ROM_DIR}"/.repo/repo || exit
   git pull
   cd "${ROM_DIR}" || exit
+  # Remove local manifests
   find "${ROM_DIR}"/.repo/local_manifests/ -type f -exec rm {} \;
   if [[ -n "${LOCAL_MANIFEST}" ]]; then
     _merge_local_manifests
@@ -34,14 +36,16 @@ _merge_local_manifests() {
   echo -e "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<manifest>" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
   IFS=',' read -r -a "LOCAL_MANIFEST" <<< "${LOCAL_MANIFEST}"
   for url in "${LOCAL_MANIFEST[@]}"; do
+    # Remove heading and end
     curl -fsSL "${url}" | sed "/<?xml version=\"1.0\" encoding=\"UTF-8\"?>/d; /<manifest>/d; /<\/manifest>/d; /<!--/d; /-->/d; /^$/d" >> "${ROM_DIR}"/.repo/local_manifests/.merge.txt
   done
+  # Remove duplicated entries
   sort < "${ROM_DIR}"/.repo/local_manifests/.merge.txt | uniq >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
   find "${ROM_DIR}"/.repo/local_manifests/ -type f ! -name "*.xml" -exec rm -r {} \; || true
   echo "</manifest>" >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
 }
 
-# Clone repos one by one
+# Clone a repo
 _clone() {
   full_repo_name="$1"
   repo_name=$(echo "${full_repo_name}" | rev | cut -d"/" -f3- | rev)
@@ -51,6 +55,7 @@ _clone() {
   git clone "${repo_name}" -b "${branch}" "${target_path}"
 }
 
+# Wrapper to clone all repos defined in $CLONE_REPOS
 _clone_all() {
   IFS=',' read -r -a "CLONE_REPOS" <<< "${CLONE_REPOS}"
   for repo in "${CLONE_REPOS[@]}"; do

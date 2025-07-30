@@ -15,7 +15,7 @@ _cleanup() {
   rm "${OUT}"/*.zip "${OUT}"/*.zip.json || true
 }
 
-# Decide for signing method
+# Decide the signing method
 _determine_signing() {
   set +eu
   if ! m target-files-package otatools -j"$(nproc)" "$@" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
