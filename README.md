@@ -11,9 +11,9 @@ This project targets Android 7 up to the most recent version.
 ## Prerequisites
 
 - [Podman](https://podman.io/docs/installation)
-  - [Python venv](https://docs.python.org/3/library/venv.html#creating-virtual-environments)
   - [Podman compose](https://github.com/containers/podman-compose?tab=readme-ov-file#pip)
 - or [Docker](https://docs.docker.com/engine/install)
+  - [Docker Compose](https://docs.docker.com/compose/install)
   - [Docker Rootless](https://docs.docker.com/engine/security/rootless/)
 - [SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - [GitConfig](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
