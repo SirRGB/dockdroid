@@ -1,4 +1,4 @@
-FROM docker.io/bitnami/minideb:bookworm
+FROM docker.io/bitnami/minideb:trixie
 
 # User
 ARG userid=1000
@@ -36,12 +36,11 @@ RUN install_packages \
     lib32readline-dev \
     lib32z1-dev \
     libelf-dev \
-    liblz4-tool \
-    libncurses5 \
     libsdl1.2-dev \
     libssl-dev \
     libxml2 \
     libxml2-utils \
+    lz4 \
     lzop \
     pngcrush \
     python3 \
@@ -67,7 +66,17 @@ RUN install_packages \
 # Automation
     file \
     jq \
+    wget \
     unzip
+
+RUN wget http://ftp.debian.org/debian/pool/main/n/ncurses/libncurses5_6.4-4_amd64.deb --directory-prefix /tmp
+RUN wget http://ftp.debian.org/debian/pool/main/l/lz4/liblz4-tool_1.9.4-1_all.deb --directory-prefix /tmp
+RUN wget http://ftp.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.4-4_amd64.deb --directory-prefix /tmp
+RUN dpkg --install /tmp/*.deb
+
+# Cleanup
+RUN rm -r /tmp/*
+RUN apt remove wget
 
 # Create dirs and copy scripts
 RUN mkdir -p "${SCRIPT_DIR}" "${BIN_DIR}" "${KEYS_DIR}"
