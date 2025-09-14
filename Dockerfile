@@ -36,6 +36,7 @@ RUN install_packages \
     lib32readline-dev \
     lib32z1-dev \
     libelf-dev \
+    libncurses6 \
     libsdl1.2-dev \
     libssl-dev \
     libxml2 \
@@ -69,9 +70,10 @@ RUN install_packages \
     wget \
     unzip
 
-RUN wget http://ftp.debian.org/debian/pool/main/n/ncurses/libncurses5_6.4-4_amd64.deb --directory-prefix /tmp
+# Symlink libncurses for compatibility
+RUN ln -s /usr/lib/x86_64-linux-gnu/libncurses.so.6 /usr/lib/x86_64-linux-gnu/libncurses.so.5
+RUN ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
 RUN wget http://ftp.debian.org/debian/pool/main/l/lz4/liblz4-tool_1.9.4-1_all.deb --directory-prefix /tmp
-RUN wget http://ftp.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.4-4_amd64.deb --directory-prefix /tmp
 RUN dpkg --install /tmp/*.deb
 
 # Cleanup
