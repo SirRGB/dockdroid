@@ -67,18 +67,11 @@ RUN install_packages \
 # Automation
     file \
     jq \
-    wget \
     unzip
 
 # Symlink libncurses for compatibility
 RUN ln -s /usr/lib/x86_64-linux-gnu/libncurses.so.6 /usr/lib/x86_64-linux-gnu/libncurses.so.5
 RUN ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
-RUN wget http://ftp.debian.org/debian/pool/main/l/lz4/liblz4-tool_1.9.4-1_all.deb --directory-prefix /tmp
-RUN dpkg --install /tmp/*.deb
-
-# Cleanup
-RUN rm -r /tmp/*
-RUN apt remove wget
 
 # Create dirs and copy scripts
 RUN mkdir -p "${SCRIPT_DIR}" "${BIN_DIR}" "${KEYS_DIR}"
