@@ -4,15 +4,15 @@ FROM docker.io/bitnami/minideb:trixie
 ARG userid=1000
 ARG groupid=1000
 ARG username=droid
-ENV USER "${username}"
+ENV USER="${username}"
 
 # Dirs
 ARG ROOT_DIR=/droid_workdir
-ENV SCRIPT_DIR "${ROOT_DIR}"/scripts
-ENV ROM_DIR "${ROOT_DIR}"/src/Los15
-ENV KEYS_DIR "${ROOT_DIR}"/keys
-ENV BIN_DIR "${ROOT_DIR}"/bin
-ENV LOGS_DIR "${ROOT_DIR}"/logs
+ENV SCRIPT_DIR="${ROOT_DIR}"/scripts
+ENV ROM_DIR="${ROOT_DIR}"/src/Los15
+ENV KEYS_DIR="${ROOT_DIR}"/keys
+ENV BIN_DIR="${ROOT_DIR}"/bin
+ENV LOGS_DIR="${ROOT_DIR}"/logs
 
 # Switch to Root for Setup
 USER root
@@ -101,29 +101,30 @@ RUN sed -i "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g
 RUN chmod -R 500 "${BIN_DIR}" "${SCRIPT_DIR}"
 
 # ROM
-ENV LOCAL_MANIFEST ""
-ENV CLONE_REPOS ""
-ENV DEVICE ""
-ENV BUILD_TYPE ""
-ENV ROM_MANIFEST ""
-ENV ROM_BRANCH ""
-ENV ROM_BUILD_FLAGS ""
+ENV LOCAL_MANIFEST=""
+ENV CLONE_REPOS=""
+ENV DEVICE=""
+ENV BUILD_TYPE=""
+ENV ROM_MANIFEST=""
+ENV ROM_BRANCH=""
+ENV ROM_BUILD_FLAGS=""
 
-ENV LUNCH_PREFIX_FALLBACK ""
-ENV ROM_PREFIX_FALLBACK ""
-ENV ROM_VERSION_FALLBACK ""
-ENV ROM_OTA_BRANCH_FALLBACK ""
+ENV LUNCH_PREFIX_FALLBACK=""
+ENV ROM_PREFIX_FALLBACK=""
+ENV ROM_VERSION_FALLBACK=""
+ENV ROM_OTA_BRANCH_FALLBACK=""
 
 # Extra
-ENV CCACHE_SIZE 40
-ENV OTA_REPO_URL ""
-ENV KEYS_SUBJECT '/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
-ENV TIME_ZONE "UTC"
+ENV CCACHE_SIZE=40
+ENV OTA_REPO_URL=""
+ENV KEYS_SUBJECT='/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
+ENV TIME_ZONE="UTC"
 
 # Auth
-ENV TELEGRAM_TOKEN ""
-ENV GITHUB_TOKEN ""
-ENV SF_USER ""
-ENV SF_RELEASES_REPO ""
+ENV TELEGRAM_TOKEN=""
+ENV GITHUB_TOKEN=""
+ENV SF_USER=""
+ENV SF_RELEASES_REPO=""
 
+SHELL ["/bin/bash", "-c"]
 ENTRYPOINT "${SCRIPT_DIR}"/init.sh
