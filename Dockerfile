@@ -53,6 +53,11 @@ RUN install_packages \
     xsltproc \
     zip \
     zlib1g-dev \
+# Python
+    libbz2-dev \
+    liblzma-dev \
+    libsqlite3-dev \
+    libreadline-dev \
 # Automation
     file \
     jq \
