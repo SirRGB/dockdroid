@@ -118,10 +118,8 @@ _run_envsetup() {
 _ccache
 _keysgen
 _get_android_version
-if [[ "${ANDROID_VERSION}" -lt 10 ]]; then
-  # shellcheck source=scripts/compat.sh
-  source "${SCRIPT_DIR}"/compat.sh
-fi
+# shellcheck source=scripts/compat.sh
+source "${SCRIPT_DIR}"/compat.sh
 _run_envsetup
 
 # shellcheck source=scripts/lunch.sh

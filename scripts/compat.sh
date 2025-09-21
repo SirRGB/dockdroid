@@ -1,15 +1,24 @@
 #!/bin/bash
 
-# Set up Py2
-_setup_py2() {
+# Set up PyEnv
+_setup_pyenv() {
   curl -fsSL https://pyenv.run | bash
   export PYENV_ROOT="${HOME}"/.pyenv
   [[ -d "${PYENV_ROOT}"/bin ]] && export PATH="${PYENV_ROOT}"/bin:"${PATH}"
   eval "$(pyenv init - bash)"
   "${SHELL}"
+}
 
+_init_py2() {
+  _setup_pyenv
   pyenv install 2
   pyenv global 2
+}
+
+_init_py3() {
+  _setup_pyenv
+  pyenv install 3.11
+  pyenv global 3.11
 }
 
 # Set up JDK8 and re-enable TLS 1/1.1
@@ -41,13 +50,24 @@ _key_size_recovery() {
   sed -i 's/!= 2048/< 2048/' "${ROM_DIR}"/bootable/recovery/tools/dumpkey/DumpPublicKey.java
 }
 
-_setup_py2
+
+# A7-9
+if [[ "${ANDROID_VERSION}" -lt 10 ]]; then
+  _init_py2
+# A10-15
+else
+  _init_py3
+fi
+
+# A7/A8
 if [[ "${ANDROID_VERSION}" -lt 9 ]]; then
   _setup_jdk8
 fi
 
-if [[ "${ANDROID_VERSION}" -gt 7 ]]; then
+# A8/9
+if [[ "${ANDROID_VERSION}" -gt 7 ]] && [[ "${ANDROID_VERSION}" -lt 10 ]]; then
   _key_size_recovery
-else
+# A7
+elif [[ "${ANDROID_VERSION}" -lt 8 ]]; then
   _key_size_sys_core
 fi
