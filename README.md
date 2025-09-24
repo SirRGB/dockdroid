@@ -22,7 +22,7 @@ The goal is to make building properly with ota and signing easy for everyone.
 ### Setting up permissions
 
 First we need to find the UID, that is used for Docker/Podman.  
-For Debian/Ubuntu this seems to be 100999 and on Fedora 52587,  
+For Debian, Ubuntu and Gentoo this seems to be 100999 and on Fedora 52587,  
 which should be $subUID+$containerUID-1 according to the [docker forums](https://forums.docker.com/t/map-more-uid-on-rootless-docker-and-mount-volume/102928/8).
 
 
