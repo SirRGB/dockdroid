@@ -16,7 +16,7 @@ The goal is to make building properly with ota and signing easy for everyone.
   - [Docker Rootless](https://docs.docker.com/engine/security/rootless/)
 - [SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - [GitConfig](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
-- ZRam (highly recommended): [Debian](https://wiki.debian.org/ZRam), [Fedora](https://github.com/systemd/zram-generator), [Ubuntu](https://wiki.ubuntuusers.de/zRam)
+- ZRam (highly recommended): [Debian](https://wiki.debian.org/ZRam), [Fedora](https://github.com/systemd/zram-generator), [Ubuntu, Arch and others](https://wiki.archlinux.org/title/Zram)
 
 
 ### Setting up permissions
