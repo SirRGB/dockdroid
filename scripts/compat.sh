@@ -27,11 +27,11 @@ _init_py3() {
 _setup_jdk8() {
   local jdk_dir jdk_tag jdk_name
   jdk_dir="${HOME}"/java/jdk
-  jdk_tag=jdk8u462-b08
+  jdk_tag=jdk8u472-b08
   jdk_name=OpenJDK8U-jdk_x64_linux_hotspot_"$(echo ${jdk_tag//jdk/} | tr -d -)".tar.gz
   mkdir -p "${jdk_dir}"
   curl -fsSOL https://github.com/adoptium/temurin8-binaries/releases/download/"${jdk_tag}"/"${jdk_name}" --output-dir "${jdk_dir}"
-  echo 5d64ae542b59a962b3caadadd346f4b1c3010879a28bb02d928326993de16e79 "${jdk_dir}"/"${jdk_name}" | sha256sum --check
+  echo 55963261b4df76f76109eaa442b8e9621425a4a45c69fd5507bb33899dffd7d5 "${jdk_dir}"/"${jdk_name}" | sha256sum --check
   tar xvf "${jdk_dir}"/"${jdk_name}" --directory="${jdk_dir}"
   rm "${jdk_dir}"/"${jdk_name}"
 
