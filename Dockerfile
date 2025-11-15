@@ -123,5 +123,4 @@ ENV GITHUB_TOKEN=""
 ENV SF_USER=""
 ENV SF_RELEASES_REPO=""
 
-SHELL ["/bin/bash", "-c"]
-ENTRYPOINT "${SCRIPT_DIR}"/init.sh
+ENTRYPOINT ["/bin/bash", "-c", "${SCRIPT_DIR}/init.sh"]
