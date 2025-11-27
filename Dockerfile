@@ -1,4 +1,4 @@
-FROM docker.io/bitnami/minideb:trixie
+FROM docker.io/debian:trixie-slim
 
 # User
 ARG userid=1000
@@ -18,7 +18,7 @@ ENV LOGS_DIR="${ROOT_DIR}"/logs
 USER root
 
 # Android build dependencies
-RUN install_packages \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     bc \
     bison \
     build-essential \
@@ -62,6 +62,8 @@ RUN install_packages \
     file \
     jq \
     unzip
+
+RUN rm --recursive /var/lib/apt/lists /var/cache/apt/archives
 
 # Symlink libncurses for compatibility
 RUN ln -s /usr/lib/x86_64-linux-gnu/libncurses.so.6 /usr/lib/x86_64-linux-gnu/libncurses.so.5
