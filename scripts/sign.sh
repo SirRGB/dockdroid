@@ -30,17 +30,17 @@ _determine_signing() {
 
   # If Android version greater than 11, use apex signing
   if [[ "${ANDROID_VERSION}" -gt 11 ]]; then
-    _print_signing_method "APEX"
+    _print_signing_method 'APEX'
     _sign_new
   else
-    _print_signing_method "Legacy"
+    _print_signing_method 'Legacy'
     _sign_old
   fi
 }
 
 # Old signing process, A11/below
 _sign_old() {
-  local releasetools_prefix=""
+  local releasetools_prefix=''
   if [[ "${ANDROID_VERSION}" -lt 11 ]]; then
     releasetools_prefix="${ANDROID_BUILD_TOP}"/build/tools/releasetools/
   fi
@@ -58,7 +58,7 @@ _sign_old() {
 _sign_new() {
   local apex_args
   for apex_key in "${APEX_KEYS[@]}"; do
-    apex_args+=("--extra_apks" "${apex_key}.apex=${KEYS_DIR}/${apex_key}" "--extra_apex_payload_key" "${apex_key}.apex=${KEYS_DIR}/${apex_key}.pem")
+    apex_args+=('--extra_apks' "${apex_key}.apex=${KEYS_DIR}/${apex_key}" '--extra_apex_payload_key' "${apex_key}.apex=${KEYS_DIR}/${apex_key}.pem")
   done
 
   set +eu

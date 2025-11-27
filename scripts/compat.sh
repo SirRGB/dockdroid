@@ -39,7 +39,7 @@ _setup_jdk8() {
   export PATH="${JAVA_HOME}"/bin:"${PATH}"
 
   sed -i 's/TLSv1, TLSv1.1, //g' "${JAVA_HOME}"/jre/lib/security/java.security
-  export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4G"
+  export ANDROID_JACK_VM_ARGS='-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4G'
   export LC_ALL=C
 }
 

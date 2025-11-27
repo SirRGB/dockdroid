@@ -23,7 +23,7 @@ _sync() {
   threads=$(nproc)
   repo forall -c "rm .git/*.lock" || true
   repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
-  repo forall -c "git lfs pull"
+  repo forall -c 'git lfs pull'
   if [[ -n "${CLONE_REPOS}" ]]; then
    _clone_all
   fi
@@ -33,16 +33,16 @@ _sync() {
 # Merge local manifests into one
 # to avoid conflicts with duplicate dependencies
 _merge_local_manifests() {
-  echo -e "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<manifest>" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+  echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<manifest>' > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
   IFS=',' read -r -a "LOCAL_MANIFEST" <<< "${LOCAL_MANIFEST}"
   for url in "${LOCAL_MANIFEST[@]}"; do
     # Remove heading and end
-    curl -fsSL "${url}" | sed "/<?xml version=\"1.0\" encoding=\"UTF-8\"?>/d; /<manifest>/d; /<\/manifest>/d; /<!--/d; /-->/d; /^$/d" >> "${ROM_DIR}"/.repo/local_manifests/.merge.txt
+    curl -fsSL "${url}" | sed '/<?xml version="1.0" encoding="UTF-8"?>/d; /<manifest>/d; /<\/manifest>/d; /<!--/d; /-->/d; /^$/d' >> "${ROM_DIR}"/.repo/local_manifests/.merge.txt
   done
   # Remove duplicated entries
   sort < "${ROM_DIR}"/.repo/local_manifests/.merge.txt | uniq >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
   find "${ROM_DIR}"/.repo/local_manifests/ -type f ! -name "*.xml" -exec rm -r {} \; || true
-  echo "</manifest>" >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+  echo '</manifest>' >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
 }
 
 # Clone a repo

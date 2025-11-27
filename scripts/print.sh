@@ -10,7 +10,7 @@ _telegram() {
     curl -fsSL \
       --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendMessage \
       --data chat_id="${TELEGRAM_CHAT}" \
-      --data parse_mode="Markdown" \
+      --data parse_mode='Markdown' \
       --data text="$1"
   fi
 }
@@ -20,8 +20,8 @@ _telegram_separator() {
     curl -fsSL \
       --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendSticker \
       --data chat_id="${TELEGRAM_CHAT}" \
-      --data parse_mode=HTML \
-      --data sticker=CAADBQADGgEAAixuhBPbSa3YLUZ8DBYE
+      --data parse_mode='HTML' \
+      --data sticker='CAADBQADGgEAAixuhBPbSa3YLUZ8DBYE'
   fi
 }
 
@@ -40,18 +40,18 @@ _print_error() {
 
 # Syncing
 _print_sync_start() {
-  SYNC_START=$(date +"%s")
+  SYNC_START=$(date '+%s')
   _print_success "Sync started for ${ROM_MANIFEST//.git/}/tree/${ROM_BRANCH}"
 }
 
 _print_sync_success() {
-  SYNC_END=$(date +"%s")
+  SYNC_END=$(date '+%s')
   SYNC_DIFF=$((SYNC_END - SYNC_START))
   _print_success "Sync completed successfully in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
 }
 
 _print_sync_fail() {
-  SYNC_END=$(date +"%s")
+  SYNC_END=$(date '+%s')
   SYNC_DIFF=$((SYNC_END - SYNC_START))
   _print_error "Sync failed in $((SYNC_DIFF / 60)) minute(s) and $((SYNC_DIFF % 60)) seconds"
 }
@@ -64,13 +64,13 @@ _print_build_start() {
 }
 
 _print_build_success() {
-  BUILD_END=$(date +"%s")
+  BUILD_END=$(date '+%s')
   BUILD_DIFF=$((BUILD_END - BUILD_START))
   _print_success "Build completed successfully in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
 }
 
 _print_build_fail() {
-  BUILD_END=$(date +"%s")
+  BUILD_END=$(date '+%s')
   BUILD_DIFF=$((BUILD_END - BUILD_START))
   _print_error "Build failed in $((BUILD_DIFF / 60)) minute(s) and $((BUILD_DIFF % 60)) seconds"
 }
@@ -92,16 +92,16 @@ _print_upload_success() {
 }
 
 _print_upload_fail() {
-  _print_error "Upload failed"
+  _print_error 'Upload failed'
 }
 
 # Ota
 _print_ota_fail() {
-  _print_error "Ota info failed"
+  _print_error 'Ota info failed'
 }
 
 
 _print_done() {
-  _print_success "Completed successfully"
+  _print_success 'Completed successfully'
   _telegram_separator
 }

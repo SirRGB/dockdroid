@@ -7,8 +7,8 @@ source "${SCRIPT_DIR}"/print.sh
 _ota_info() {
   local file_size id datetime custom_build_type
   file_size=$(stat -c%s "${OUT}"/"${PACKAGE_NAME}")
-  id=$(sha256sum "${OUT}"/"${PACKAGE_NAME}" | cut -d" " -f1)
-  datetime=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut -d"=" -f2)
+  id=$(sha256sum "${OUT}"/"${PACKAGE_NAME}" | cut -d' ' -f1)
+  datetime=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut -d'=' -f2)
   custom_build_type="UNOFFICIAL"
   jq -n "{\"response\": [{\"datetime\": ${datetime},\"filename\": \"${PACKAGE_NAME}\",\"id\": \"${id}\",\"romtype\": \"${custom_build_type}\", \"size\": ${file_size}, \"url\": \"${DL_OTA_URL}\", \"version\": \"${ROM_VERSION}\"}]}" > "${OUT}"/"${PACKAGE_NAME}".json
 }
