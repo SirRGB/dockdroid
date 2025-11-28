@@ -15,7 +15,7 @@ _cleanup() {
   rm "${OUT}"/*.zip "${OUT}"/*.zip.json || true
 }
 
-# Decide for signing method
+# Decide the signing method
 _determine_signing() {
   set +eu
   if ! m target-files-package otatools -j"$(nproc)" "$@" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
@@ -30,17 +30,17 @@ _determine_signing() {
 
   # If Android version greater than 11, use apex signing
   if [[ "${ANDROID_VERSION}" -gt 11 ]]; then
-    _print_signing_method "APEX"
+    _print_signing_method 'APEX'
     _sign_new
   else
-    _print_signing_method "Legacy"
+    _print_signing_method 'Legacy'
     _sign_old
   fi
 }
 
 # Old signing process, A11/below
 _sign_old() {
-  local releasetools_prefix=""
+  local releasetools_prefix=''
   if [[ "${ANDROID_VERSION}" -lt 11 ]]; then
     releasetools_prefix="${ANDROID_BUILD_TOP}"/build/tools/releasetools/
   fi
@@ -56,8 +56,9 @@ _sign_old() {
 
 # New signing process (APEX), A12/up
 _sign_new() {
+  local apex_args
   for apex_key in "${APEX_KEYS[@]}"; do
-    APEX_ARGS+=("--extra_apks" "${apex_key}.apex=${KEYS_DIR}/${apex_key}" "--extra_apex_payload_key" "${apex_key}.apex=${KEYS_DIR}/${apex_key}.pem")
+    apex_args+=('--extra_apks' "${apex_key}.apex=${KEYS_DIR}/${apex_key}" '--extra_apex_payload_key' "${apex_key}.apex=${KEYS_DIR}/${apex_key}.pem")
   done
 
   set +eu
@@ -73,14 +74,13 @@ _sign_new() {
       --extra_apks ServiceUwbResources.apk="${KEYS_DIR}"/releasekey \
       --extra_apks ServiceWifiResources.apk="${KEYS_DIR}"/releasekey \
       --extra_apks WifiDialog.apk="${KEYS_DIR}"/releasekey \
-      "${APEX_ARGS[@]}" \
+      "${apex_args[@]}" \
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files*.zip \
       "${OUT}"/signed-target_files.zip 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign.txt
   then
     _cleanup_fail
   fi
   set -eu
-  unset APEX_ARGS
 }
 
 _cleanup_fail() {

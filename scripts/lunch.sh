@@ -11,7 +11,7 @@ _lunch() {
   local release_codename
   release_codename=
   if [[ -d "${ANDROID_BUILD_TOP}"/build/release/aconfig/ ]]; then
-    release_codename=-$(find "${ANDROID_BUILD_TOP}"/build/release/aconfig/* -maxdepth 0 -type d -name "[a-z][a-z][0-9][a-z]" -printf '%f\n' | tail -n1)
+    release_codename=-$(find "${ANDROID_BUILD_TOP}"/build/release/aconfig/* -maxdepth 0 -type d -name '[a-z][a-z][0-9][a-z]' -printf '%f\n' | tail -n1)
   fi
 
   # Extract lunch prefix from AndroidProducts
@@ -19,7 +19,7 @@ _lunch() {
   if [[ -n "${LUNCH_PREFIX_FALLBACK}" ]]; then
     product="${LUNCH_PREFIX_FALLBACK}"_"${TARGET_DEVICE}"
   else
-    product=$(grep -E "${TARGET_DEVICE}" "${ANDROID_BUILD_TOP}"/device/*/"${TARGET_DEVICE}"/AndroidProducts.mk | cut -d"/" -f2 | cut -d"." -f1 | head -n1)
+    product=$(grep -E "${TARGET_DEVICE}" "${ANDROID_BUILD_TOP}"/device/*/"${TARGET_DEVICE}"/AndroidProducts.mk | cut -d'/' -f2 | cut -d'.' -f1 | head -n1)
   fi
 
   # It's all coming together

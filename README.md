@@ -1,7 +1,8 @@
 ## Why Docker/Podman?
 
 Docker/Podman provides a uniform build environment, without external dependencies, that you have to set up manually.  
-The goal is to make building properly with ota and signing easy for everyone.
+The goal is to make building properly with ota and signing easy for everyone.  
+This project targets Android 7 up to the most recent version.
 
 
 <details>
@@ -10,19 +11,19 @@ The goal is to make building properly with ota and signing easy for everyone.
 ## Prerequisites
 
 - [Podman](https://podman.io/docs/installation)
-  - [Python venv](https://docs.python.org/3/library/venv.html#creating-virtual-environments)
   - [Podman compose](https://github.com/containers/podman-compose?tab=readme-ov-file#pip)
 - or [Docker](https://docs.docker.com/engine/install)
+  - [Docker Compose](https://docs.docker.com/compose/install)
   - [Docker Rootless](https://docs.docker.com/engine/security/rootless/)
 - [SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - [GitConfig](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
-- ZRam (highly recommended): [Debian](https://wiki.debian.org/ZRam), [Fedora](https://github.com/systemd/zram-generator), [Ubuntu](https://wiki.ubuntuusers.de/zRam)
+- ZRam (highly recommended): [Debian](https://wiki.debian.org/ZRam), [Fedora](https://github.com/systemd/zram-generator), [Ubuntu, Arch and others](https://wiki.archlinux.org/title/Zram)
 
 
 ### Setting up permissions
 
 First we need to find the UID, that is used for Docker/Podman.  
-For Debian/Ubuntu this seems to be 100999 and on Fedora 52587,  
+For Debian, Ubuntu and Gentoo this seems to be 100999 and on Fedora 52587,  
 which should be $subUID+$containerUID-1 according to the [docker forums](https://forums.docker.com/t/map-more-uid-on-rootless-docker-and-mount-volume/102928/8).
 
 

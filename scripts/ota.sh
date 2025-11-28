@@ -7,8 +7,8 @@ source "${SCRIPT_DIR}"/print.sh
 _ota_info() {
   local file_size id datetime custom_build_type
   file_size=$(stat -c%s "${OUT}"/"${PACKAGE_NAME}")
-  id=$(sha256sum "${OUT}"/"${PACKAGE_NAME}" | cut -d" " -f1)
-  datetime=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut -d"=" -f2)
+  id=$(sha256sum "${OUT}"/"${PACKAGE_NAME}" | cut -d' ' -f1)
+  datetime=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut -d'=' -f2)
   custom_build_type="UNOFFICIAL"
   jq -n "{\"response\": [{\"datetime\": ${datetime},\"filename\": \"${PACKAGE_NAME}\",\"id\": \"${id}\",\"romtype\": \"${custom_build_type}\", \"size\": ${file_size}, \"url\": \"${DL_OTA_URL}\", \"version\": \"${ROM_VERSION}\"}]}" > "${OUT}"/"${PACKAGE_NAME}".json
 }
@@ -34,13 +34,14 @@ _push_ota_info() {
     target_ota_repo_url="${OTA_REPO_URL//git@github.com:/https://${GITHUB_TOKEN}@github.com/}"
   fi
 
-  # Append extraversion to avoid collision of different flavours
+  # Specify a fallback, so that roms, that purely rely on android numbers dont collide
   if [[ -n "${ROM_OTA_BRANCH_FALLBACK}" ]]; then
     target_ota_branch="${ROM_OTA_BRANCH_FALLBACK}"
   else
     target_ota_branch="${ROM_BRANCH}"
   fi
 
+  # Append extraversion to avoid collision of different flavours
   if [[ -n "${ROM_EXTRAVERSION}" ]]; then
     target_ota_branch="${target_ota_branch}"-"$(tr -d - <<< "${ROM_EXTRAVERSION,,}")"
   fi

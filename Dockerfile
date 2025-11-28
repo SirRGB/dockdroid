@@ -1,24 +1,24 @@
-FROM docker.io/bitnami/minideb:bookworm
+FROM docker.io/debian:trixie-slim
 
 # User
 ARG userid=1000
 ARG groupid=1000
 ARG username=droid
-ENV USER "${username}"
+ENV USER="${username}"
 
 # Dirs
 ARG ROOT_DIR=/droid_workdir
-ENV SCRIPT_DIR "${ROOT_DIR}"/scripts
-ENV ROM_DIR "${ROOT_DIR}"/src/Los15
-ENV KEYS_DIR "${ROOT_DIR}"/keys
-ENV BIN_DIR "${ROOT_DIR}"/bin
-ENV LOGS_DIR "${ROOT_DIR}"/logs
+ENV SCRIPT_DIR="${ROOT_DIR}"/scripts
+ENV ROM_DIR="${ROOT_DIR}"/src/Los15
+ENV KEYS_DIR="${ROOT_DIR}"/keys
+ENV BIN_DIR="${ROOT_DIR}"/bin
+ENV LOGS_DIR="${ROOT_DIR}"/logs
 
 # Switch to Root for Setup
 USER root
 
 # Android build dependencies
-RUN install_packages \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     bc \
     bison \
     build-essential \
@@ -36,12 +36,12 @@ RUN install_packages \
     lib32readline-dev \
     lib32z1-dev \
     libelf-dev \
-    liblz4-tool \
-    libncurses5 \
+    libncurses6 \
     libsdl1.2-dev \
     libssl-dev \
     libxml2 \
     libxml2-utils \
+    lz4 \
     lzop \
     pngcrush \
     python3 \
@@ -54,20 +54,20 @@ RUN install_packages \
     zip \
     zlib1g-dev \
 # Python
-    libffi-dev \
     libbz2-dev \
-    libncursesw5-dev \
-    libreadline-dev \
-    libsqlite3-dev \
-    libxml2-dev \
-    libxmlsec1-dev \
     liblzma-dev \
-    tk-dev \
-    xz-utils \
+    libsqlite3-dev \
+    libreadline-dev \
 # Automation
     file \
     jq \
     unzip
+
+RUN rm --recursive /var/lib/apt/lists /var/cache/apt/archives
+
+# Symlink libncurses for compatibility
+RUN ln -s /usr/lib/x86_64-linux-gnu/libncurses.so.6 /usr/lib/x86_64-linux-gnu/libncurses.so.5
+RUN ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
 
 # Create dirs and copy scripts
 RUN mkdir -p "${SCRIPT_DIR}" "${BIN_DIR}" "${KEYS_DIR}"
@@ -96,30 +96,33 @@ RUN sed -i "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g
 # Make scripts executable
 RUN chmod -R 500 "${BIN_DIR}" "${SCRIPT_DIR}"
 
-# ROM
-ENV LOCAL_MANIFEST ""
-ENV CLONE_REPOS ""
-ENV DEVICE ""
-ENV BUILD_TYPE ""
-ENV ROM_MANIFEST ""
-ENV ROM_BRANCH ""
-ENV ROM_BUILD_FLAGS ""
+# ROM variables
+ENV LOCAL_MANIFEST=''
+ENV CLONE_REPOS=''
+ENV DEVICE=''
+ENV BUILD_TYPE=''
+ENV ROM_MANIFEST=''
+ENV ROM_BRANCH=''
+ENV ROM_BUILD_FLAGS=''
 
-ENV LUNCH_PREFIX_FALLBACK ""
-ENV ROM_PREFIX_FALLBACK ""
-ENV ROM_VERSION_FALLBACK ""
-ENV ROM_OTA_BRANCH_FALLBACK ""
+# Fallbacks (required for non-standard naming and conflicts)
+ENV LUNCH_PREFIX_FALLBACK=''
+ENV ROM_PREFIX_FALLBACK=''
+ENV ROM_VERSION_FALLBACK=''
+ENV ROM_OTA_BRANCH_FALLBACK=''
 
-# Extra
-ENV CCACHE_SIZE 40
-ENV OTA_REPO_URL ""
-ENV KEYS_SUBJECT '/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
-ENV TIME_ZONE "UTC"
+# Extra variables
+ENV CCACHE_SIZE=40
+ENV OTA_REPO_URL=''
+ENV KEYS_SUBJECT='/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
+ENV TIME_ZONE="UTC"
+ENV REPOPICK_PICKS=''
+ENV REPOPICK_TOPICS=''
 
-# Auth
-ENV TELEGRAM_TOKEN ""
-ENV GITHUB_TOKEN ""
-ENV SF_USER ""
-ENV SF_RELEASES_REPO ""
+# Authentification
+ENV TELEGRAM_TOKEN=''
+ENV GITHUB_TOKEN=''
+ENV SF_USER=''
+ENV SF_RELEASES_REPO=''
 
-ENTRYPOINT "${SCRIPT_DIR}"/init.sh
+ENTRYPOINT ["/bin/bash", "-c", "${SCRIPT_DIR}/init.sh"]

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Set up ccache
+# Set up ccache for build caching
 _ccache() {
   if [[ "${CCACHE_SIZE}" -gt 0 ]]; then
     export USE_CCACHE=1
@@ -104,7 +104,7 @@ _keysgen() {
 
 # Get android version for legacy workarounds and signing
 _get_android_version() {
-  ANDROID_VERSION=$(< "${ROM_DIR}"/cts/tests/tests/os/assets/platform_versions.txt tr -d "A-z" | cut -d"." -f1 | sort | tail -n1)
+  ANDROID_VERSION=$(< "${ROM_DIR}"/cts/tests/tests/os/assets/platform_versions.txt tr -d 'A-z' | cut -d'.' -f1 | sort | tail -n1)
 }
 
 # Prepare Android build env
@@ -112,17 +112,29 @@ _run_envsetup() {
   set +eu
   # shellcheck source=/dev/null
   source "${ROM_DIR}"/build/envsetup.sh || true
+  croot
   set -eu
+}
+
+# Fetch patches from gerrit
+_repopick() {
+  export TOP="${ROM_DIR}"
+  if [[ -n "${REPOPICK_PICKS}" ]]; then
+    repopick -f "${REPOPICK_PICKS}" || true
+  fi
+
+  if [[ -n "${REPOPICK_TOPICS}" ]]; then
+    repopick -f -t "${REPOPICK_TOPICS}" || true
+  fi
 }
 
 _ccache
 _keysgen
 _get_android_version
-if [[ "${ANDROID_VERSION}" -lt 10 ]]; then
-  # shellcheck source=scripts/compat.sh
-  source "${SCRIPT_DIR}"/compat.sh
-fi
+# shellcheck source=scripts/compat.sh
+source "${SCRIPT_DIR}"/compat.sh
 _run_envsetup
+_repopick
 
 # shellcheck source=scripts/lunch.sh
 source "${SCRIPT_DIR}"/lunch.sh
