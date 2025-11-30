@@ -100,7 +100,7 @@ or
 These variables should be defined in the target.env.
 
 ```
-cp example.env target.env
+cp ~/docker_droid/minideb/example.env ~/docker_droid/minideb/target.env
 ```
 
 ```
@@ -153,6 +153,7 @@ OTA_REPO_URL=git@github.com:user/ota_config
 ```
 podman compose up --force-recreate --build
 ```
+or
 ```
 docker compose up --force-recreate --build
 ```
