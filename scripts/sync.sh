@@ -17,7 +17,11 @@ _sync() {
   # Remove local manifests
   find "${ROM_DIR}"/.repo/local_manifests/ -type f -exec rm {} \;
   if [[ -n "${LOCAL_MANIFEST}" ]]; then
-    _merge_local_manifests
+    if grep -q ',' <<< "${LOCAL_MANIFEST}"; then
+      _merge_local_manifests
+    else
+      curl -fsSL "${LOCAL_MANIFEST}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+    fi
   fi
   local threads
   threads=$(nproc)
