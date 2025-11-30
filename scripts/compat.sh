@@ -31,7 +31,7 @@ _setup_jdk8() {
   jdk_name=OpenJDK8U-jdk_x64_linux_hotspot_"$(echo ${jdk_tag//jdk/} | tr -d -)".tar.gz
   mkdir -p "${jdk_dir}"
   curl -fsSOL https://github.com/adoptium/temurin8-binaries/releases/download/"${jdk_tag}"/"${jdk_name}" --output-dir "${jdk_dir}"
-  echo 55963261b4df76f76109eaa442b8e9621425a4a45c69fd5507bb33899dffd7d5 "${jdk_dir}"/"${jdk_name}" | sha256sum --check
+  echo 5becaa4ac660e844c5a39e2ebc39ff5ac824c37ff1b625af8c8b111dc13c3592 "${jdk_dir}"/"${jdk_name}" | sha256sum --check
   tar xvf "${jdk_dir}"/"${jdk_name}" --directory="${jdk_dir}"
   rm "${jdk_dir}"/"${jdk_name}"
 
