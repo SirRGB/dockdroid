@@ -41,7 +41,7 @@ _packaging() {
     releasetools_prefix="${ANDROID_BUILD_TOP}"/build/tools/releasetools/
   fi
   set +eu
-  if ! "${releasetools_prefix}"ota_from_target_files -k "${KEYS_DIR}"/releasekey \
+  if ! "${releasetools_prefix}"ota_from_target_files "${RELEASETOOL_EXTRA_FLAGS}" -k "${KEYS_DIR}"/releasekey \
       "${OUT}"/signed-target_files.zip \
       "${OUT}"/"${PACKAGE_NAME}" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/packaging.txt
   then
