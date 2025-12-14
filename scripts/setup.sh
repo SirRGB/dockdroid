@@ -127,6 +127,10 @@ _repopick() {
   if [[ -n "${REPOPICK_TOPICS}" ]]; then
     repopick -f -t "${REPOPICK_TOPICS}" || true
   fi
+
+  if [[ -n "${REPOPICK_PULLS}" ]]; then
+    repopick -f -p "${REPOPICK_PULLS}" || true
+  fi
 }
 
 _ccache
