@@ -21,7 +21,7 @@ COPY scripts/ "${SCRIPT_DIR}"/
 RUN chown -R "${userid}":"${groupid}" "${ROOT_DIR}" && chmod -R ug+srw "${ROOT_DIR}"
 
 # Switch to user for execution
-USER "${username}"
+USER "${USER}"
 
 # Make scripts executable
 RUN chmod -R 500 "${SCRIPT_DIR}"

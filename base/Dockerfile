@@ -3,8 +3,7 @@ FROM docker.io/debian:trixie-slim
 # User
 ARG userid=1000
 ARG groupid=1000
-ARG username=droid
-ENV USER="${username}"
+ENV USER=droid
 
 # Switch to Root for Setup
 USER root
@@ -69,12 +68,12 @@ RUN ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-gnu/libt
 RUN mkdir -p "${BIN_DIR}"
 
 # Set up user and work directories
-RUN groupadd -g "${groupid}" "${username}" \
-   && useradd -m -s /bin/bash -u "${userid}" -g "${groupid}" "${username}" -d "${ROOT_DIR}"
+RUN groupadd -g "${groupid}" "${USER}" \
+   && useradd -m -s /bin/bash -u "${userid}" -g "${groupid}" "${USER}" -d "${ROOT_DIR}"
 RUN chown -R "${userid}":"${groupid}" "${ROOT_DIR}" && chmod -R ug+srw "${ROOT_DIR}"
 
 # Switch to user for execution
-USER "${username}"
+USER "${USER}"
 
 # Curl flags
 RUN echo '/usr/bin/curl --fail --silent --show-error --location $@' > "${BIN_DIR}"/curl_cmd
