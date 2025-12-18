@@ -2,24 +2,18 @@
 
 # Initialize PyEnv
 _setup_pyenv() {
-  curl -fsSL https://pyenv.run | bash
-  export PYENV_ROOT="${HOME}"/.pyenv
-  [[ -d "${PYENV_ROOT}"/bin ]] && export PATH="${PYENV_ROOT}"/bin:"${PATH}"
   eval "$(pyenv init - bash)"
-  "${SHELL}"
 }
 
 # Set up PyEnv with Python 2.7
 _init_py2() {
   _setup_pyenv
-  pyenv install 2
   pyenv global 2
 }
 
 # Set up PyEnv with Python 3.11
 _init_py3() {
   _setup_pyenv
-  pyenv install 3.11
   pyenv global 3.11
 }
 

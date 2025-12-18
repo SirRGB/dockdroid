@@ -88,5 +88,13 @@ RUN curl https://raw.githubusercontent.com/LineageOS/android_development/refs/he
 RUN sed -i "/read -p \"Enter password for '\$1' (blank for none\; password will be visible): \" \\\/d" "${BIN_DIR}"/make_key
 RUN sed -i "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g; s/2048/4096/g" "${BIN_DIR}"/make_key
 
+# PyEnv
+RUN curl -fsSLO https://github.com/pyenv/pyenv/archive/refs/heads/master.zip --output-dir /tmp
+RUN unzip /tmp/master.zip -d "${ROOT_DIR}"/
+RUN rm /tmp/*
+ENV PYENV_ROOT="${ROOT_DIR}"/pyenv-master
+RUN pyenv install 2 3.11
+
 # Make scripts executable
 RUN chmod -R 500 "${BIN_DIR}"
+ENV PATH="${PYENV_ROOT}"/bin:"${BIN_DIR}":"${PATH}"
