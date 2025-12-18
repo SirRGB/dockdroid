@@ -32,18 +32,18 @@ _setup_jdk8() {
   export JAVA_HOME="${jdk_dir}"/"${jdk_tag}"
   export PATH="${JAVA_HOME}"/bin:"${PATH}"
 
-  sed -i 's/TLSv1, TLSv1.1, //g' "${JAVA_HOME}"/jre/lib/security/java.security
+  sed --in-place 's/TLSv1, TLSv1.1, //g' "${JAVA_HOME}"/jre/lib/security/java.security
   export ANDROID_JACK_VM_ARGS='-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4G'
   export LC_ALL=C
 }
 
 # Allow greater key sizes
 _key_size_sys_core() {
-  sed -i 's/!= 2048/< 2048/' "${ROM_DIR}"/system/core/libmincrypt/tools/DumpPublicKey.java
+  sed --in-place 's/!= 2048/< 2048/' "${ROM_DIR}"/system/core/libmincrypt/tools/DumpPublicKey.java
 }
 
 _key_size_recovery() {
-  sed -i 's/!= 2048/< 2048/' "${ROM_DIR}"/bootable/recovery/tools/dumpkey/DumpPublicKey.java
+  sed --in-place 's/!= 2048/< 2048/' "${ROM_DIR}"/bootable/recovery/tools/dumpkey/DumpPublicKey.java
 }
 
 

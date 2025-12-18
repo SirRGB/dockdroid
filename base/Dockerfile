@@ -92,8 +92,8 @@ RUN curl_cmd https://storage.googleapis.com/git-repo-downloads/repo.asc | gpg --
 RUN curl_cmd https://raw.githubusercontent.com/LineageOS/android_development/refs/heads/lineage-23.2/tools/make_key --output "${BIN_DIR}"/make_key
 
 # Patch for longer key size and drop input
-RUN sed -i "/read -p \"Enter password for '\$1' (blank for none\; password will be visible): \" \\\/d" "${BIN_DIR}"/make_key
-RUN sed -i "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g; s/2048/4096/g" "${BIN_DIR}"/make_key
+RUN sed --in-place "/read -p \"Enter password for '\$1' (blank for none\; password will be visible): \" \\\/d" "${BIN_DIR}"/make_key
+RUN sed --in-place "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g; s/2048/4096/g" "${BIN_DIR}"/make_key
 
 # PyEnv
 RUN curl_cmd --remote-name https://github.com/pyenv/pyenv/archive/refs/heads/master.zip --output-dir /tmp
