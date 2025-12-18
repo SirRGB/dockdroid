@@ -20,7 +20,7 @@ _sync() {
     if grep -q ',' <<< "${LOCAL_MANIFEST}"; then
       _merge_local_manifests
     else
-      curl -fsSL "${LOCAL_MANIFEST}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+      curl_cmd "${LOCAL_MANIFEST}" --output "${ROM_DIR}"/.repo/local_manifests/manifest.xml
     fi
   fi
   local threads
@@ -41,7 +41,7 @@ _merge_local_manifests() {
   IFS=',' read -r -a "LOCAL_MANIFEST" <<< "${LOCAL_MANIFEST}"
   for url in "${LOCAL_MANIFEST[@]}"; do
     # Remove heading and end
-    curl -fsSL "${url}" | sed '/<?xml version="1.0" encoding="UTF-8"?>/d; /<manifest>/d; /<\/manifest>/d; /<!--/d; /-->/d; /^$/d' >> "${ROM_DIR}"/.repo/local_manifests/.merge.txt
+    curl_cmd "${url}" | sed '/<?xml version="1.0" encoding="UTF-8"?>/d; /<manifest>/d; /<\/manifest>/d; /<!--/d; /-->/d; /^$/d' >> "${ROM_DIR}"/.repo/local_manifests/.merge.txt
   done
   # Remove duplicated entries
   sort < "${ROM_DIR}"/.repo/local_manifests/.merge.txt | uniq >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml

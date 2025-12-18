@@ -7,7 +7,7 @@ NC='\033[0m'
 # Skelleton for posting to telegram
 _telegram() {
   if [[ -n "${TELEGRAM_TOKEN}" ]]; then
-    curl -fsSL \
+    curl_cmd \
       --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendMessage \
       --data chat_id="${TELEGRAM_CHAT}" \
       --data parse_mode='Markdown' \
@@ -17,7 +17,7 @@ _telegram() {
 
 _telegram_separator() {
   if [[ -n "${TELEGRAM_TOKEN}" ]]; then
-    curl -fsSL \
+    curl_cmd \
       --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendSticker \
       --data chat_id="${TELEGRAM_CHAT}" \
       --data parse_mode='HTML' \

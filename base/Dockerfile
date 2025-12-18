@@ -76,25 +76,28 @@ RUN chown -R "${userid}":"${groupid}" "${ROOT_DIR}" && chmod -R ug+srw "${ROOT_D
 # Switch to user for execution
 USER "${username}"
 
+# Curl flags
+RUN echo '/usr/bin/curl --fail --silent --show-error --location $@' > "${BIN_DIR}"/curl_cmd
+
+# Make scripts executable
+RUN chmod -R 700 "${BIN_DIR}"
+ENV PYENV_ROOT="${ROOT_DIR}"/pyenv-master
+ENV PATH="${PYENV_ROOT}"/bin:"${BIN_DIR}":"${PATH}"
+
 # Install and verify repo
 RUN gpg --recv-key 8BB9AD793E8E6153AF0F9A4416530D5E920F5C65
-RUN curl -o "${BIN_DIR}"/repo https://storage.googleapis.com/git-repo-downloads/repo
-RUN curl https://storage.googleapis.com/git-repo-downloads/repo.asc | gpg --verify - "${BIN_DIR}"/repo
+RUN curl_cmd https://storage.googleapis.com/git-repo-downloads/repo --output "${BIN_DIR}"/repo
+RUN curl_cmd https://storage.googleapis.com/git-repo-downloads/repo.asc | gpg --verify - "${BIN_DIR}"/repo
 
 # Provide make_key to create signing keys
-RUN curl https://raw.githubusercontent.com/LineageOS/android_development/refs/heads/lineage-23.2/tools/make_key > "${BIN_DIR}"/make_key
+RUN curl_cmd https://raw.githubusercontent.com/LineageOS/android_development/refs/heads/lineage-23.2/tools/make_key --output "${BIN_DIR}"/make_key
 
 # Patch for longer key size and drop input
 RUN sed -i "/read -p \"Enter password for '\$1' (blank for none\; password will be visible): \" \\\/d" "${BIN_DIR}"/make_key
 RUN sed -i "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g; s/2048/4096/g" "${BIN_DIR}"/make_key
 
 # PyEnv
-RUN curl -fsSLO https://github.com/pyenv/pyenv/archive/refs/heads/master.zip --output-dir /tmp
+RUN curl_cmd --remote-name https://github.com/pyenv/pyenv/archive/refs/heads/master.zip --output-dir /tmp
 RUN unzip /tmp/master.zip -d "${ROOT_DIR}"/
 RUN rm /tmp/*
-ENV PYENV_ROOT="${ROOT_DIR}"/pyenv-master
 RUN pyenv install 2 3.11
-
-# Make scripts executable
-RUN chmod -R 500 "${BIN_DIR}"
-ENV PATH="${PYENV_ROOT}"/bin:"${BIN_DIR}":"${PATH}"
