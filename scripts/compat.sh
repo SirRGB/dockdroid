@@ -25,7 +25,7 @@ _setup_jdk8() {
   jdk_name=OpenJDK8U-jdk_x64_linux_hotspot_"$(echo ${jdk_tag//jdk/} | tr -d -)".tar.gz
   mkdir -p "${jdk_dir}"
   curl_cmd --remote-name https://github.com/adoptium/temurin8-binaries/releases/download/"${jdk_tag}"/"${jdk_name}" --output-dir "${jdk_dir}"
-  echo 5becaa4ac660e844c5a39e2ebc39ff5ac824c37ff1b625af8c8b111dc13c3592 "${jdk_dir}"/"${jdk_name}" | sha256sum --check
+  curl_cmd https://github.com/adoptium/temurin8-binaries/releases/download/"${jdk_tag}"/"${jdk_name}".sha256.txt | sed "s|${jdk_name}|${jdk_dir}/${jdk_name}|g" | sha256sum --check
   tar xvf "${jdk_dir}"/"${jdk_name}" --directory="${jdk_dir}"
   rm "${jdk_dir}"/"${jdk_name}"
 
