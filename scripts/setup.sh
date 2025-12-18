@@ -121,15 +121,15 @@ _run_envsetup() {
 _repopick() {
   export TOP="${ROM_DIR}"
   if [[ -n "${REPOPICK_PICKS}" ]]; then
-    repopick -f "${REPOPICK_PICKS}" || true
+    repopick --force "${REPOPICK_PICKS}" || true
   fi
 
   if [[ -n "${REPOPICK_TOPICS}" ]]; then
-    repopick -f -t "${REPOPICK_TOPICS}" || true
+    repopick --force --topic "${REPOPICK_TOPICS}" || true
   fi
 
   if [[ -n "${REPOPICK_PULLS}" ]]; then
-    repopick -f -p "${REPOPICK_PULLS}" || true
+    repopick --force --pull "${REPOPICK_PULLS}" || true
   fi
 }
 
