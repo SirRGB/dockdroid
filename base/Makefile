@@ -7,4 +7,5 @@ run:
 	docker run --interactive --tty docker.io/sirrgb/dockdroid-base:latest
 
 publish:
+	docker image push docker.io/sirrgb/dockdroid-base:$$(date +%Y%m%d%H%M)
 	docker image push docker.io/sirrgb/dockdroid-base:latest
