@@ -13,7 +13,7 @@ ARG ROOT_DIR=/droid_workdir
 ENV BIN_DIR="${ROOT_DIR}"/bin
 
 # Android build dependencies
-RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
     bc \
     bison \
     build-essential \
@@ -68,8 +68,8 @@ RUN ln --symbolic /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-
 RUN mkdir --parents "${BIN_DIR}"
 
 # Set up user and work directories
-RUN groupadd -g "${groupid}" "${USER}" \
-   && useradd -m -s /bin/bash -u "${userid}" -g "${groupid}" "${USER}" -d "${ROOT_DIR}"
+RUN groupadd --gid "${groupid}" "${USER}" \
+   && useradd --create-home --shell /bin/bash --uid "${userid}" --gid "${groupid}" "${USER}" --home-dir "${ROOT_DIR}"
 RUN chown --recursive "${userid}":"${groupid}" "${ROOT_DIR}" && chmod --recursive ug+srw "${ROOT_DIR}"
 
 # Switch to user for execution
