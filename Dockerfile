@@ -14,7 +14,7 @@ ENV LOGS_DIR="${ROOT_DIR}"/logs
 USER root
 
 # Create dirs and copy scripts
-RUN mkdir -p "${SCRIPT_DIR}"
+RUN mkdir --parents "${SCRIPT_DIR}"
 COPY scripts/ "${SCRIPT_DIR}"/
 
 # Set up user and work directories

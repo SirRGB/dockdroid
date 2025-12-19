@@ -6,7 +6,7 @@ source "${SCRIPT_DIR}"/print.sh
 # Pull manifest, local manifest and sync
 _sync() {
   if [[ ! -d "${ROM_DIR}"/.repo/local_manifests ]]; then
-    mkdir -p "${ROM_DIR}"/.repo/local_manifests
+    mkdir --parents "${ROM_DIR}"/.repo/local_manifests
   fi
   cd "${ROM_DIR}" || exit
   repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 -g default,-darwin --git-lfs --no-clone-bundle 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt

@@ -65,7 +65,7 @@ RUN ln --symbolic /usr/lib/x86_64-linux-gnu/libncurses.so.6 /usr/lib/x86_64-linu
 RUN ln --symbolic /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
 
 # Create dirs and copy scripts
-RUN mkdir -p "${BIN_DIR}"
+RUN mkdir --parents "${BIN_DIR}"
 
 # Set up user and work directories
 RUN groupadd -g "${groupid}" "${USER}" \
