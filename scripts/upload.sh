@@ -27,31 +27,31 @@ _upload_gh() {
 
   # Create a release and get url
   upload_url=$(curl_cmd \
-    -X POST \
-    -H "Authorization: token ${GITHUB_TOKEN}" \
-    -H 'content-type: application/json' \
+    --request POST \
+    --header "Authorization: token ${GITHUB_TOKEN}" \
+    --header 'content-type: application/json' \
     https://api.github.com/repos/"${release_repo}"/releases \
-    -d "{ \"tag_name\": \"${tag}\", \"body\": \"${desc}\" }" \
+    --data "{ \"tag_name\": \"${tag}\", \"body\": \"${desc}\" }" \
     | jq -r .upload_url \
     | cut -d'{' -f1)
 
   # Upload ROM
   DL_OTA_URL=$(curl_cmd \
-    -H "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME}")" \
-    -H "Authorization: token ${GITHUB_TOKEN}" \
-    -H "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME}")" \
-    -T "${OUT}"/"${PACKAGE_NAME}" \
-    -H 'Accept: application/vnd.github.v3+json' \
+    --header 'Accept: application/vnd.github.v3+json' \
+    --header "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME}")" \
+    --header "Authorization: token ${GITHUB_TOKEN}" \
+    --header "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME}")" \
+    --upload-file "${OUT}"/"${PACKAGE_NAME}" \
     "${upload_url}"?name="${PACKAGE_NAME}" \
     | jq -r .browser_download_url)
 
   # Upload Recovery
   curl_cmd \
-    -H "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
-    -H "Authorization: token ${GITHUB_TOKEN}" \
-    -H "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
-    -T "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" \
-    -H 'Accept: application/vnd.github.v3+json' \
+    --header 'Accept: application/vnd.github.v3+json' \
+    --header "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
+    --header "Authorization: token ${GITHUB_TOKEN}" \
+    --header "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
+    --upload-file "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" \
     "${upload_url}"?name="${PACKAGE_NAME//.zip/-recovery.img}"
 }
 
