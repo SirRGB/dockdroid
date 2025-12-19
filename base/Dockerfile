@@ -70,7 +70,7 @@ RUN mkdir -p "${BIN_DIR}"
 # Set up user and work directories
 RUN groupadd -g "${groupid}" "${USER}" \
    && useradd -m -s /bin/bash -u "${userid}" -g "${groupid}" "${USER}" -d "${ROOT_DIR}"
-RUN chown -R "${userid}":"${groupid}" "${ROOT_DIR}" && chmod -R ug+srw "${ROOT_DIR}"
+RUN chown --recursive "${userid}":"${groupid}" "${ROOT_DIR}" && chmod --recursive ug+srw "${ROOT_DIR}"
 
 # Switch to user for execution
 USER "${USER}"
@@ -79,7 +79,7 @@ USER "${USER}"
 RUN echo '/usr/bin/curl --fail --silent --show-error --location $@' > "${BIN_DIR}"/curl_cmd
 
 # Make scripts executable
-RUN chmod -R 700 "${BIN_DIR}"
+RUN chmod --recursive 700 "${BIN_DIR}"
 ENV PYENV_ROOT="${ROOT_DIR}"/pyenv-master
 ENV PATH="${PYENV_ROOT}"/bin:"${BIN_DIR}":"${PATH}"
 

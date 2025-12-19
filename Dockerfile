@@ -18,13 +18,13 @@ RUN mkdir -p "${SCRIPT_DIR}"
 COPY scripts/ "${SCRIPT_DIR}"/
 
 # Set up user and work directories
-RUN chown -R "${userid}":"${groupid}" "${ROOT_DIR}" && chmod -R ug+srw "${ROOT_DIR}"
+RUN chown --recursive "${userid}":"${groupid}" "${ROOT_DIR}" && chmod --recursive ug+srw "${ROOT_DIR}"
 
 # Switch to user for execution
 USER "${USER}"
 
 # Make scripts executable
-RUN chmod -R 500 "${SCRIPT_DIR}"
+RUN chmod --recursive 500 "${SCRIPT_DIR}"
 
 # ROM variables
 ENV LOCAL_MANIFEST=''

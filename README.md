@@ -45,12 +45,12 @@ Then we need to chown that directory to the Docker user:
 
 #### Debian/Ubuntu
 ```
-sudo chown -R 100999:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
+sudo chown --recursive 100999:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 
 #### Fedora
 ```
-sudo chown -R 52587:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
+sudo chown --recursive 52587:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 
 #### Other
@@ -61,7 +61,7 @@ it seems to be 1000 for debian/ubuntu and 100 for fedora)
 
 Let other users read the directory
 ```
-sudo chmod -R 507 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
+sudo chmod --recursive 507 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 Run the first docker build
 ```
@@ -75,7 +75,7 @@ ls -n ~/docker_droid/src/Los15/.repo
 Give ownership to the uid you found out:  
 (replace the 1st UID)
 ```
-sudo chown -R UID:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
+sudo chown --recursive UID:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 And remove the incomplete sync
 ```
