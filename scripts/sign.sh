@@ -7,7 +7,7 @@ source "${SCRIPT_DIR}"/print.sh
 _cleanup() {
   cd "${ROM_DIR}" || exit
   set +eu
-  if ! m installclean -j"$(nproc)" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
+  if ! m installclean -j"$(nproc)" 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   then
     _cleanup_fail
   fi
@@ -18,7 +18,7 @@ _cleanup() {
 # Decide the signing method
 _determine_signing() {
   set +eu
-  if ! m target-files-package otatools -j"$(nproc)" "$@" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
+  if ! m target-files-package otatools -j"$(nproc)" "$@" 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   then
     _cleanup_fail
   fi
@@ -47,7 +47,7 @@ _sign_old() {
   set +eu
   if ! "${releasetools_prefix}"sign_target_files_apks -o -d "${KEYS_DIR}" \
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip \
-      "${OUT}"/signed-target_files.zip 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign-legacy.txt
+      "${OUT}"/signed-target_files.zip 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/sign-legacy.txt
   then
     _cleanup_fail
   fi
@@ -76,7 +76,7 @@ _sign_new() {
       --extra_apks WifiDialog.apk="${KEYS_DIR}"/releasekey \
       "${apex_args[@]}" \
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files*.zip \
-      "${OUT}"/signed-target_files.zip 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sign.txt
+      "${OUT}"/signed-target_files.zip 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/sign.txt
   then
     _cleanup_fail
   fi

@@ -9,7 +9,7 @@ _sync() {
     mkdir --parents "${ROM_DIR}"/.repo/local_manifests
   fi
   cd "${ROM_DIR}" || exit
-  repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 -g default,-darwin --git-lfs --no-clone-bundle 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
+  repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 -g default,-darwin --git-lfs --no-clone-bundle 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
   # Pull the latest repo tool
   cd "${ROM_DIR}"/.repo/repo || exit
   git pull
@@ -26,7 +26,7 @@ _sync() {
   local threads
   threads=$(nproc)
   repo forall -c "rm .git/*.lock" || true
-  repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
+  repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
   repo forall -c 'git lfs pull'
   if [[ -n "${CLONE_REPOS}" ]]; then
    _clone_all

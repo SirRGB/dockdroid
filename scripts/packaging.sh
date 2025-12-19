@@ -43,7 +43,7 @@ _packaging() {
   set +eu
   if ! "${releasetools_prefix}"ota_from_target_files "${RELEASETOOL_EXTRA_FLAGS}" -k "${KEYS_DIR}"/releasekey \
       "${OUT}"/signed-target_files.zip \
-      "${OUT}"/"${PACKAGE_NAME}" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/packaging.txt
+      "${OUT}"/"${PACKAGE_NAME}" 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/packaging.txt
   then
     _cleanup_fail
   fi
