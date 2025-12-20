@@ -15,6 +15,10 @@ _upload() {
     UPLOAD_TARGET='sourceforge'
     _print_upload_start "${UPLOAD_TARGET}"
     _upload_sf
+  elif [[ -n $(find "${HOME}"/.ssh -name "id_*") ]] && [[ -n "${SSH_USER}" ]] && [[ -n "${SSH_UPLOAD_URL}" ]] && [[ -n "${SSH_DOWNLOAD_URL}" ]]; then
+    UPLOAD_TARGET='ssh'
+    _print_upload_start "${UPLOAD_TARGET}"
+    _upload_generic
   fi
 }
 
@@ -55,11 +59,19 @@ _upload_gh() {
     "${upload_url}"?name="${PACKAGE_NAME//.zip/-recovery.img}"
 }
 
+_upload_ssh() {
+  scp "${OUT}"/"${PACKAGE_NAME}" "${1}"@"${2}"
+  scp "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" "${1}"@"${2}"
+  DL_OTA_URL="${3}"
+}
+
 # Upload to SourceForge
 _upload_sf() {
-  scp "${OUT}"/"${PACKAGE_NAME}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/
-  scp "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/
-  DL_OTA_URL=https://sourceforge.net/projects/"${SF_RELEASES_REPO}"/files/"${PACKAGE_NAME}"/download
+  _upload_ssh "${SF_USER}" frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/ https://sourceforge.net/projects/"${SF_RELEASES_REPO}"/files/"${PACKAGE_NAME}"/download
+}
+
+_upload_generic() {
+  _upload_ssh "${SSH_USER}" "${SSH_UPLOAD_URL}" "${SSH_DOWNLOAD_URL}"
 }
 
 _cleanup_fail() {
