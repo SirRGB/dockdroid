@@ -11,7 +11,7 @@ _telegram() {
       --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendMessage \
       --data chat_id="${TELEGRAM_CHAT}" \
       --data parse_mode='Markdown' \
-      --data text="$1"
+      --data text="${1}"
   fi
 }
 
