@@ -52,9 +52,9 @@ _merge_local_manifests() {
 # Clone a repo
 _clone() {
   full_repo_name="${1}"
-  repo_name=$(echo "${full_repo_name}" | rev | cut -d"/" -f3- | rev)
-  branch=$(echo "${full_repo_name}" | rev | cut -d"/" -f-1 | rev)
-  target_path=$(echo "${full_repo_name}" | rev | cut -d"/" -f3 | rev | sed 's/android_//g; s/proprietary_//g; s|_|/|g')
+  repo_name=$(echo "${full_repo_name}" | rev | cut -d'/' -f3- | rev)
+  branch=$(echo "${full_repo_name}" | rev | cut -d'/' -f-1 | rev)
+  target_path=$(echo "${full_repo_name}" | rev | cut -d'/' -f3 | rev | sed 's/android_//g; s/proprietary_//g; s|_|/|g')
   rm -rf "${target_path}" || true
   git clone "${repo_name}" -b "${branch}" "${target_path}"
 }

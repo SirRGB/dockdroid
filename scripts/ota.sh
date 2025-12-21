@@ -9,7 +9,7 @@ _ota_info() {
   file_size=$(stat -c%s "${OUT}"/"${PACKAGE_NAME}")
   id=$(sha256sum "${OUT}"/"${PACKAGE_NAME}" | cut -d' ' -f1)
   datetime=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut -d'=' -f2)
-  custom_build_type="UNOFFICIAL"
+  custom_build_type='UNOFFICIAL'
   jq -n "{\"response\": [{\"datetime\": ${datetime},\"filename\": \"${PACKAGE_NAME}\",\"id\": \"${id}\",\"romtype\": \"${custom_build_type}\", \"size\": ${file_size}, \"url\": \"${DL_OTA_URL}\", \"version\": \"${ROM_VERSION}\"}]}" > "${OUT}"/"${PACKAGE_NAME}".json
 }
 
@@ -43,7 +43,7 @@ _push_ota_info() {
 
   # Append extraversion to avoid collision of different flavours
   if [[ -n "${ROM_EXTRAVERSION}" ]]; then
-    target_ota_branch="${target_ota_branch}"-"$(tr -d - <<< "${ROM_EXTRAVERSION,,}")"
+    target_ota_branch="${target_ota_branch}"-"$(tr -d '-' <<< "${ROM_EXTRAVERSION,,}")"
   fi
 
   if [[ -n "${target_ota_repo_url}" ]]; then
