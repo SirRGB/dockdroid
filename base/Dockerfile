@@ -55,7 +55,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq && DEBIAN_FRONTEND=noninte
     libreadline-dev \
 # Automation
     file \
-    jq \
     unzip
 
 RUN rm --recursive /var/lib/apt/lists /var/cache/apt/archives
