@@ -27,7 +27,7 @@ _push_ota_info() {
   git add "${ROM_DIR}"_ota/"${TARGET_DEVICE}".json
   git commit -m "${TARGET_DEVICE}: ${BUILD_DATE} update"
 
-  # Use ssh primarely, fallback to github tokens
+  # Use ssh primarily, fallback to github tokens
   if [[ -n $(find "${HOME}"/.ssh -name "id_*") ]]; then
     target_ota_repo_url="${OTA_REPO_URL}"
   elif [[ -n "${GITHUB_TOKEN}" ]]; then
