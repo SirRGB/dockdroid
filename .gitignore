@@ -1,6 +1,9 @@
-# Python
+# Python Virtual Environments
 venv
 .venv
 
-# Env
+# Environment files
 *.env
+
+# IntelliJ
+.idea
