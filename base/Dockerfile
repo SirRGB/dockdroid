@@ -75,7 +75,7 @@ RUN chown --recursive "${userid}":"${groupid}" "${ROOT_DIR}" && chmod --recursiv
 USER "${USER}"
 
 # Curl flags
-RUN echo '/usr/bin/curl --fail --silent --show-error --location $@' > "${BIN_DIR}"/curl_cmd
+RUN echo '/usr/bin/curl --fail --silent --show-error --location "$@"' > "${BIN_DIR}"/curl_cmd
 
 # Make scripts executable
 RUN chmod --recursive 700 "${BIN_DIR}"
