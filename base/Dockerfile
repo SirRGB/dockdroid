@@ -69,7 +69,7 @@ RUN mkdir --parents "${BIN_DIR}"
 # Set up user and work directories
 RUN groupadd --gid "${groupid}" "${USER}" \
    && useradd --create-home --shell /bin/bash --uid "${userid}" --gid "${groupid}" "${USER}" --home-dir "${ROOT_DIR}"
-RUN chown --recursive "${userid}":"${groupid}" "${ROOT_DIR}" && chmod --recursive ug+srw "${ROOT_DIR}"
+RUN chown --recursive "${userid}":"${groupid}" "${ROOT_DIR}" && chmod --recursive u+srw "${ROOT_DIR}"
 
 # Switch to user for execution
 USER "${USER}"

@@ -19,7 +19,7 @@ COPY scripts/ "${SCRIPT_DIR}"/
 COPY py-utils/ "${BIN_DIR}"/
 
 # Set up user and work directories
-RUN chown --recursive "${userid}":"${groupid}" "${ROOT_DIR}" && chmod --recursive ug+srw "${ROOT_DIR}"
+RUN chown --recursive "${userid}":"${groupid}" "${ROOT_DIR}" && chmod --recursive u+srw "${ROOT_DIR}"
 
 # Switch to user for execution
 USER "${USER}"
