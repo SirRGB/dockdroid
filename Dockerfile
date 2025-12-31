@@ -25,7 +25,7 @@ RUN chown --recursive "${userid}":"${groupid}" "${ROOT_DIR}" && chmod --recursiv
 USER "${USER}"
 
 # Make scripts executable
-RUN chmod --recursive 500 "${SCRIPT_DIR}"
+RUN chmod --recursive 500 "${SCRIPT_DIR}" "${BIN_DIR}"
 
 # ROM variables
 ENV LOCAL_MANIFEST=''
