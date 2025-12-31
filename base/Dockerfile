@@ -94,6 +94,9 @@ RUN curl_cmd https://raw.githubusercontent.com/LineageOS/android_development/ref
 RUN sed --in-place "/read -p \"Enter password for '\$1' (blank for none\; password will be visible): \" \\\/d" "${BIN_DIR}"/make_key
 RUN sed --in-place "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g; s/2048/4096/g" "${BIN_DIR}"/make_key
 
+# Make scripts executable
+RUN chmod --recursive 500 "${BIN_DIR}"
+
 # PyEnv
 RUN curl_cmd --remote-name https://github.com/pyenv/pyenv/archive/refs/heads/master.zip --output-dir /tmp
 RUN unzip /tmp/master.zip -d "${ROOT_DIR}"/
