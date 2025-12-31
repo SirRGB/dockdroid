@@ -6,9 +6,6 @@ if [[ 'true' == "${DEBUG}" ]]; then
   unset DEBUG
 fi
 
-# Add our functions
-export PATH="${BIN_DIR}":"${PATH}"
-
 # Set up logs
 find "${LOGS_DIR}"/ -type d -ctime +1 -exec rm -r {} \; || true
 BUILD_DATE_UNIX="$(date '+%s')"
