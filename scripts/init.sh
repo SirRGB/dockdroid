@@ -1,6 +1,10 @@
 #!/bin/bash
 
-set -eEuo pipefail #-x
+set -eEuo pipefail
+if [[ 'true' == "${DEBUG}" ]]; then
+  set -x
+  unset DEBUG
+fi
 
 # Add our functions
 export PATH="${BIN_DIR}":"${PATH}"
