@@ -7,7 +7,7 @@ ARG groupid=1000
 # Directories
 ARG ROOT_DIR=/droid_workdir
 ENV SCRIPT_DIR="${ROOT_DIR}"/scripts
-ENV ROM_DIR="${ROOT_DIR}"/src/Los15
+ENV ROM_DIR=''
 ENV KEYS_DIR="${ROOT_DIR}"/keys
 ENV LOGS_DIR="${ROOT_DIR}"/logs
 
