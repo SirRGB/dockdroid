@@ -40,8 +40,13 @@ _packaging() {
   if [[ "${ANDROID_VERSION}" -lt 11 ]]; then
     releasetools_prefix="${ANDROID_BUILD_TOP}"/build/tools/releasetools/
   fi
+
+  local releasetool_flags=(-k "${KEYS_DIR}"/releasekey)
+  if [[ -n "${RELEASETOOL_EXTRA_FLAGS}" ]]; then
+    releasetool_flags=("${releasetool_flags[@]}" "${RELEASETOOL_EXTRA_FLAGS}")
+  fi
   set +eu
-  if ! "${releasetools_prefix}"ota_from_target_files "${RELEASETOOL_EXTRA_FLAGS}" -k "${KEYS_DIR}"/releasekey \
+  if ! "${releasetools_prefix}"ota_from_target_files "${releasetool_flags[@]}" \
       "${OUT}"/signed-target_files.zip \
       "${OUT}"/"${PACKAGE_NAME}" 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/packaging.txt
   then
