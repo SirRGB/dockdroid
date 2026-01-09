@@ -4,7 +4,7 @@ import json
 import sys
 
 
-def main():
+def main() -> None:
     try:
         json_target = json.loads(str(sys.stdin.read()))
         search_target = str(sys.argv[1])
