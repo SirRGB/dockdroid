@@ -58,6 +58,7 @@ def add_remote_to_manifest(manifest: str, remote_name: str, remote_fetch: str, r
     manifest.append(element)
     return manifest
 
+
 def generate_manifest(local_manifest: str, remote_manifest: str) -> str:
     for projects in remote_manifest.findall("remote"):
         if projects.get("revision") == "":
@@ -94,6 +95,7 @@ def generate_manifest(local_manifest: str, remote_manifest: str) -> str:
     ElementTree.indent(local_manifest)
     return local_manifest
 
+
 def main() -> None:
     local_manifest = ElementTree.Element("manifest")
 
@@ -106,7 +108,6 @@ def main() -> None:
 
     print('<?xml version="1.0" encoding="UTF-8"?>')
     print(ElementTree.tostring(local_manifest).decode())
-
 
 
 if __name__ == '__main__':
