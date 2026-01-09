@@ -16,13 +16,8 @@ _sync() {
   cd "${ROM_DIR}" || exit
   # Remove local manifests
   find "${ROM_DIR}"/.repo/local_manifests/ -type f -exec rm {} \;
-  if [[ -n "${LOCAL_MANIFEST}" ]]; then
-    if grep -q ',' <<< "${LOCAL_MANIFEST}"; then
-      _merge_local_manifests
-    else
-      curl_cmd "${LOCAL_MANIFEST}" --output "${ROM_DIR}"/.repo/local_manifests/manifest.xml
-    fi
-  fi
+  # Merge local manifests into one to avoid conflicts with duplicate dependencies
+  xml_manifest_gen.py "${LOCAL_MANIFEST}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
   local threads
   threads=$(nproc)
   repo forall -c "rm .git/*.lock" || true
@@ -32,21 +27,6 @@ _sync() {
    _clone_all
   fi
   unset ROM_MANIFEST LOCAL_MANIFEST CLONE_REPOS
-}
-
-# Merge local manifests into one
-# to avoid conflicts with duplicate dependencies
-_merge_local_manifests() {
-  echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<manifest>' > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
-  IFS=',' read -r -a "LOCAL_MANIFEST" <<< "${LOCAL_MANIFEST}"
-  for url in "${LOCAL_MANIFEST[@]}"; do
-    # Remove heading and end
-    curl_cmd "${url}" | sed '/<?xml version="1.0" encoding="UTF-8"?>/d; /<manifest>/d; /<\/manifest>/d; /<!--/d; /-->/d; /^$/d' >> "${ROM_DIR}"/.repo/local_manifests/.merge.txt
-  done
-  # Remove duplicated entries
-  sort < "${ROM_DIR}"/.repo/local_manifests/.merge.txt | uniq >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
-  find "${ROM_DIR}"/.repo/local_manifests/ -type f ! -name "*.xml" -exec rm -r {} \; || true
-  echo '</manifest>' >> "${ROM_DIR}"/.repo/local_manifests/manifest.xml
 }
 
 # Clone a repo
