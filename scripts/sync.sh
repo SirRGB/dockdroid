@@ -22,6 +22,38 @@ _sync() {
   threads=$(nproc)
   repo forall -c "rm .git/*.lock" || true
   repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
+  if grep -q "Failing repos" "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
+  then
+    # Extract failing repositories from the error message and echo the deletion path
+    while IFS= read -r line; do
+        # Extract repository name and path from the error message
+        local repo_info repo_path repo_name
+        repo_info=$(echo "${line}" | awk -F': ' '{print $NF}')
+        repo_path=$(dirname "${repo_info}")
+        repo_name=$(basename "${repo_info}")
+        # Delete the repository
+        rm --recursive --force "${repo_path:?}/${repo_name}"
+        rm --recursive --force "${ROM_DIR}"/.repo/project/"${repo_path}"/"${repo_name}"/*.git
+    done <<< "$(awk '/Failing repos.*:/ {flag=1; next} /Try/ {flag=0} flag' < "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt | sort -u)"
+  fi
+
+  # Check if there are any failing repositories due to uncommitted changes
+  if grep -q "uncommitted changes are present" "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt ; then
+      echo "Deleting repositories with uncommitted changes..."
+
+      # Extract failing repositories from the error message and echo the deletion path
+      while IFS= read -r line; do
+          # Extract repository name and path from the error message
+          repo_info=$(echo "${line}" | awk -F': ' '{print $2}')
+          repo_path=$(dirname "${repo_info}")
+          repo_name=$(basename "${repo_info}")
+          # Delete the repository
+          rm --recursive --force "${repo_path:?}/${repo_name}"
+          rm --recursive --force "${ROM_DIR}"/".repo/project/${repo_path}/${repo_name}"/*.git
+      done <<< "$(grep 'uncommitted changes are present' < "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt)"
+  fi
+
+  repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
   repo forall -c 'git lfs pull'
   if [[ -n "${CLONE_REPOS}" ]]; then
    _clone_all
