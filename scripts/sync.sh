@@ -22,7 +22,7 @@ _sync() {
   threads=$(nproc)
   repo forall -c "rm .git/*.lock" || true
   repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
-  if grep -q "Failing repos" "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
+  if grep --quiet "Failing repos" "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
   then
     # Extract failing repositories from the error message and echo the deletion path
     while IFS= read -r line; do
@@ -38,9 +38,7 @@ _sync() {
   fi
 
   # Check if there are any failing repositories due to uncommitted changes
-  if grep -q "uncommitted changes are present" "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt ; then
-      echo "Deleting repositories with uncommitted changes..."
-
+  if grep --quiet "uncommitted changes are present" "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt ; then
       # Extract failing repositories from the error message and echo the deletion path
       while IFS= read -r line; do
           # Extract repository name and path from the error message
@@ -64,11 +62,11 @@ _sync() {
 # Clone a repo
 _clone() {
   full_repo_name="${1}"
-  repo_name=$(rev <<< "${full_repo_name}" | cut -d'/' -f3- | rev)
-  branch=$(rev <<< "${full_repo_name}" | cut -d'/' -f-1 | rev)
-  target_path=$(rev <<< "${full_repo_name}" | cut -d'/' -f3 | rev | sed 's/android_//g; s/proprietary_//g; s|_|/|g')
-  rm -rf "${target_path}" || true
-  git clone "${repo_name}" -b "${branch}" "${target_path}"
+  repo_name=$(rev <<< "${full_repo_name}" | cut --delimiter='/' --fields=3- | rev)
+  branch=$(rev <<< "${full_repo_name}" | cut --delimiter='/' --fields=-1 | rev)
+  target_path=$(rev <<< "${full_repo_name}" | cut --delimiter='/' --fields=3 | rev | sed 's/android_//g; s/proprietary_//g; s|_|/|g')
+  rm --recursive --force "${target_path}" || true
+  git clone "${repo_name}" --branch "${branch}" "${target_path}"
 }
 
 # Wrapper to clone all repos defined in $CLONE_REPOS

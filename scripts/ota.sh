@@ -6,9 +6,9 @@ source "${SCRIPT_DIR}"/print.sh
 # Create/print ota json
 _ota_info() {
   local file_size id datetime custom_build_type
-  file_size=$(stat -c%s "${OUT}"/"${PACKAGE_NAME}")
-  id=$(sha256sum "${OUT}"/"${PACKAGE_NAME}" | cut -d' ' -f1)
-  datetime=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut -d'=' -f2)
+  file_size=$(stat --format=%s "${OUT}"/"${PACKAGE_NAME}")
+  id=$(sha256sum "${OUT}"/"${PACKAGE_NAME}" | cut --delimiter=' ' --fields=1)
+  datetime=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut --delimiter='=' -f2)
   custom_build_type='UNOFFICIAL'
   python3 -m json.tool --indent 2 <<< "{\"response\": [{\"datetime\": ${datetime},\"filename\": \"${PACKAGE_NAME}\",\"id\": \"${id}\",\"romtype\": \"${custom_build_type}\", \"size\": ${file_size}, \"url\": \"${DL_OTA_URL}\", \"version\": \"${ROM_VERSION}\"}]}" > "${OUT}"/"${PACKAGE_NAME}".json
 }
@@ -25,7 +25,7 @@ _push_ota_info() {
 
   cp "${OUT}"/"${PACKAGE_NAME}".json "${ROM_DIR}"_ota/"${TARGET_DEVICE}".json
   git add "${ROM_DIR}"_ota/"${TARGET_DEVICE}".json
-  git commit -m "${TARGET_DEVICE}: ${BUILD_DATE} update"
+  git commit --message="${TARGET_DEVICE}: ${BUILD_DATE} update"
 
   # Use ssh primarily, fallback to github tokens
   if [[ -n $(find "${HOME}"/.ssh -name "id_*") ]]; then
@@ -43,7 +43,7 @@ _push_ota_info() {
 
   # Append extraversion to avoid collision of different flavours
   if [[ -n "${ROM_EXTRAVERSION}" ]]; then
-    target_ota_branch="${target_ota_branch}"-"$(tr -d '-' <<< "${ROM_EXTRAVERSION,,}")"
+    target_ota_branch="${target_ota_branch}"-"$(tr --delete '-' <<< "${ROM_EXTRAVERSION,,}")"
   fi
 
   if [[ -n "${target_ota_repo_url}" ]]; then

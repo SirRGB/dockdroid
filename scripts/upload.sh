@@ -25,7 +25,7 @@ _upload() {
 # Upload to GitHub
 _upload_gh() {
   local tag desc release_repo upload_url
-  tag=$(env TZ="${TIME_ZONE}" date -d @"${BUILD_DATE_UNIX}" '+%Y%m%d%H%M')-"${PACKAGE_NAME//.zip/}"
+  tag=$(env TZ="${TIME_ZONE}" date --date=@"${BUILD_DATE_UNIX}" '+%Y%m%d%H%M')-"${PACKAGE_NAME//.zip/}"
   desc="${ROM_PREFIX}${ROM_VERSION} for ${TARGET_DEVICE}"
   release_repo="${OTA_REPO_URL//git@github.com:/}"
 
@@ -36,8 +36,8 @@ _upload_gh() {
     --header 'content-type: application/json' \
     https://api.github.com/repos/"${release_repo}"/releases \
     --data "{ \"tag_name\": \"${tag}\", \"body\": \"${desc}\" }" \
-    | tr -d '\n' | json_arg_parser.py "upload_url" \
-    | cut -d'{' -f1)
+    | tr --delete '\n' | json_arg_parser.py "upload_url" \
+    | cut --delimiter='{' -f1)
 
   # Upload ROM
   DL_OTA_URL=$(curl_cmd \
@@ -47,7 +47,7 @@ _upload_gh() {
     --header "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME}")" \
     --upload-file "${OUT}"/"${PACKAGE_NAME}" \
     "${upload_url}"?name="${PACKAGE_NAME}" \
-    | tr -d '\n' | json_arg_parser.py "browser_download_url")
+    | tr --delete '\n' | json_arg_parser.py "browser_download_url")
 
   # Upload Recovery
   curl_cmd \

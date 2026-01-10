@@ -6,8 +6,8 @@ _ccache() {
     export USE_CCACHE=1
     export CCACHE_EXEC=/usr/bin/ccache
     export CCACHE_DIR=/mnt/ccache
-    ccache -M "${CCACHE_SIZE}"G
-    ccache -o compression=true
+    ccache --max-size "${CCACHE_SIZE}"G
+    ccache --set-config compression=true
   fi
   unset CCACHE_SIZE
 }
@@ -105,7 +105,7 @@ _keysgen() {
 
 # Get android version for legacy workarounds and signing
 _get_android_version() {
-  ANDROID_VERSION=$(< "${ROM_DIR}"/cts/tests/tests/os/assets/platform_versions.txt tr -d 'A-z' | cut -d'.' -f1 | sort | tail -n1)
+  ANDROID_VERSION=$(< "${ROM_DIR}"/cts/tests/tests/os/assets/platform_versions.txt tr --delete 'A-z' | cut --delimiter='.' --fields=1 | sort | tail --lines=1)
 }
 
 # Prepare Android build env

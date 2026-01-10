@@ -55,7 +55,7 @@ sudo chown --recursive 52587:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles
 
 #### Other
 (If you know a smarter way to do this please tell me,  
-I know the available subuids can be found with `cat /etc/subuid | grep $USER | cut -d":" -f2`  
+I know the available subuids can be found with `grep $USER < /etc/subuid | cut --delimiter=":" --fields=2`  
 I just do not know if the container uid is predictable,  
 it seems to be 1000 for debian/ubuntu and 100 for fedora)
 
