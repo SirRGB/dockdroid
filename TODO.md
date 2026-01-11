@@ -1,2 +1,2 @@
 ## ToDo
-- automatic repo pulling for officially supported lineage devices
+- make vendor pulling work for multiple devices
