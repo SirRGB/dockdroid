@@ -4,20 +4,20 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-# Skelleton for posting to telegram
+# Skeleton for posting to telegram
 _telegram() {
   if [[ -n "${TELEGRAM_TOKEN}" ]]; then
-    curl -fsSL \
+    curl_cmd \
       --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendMessage \
       --data chat_id="${TELEGRAM_CHAT}" \
       --data parse_mode='Markdown' \
-      --data text="$1"
+      --data text="${1}"
   fi
 }
 
 _telegram_separator() {
   if [[ -n "${TELEGRAM_TOKEN}" ]]; then
-    curl -fsSL \
+    curl_cmd \
       --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendSticker \
       --data chat_id="${TELEGRAM_CHAT}" \
       --data parse_mode='HTML' \

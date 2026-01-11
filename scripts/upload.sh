@@ -15,51 +15,63 @@ _upload() {
     UPLOAD_TARGET='sourceforge'
     _print_upload_start "${UPLOAD_TARGET}"
     _upload_sf
+  elif [[ -n $(find "${HOME}"/.ssh -name "id_*") ]] && [[ -n "${SSH_USER}" ]] && [[ -n "${SSH_UPLOAD_URL}" ]] && [[ -n "${SSH_DOWNLOAD_URL}" ]]; then
+    UPLOAD_TARGET='ssh'
+    _print_upload_start "${UPLOAD_TARGET}"
+    _upload_generic
   fi
 }
 
 # Upload to GitHub
 _upload_gh() {
   local tag desc release_repo upload_url
-  tag=$(env TZ="${TIME_ZONE}" date -d @"${BUILD_DATE_UNIX}" '+%Y%m%d%H%M')-"${PACKAGE_NAME//.zip/}"
+  tag=$(env TZ="${TIME_ZONE}" date --date=@"${BUILD_DATE_UNIX}" '+%Y%m%d%H%M')-"${PACKAGE_NAME//.zip/}"
   desc="${ROM_PREFIX}${ROM_VERSION} for ${TARGET_DEVICE}"
   release_repo="${OTA_REPO_URL//git@github.com:/}"
 
   # Create a release and get url
-  upload_url=$(curl -fsSL \
-    -X POST \
-    -H "Authorization: token ${GITHUB_TOKEN}" \
-    -H 'content-type: application/json' \
+  upload_url=$(curl_cmd \
+    --request POST \
+    --header "Authorization: token ${GITHUB_TOKEN}" \
+    --header 'content-type: application/json' \
     https://api.github.com/repos/"${release_repo}"/releases \
-    -d "{ \"tag_name\": \"${tag}\", \"body\": \"${desc}\" }" \
-    | jq -r .upload_url \
-    | cut -d'{' -f1)
+    --data "{ \"tag_name\": \"${tag}\", \"body\": \"${desc}\" }" \
+    | tr --delete '\n' | json_arg_parser.py "upload_url" \
+    | cut --delimiter='{' -f1)
 
   # Upload ROM
-  DL_OTA_URL=$(curl -fSL \
-    -H "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME}")" \
-    -H "Authorization: token ${GITHUB_TOKEN}" \
-    -H "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME}")" \
-    -T "${OUT}"/"${PACKAGE_NAME}" \
-    -H 'Accept: application/vnd.github.v3+json' \
+  DL_OTA_URL=$(curl_cmd \
+    --header 'Accept: application/vnd.github.v3+json' \
+    --header "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME}")" \
+    --header "Authorization: token ${GITHUB_TOKEN}" \
+    --header "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME}")" \
+    --upload-file "${OUT}"/"${PACKAGE_NAME}" \
     "${upload_url}"?name="${PACKAGE_NAME}" \
-    | jq -r .browser_download_url)
+    | tr --delete '\n' | json_arg_parser.py "browser_download_url")
 
   # Upload Recovery
-  curl -fSL \
-    -H "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
-    -H "Authorization: token ${GITHUB_TOKEN}" \
-    -H "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
-    -T "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" \
-    -H 'Accept: application/vnd.github.v3+json' \
+  curl_cmd \
+    --header 'Accept: application/vnd.github.v3+json' \
+    --header "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
+    --header "Authorization: token ${GITHUB_TOKEN}" \
+    --header "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
+    --upload-file "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" \
     "${upload_url}"?name="${PACKAGE_NAME//.zip/-recovery.img}"
+}
+
+_upload_ssh() {
+  scp "${OUT}"/"${PACKAGE_NAME}" "${1}"@"${2}"
+  scp "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" "${1}"@"${2}"
+  DL_OTA_URL="${3}"
 }
 
 # Upload to SourceForge
 _upload_sf() {
-  scp "${OUT}"/"${PACKAGE_NAME}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/
-  scp "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" "${SF_USER}"@frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/
-  DL_OTA_URL=https://sourceforge.net/projects/"${SF_RELEASES_REPO}"/files/"${PACKAGE_NAME}"/download
+  _upload_ssh "${SF_USER}" frs.sourceforge.net:/home/frs/project/"${SF_RELEASES_REPO}"/ https://sourceforge.net/projects/"${SF_RELEASES_REPO}"/files/"${PACKAGE_NAME}"/download
+}
+
+_upload_generic() {
+  _upload_ssh "${SSH_USER}" "${SSH_UPLOAD_URL}" "${SSH_DOWNLOAD_URL}"
 }
 
 _cleanup_fail() {

@@ -45,23 +45,23 @@ Then we need to chown that directory to the Docker user:
 
 #### Debian/Ubuntu
 ```
-sudo chown -R 100999:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
+sudo chown --recursive 100999:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 
 #### Fedora
 ```
-sudo chown -R 52587:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
+sudo chown --recursive 52587:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 
 #### Other
 (If you know a smarter way to do this please tell me,  
-I know the available subuids can be found with `cat /etc/subuid | grep $USER | cut -d":" -f2`  
+I know the available subuids can be found with `grep $USER < /etc/subuid | cut --delimiter=":" --fields=2`  
 I just do not know if the container uid is predictable,  
 it seems to be 1000 for debian/ubuntu and 100 for fedora)
 
 Let other users read the directory
 ```
-sudo chmod -R 507 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
+sudo chmod --recursive 507 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 Run the first docker build
 ```
@@ -75,7 +75,7 @@ ls -n ~/docker_droid/src/Los15/.repo
 Give ownership to the uid you found out:  
 (replace the 1st UID)
 ```
-sudo chown -R UID:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
+sudo chown --recursive UID:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 And remove the incomplete sync
 ```
@@ -100,7 +100,7 @@ or
 These variables should be defined in the target.env.
 
 ```
-cp example.env target.env
+cp ~/docker_droid/minideb/example.env ~/docker_droid/minideb/target.env
 ```
 
 ```
@@ -153,6 +153,7 @@ OTA_REPO_URL=git@github.com:user/ota_config
 ```
 podman compose up --force-recreate --build
 ```
+or
 ```
 docker compose up --force-recreate --build
 ```

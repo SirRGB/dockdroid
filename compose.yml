@@ -18,6 +18,6 @@ services:
       - ~/docker_droid/dotfiles/.ssh:/droid_workdir/.ssh:ro
     env_file:
       - path: ./target.env
-        required: false
+        required: true
       - path: ./config.env
         required: false

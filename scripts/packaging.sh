@@ -13,13 +13,13 @@ _version() {
 
   # Search for line containing the regex inside *[V|v]ersion.mk|common.mk, cut that number and set points in between
   if [[ -z "${ROM_PREFIX_FALLBACK}" ]]; then
-    ROM_PREFIX=$(find "${ANDROID_BUILD_TOP}"/vendor/*/build/tasks/* "${ANDROID_BUILD_TOP}"/build/core/Makefile -exec grep '_TARGET_PACKAGE[[:space:]]:=' {} \; | cut -d'=' -f2 | cut -d'/' -f2 | cut -d'$' -f1)
+    ROM_PREFIX=$(find "${ANDROID_BUILD_TOP}"/vendor/*/build/tasks/* "${ANDROID_BUILD_TOP}"/build/core/Makefile -exec grep '_TARGET_PACKAGE[[:space:]]:=' {} \; | cut --delimiter='=' --fields=2 | cut --delimiter='/' --fields=2 | cut --delimiter='$' --fields=1)
   else
     ROM_PREFIX="${ROM_PREFIX_FALLBACK}"
   fi
   if [[ -z "${ROM_VERSION_FALLBACK}" ]]; then
-    ROM_VERSION=$(find "${ANDROID_BUILD_TOP}"/vendor/*/config/ \( -name '*[vV]ersion.mk' -o -name common.mk \) -exec grep -E "${major_version_regex}" {} \; | tr -d 'A-z:= \n').\
-$(find "${ANDROID_BUILD_TOP}"/vendor/*/config/ \( -name '*[vV]ersion.mk' -o -name common.mk \) -exec grep -E "${minor_version_regex}" {} \; | tr -d 'A-z:= \n')
+    ROM_VERSION=$(find "${ANDROID_BUILD_TOP}"/vendor/*/config/ \( -name '*[vV]ersion.mk' -o -name common.mk \) -exec grep --extended-regexp "${major_version_regex}" {} \; | tr --delete 'A-z:= \n').\
+$(find "${ANDROID_BUILD_TOP}"/vendor/*/config/ \( -name '*[vV]ersion.mk' -o -name common.mk \) -exec grep --extended-regexp "${minor_version_regex}" {} \; | tr --delete 'A-z:= \n')
   else
     ROM_VERSION="${ROM_VERSION_FALLBACK}"
   fi
@@ -29,7 +29,7 @@ $(find "${ANDROID_BUILD_TOP}"/vendor/*/config/ \( -name '*[vV]ersion.mk' -o -nam
   elif [[ -n $(find "${OUT}" -mindepth 2 -name 'GmsCore.apk' -print -quit) ]]; then
     ROM_EXTRAVERSION='GMS-'
   fi
-  PACKAGE_NAME="${ROM_PREFIX}""${ROM_VERSION}"-"${ROM_EXTRAVERSION}"$(env TZ="${TIME_ZONE}" date -d @"${BUILD_DATE_UNIX}" '+%Y%m%d')-"${TARGET_DEVICE}"-signed.zip
+  PACKAGE_NAME="${ROM_PREFIX}""${ROM_VERSION}"-"${ROM_EXTRAVERSION}"$(env TZ="${TIME_ZONE}" date --date=@"${BUILD_DATE_UNIX}" '+%Y%m%d')-"${TARGET_DEVICE}"-signed.zip
 }
 
 # Create flashable zip from target files
@@ -40,10 +40,15 @@ _packaging() {
   if [[ "${ANDROID_VERSION}" -lt 11 ]]; then
     releasetools_prefix="${ANDROID_BUILD_TOP}"/build/tools/releasetools/
   fi
+
+  local releasetool_flags=(-k "${KEYS_DIR}"/releasekey)
+  if [[ -n "${RELEASETOOL_EXTRA_FLAGS}" ]]; then
+    releasetool_flags=("${releasetool_flags[@]}" "${RELEASETOOL_EXTRA_FLAGS}")
+  fi
   set +eu
-  if ! "${releasetools_prefix}"ota_from_target_files -k "${KEYS_DIR}"/releasekey \
+  if ! "${releasetools_prefix}"ota_from_target_files "${releasetool_flags[@]}" \
       "${OUT}"/signed-target_files.zip \
-      "${OUT}"/"${PACKAGE_NAME}" 2>&1 | tee -a "${LOGS_DIR}"/"${BUILD_DATE}"/packaging.txt
+      "${OUT}"/"${PACKAGE_NAME}" 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/packaging.txt
   then
     _cleanup_fail
   fi

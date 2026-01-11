@@ -1,6 +1,10 @@
-# Python
+# Python Virtual Environments
 venv
 .venv
+py-utils/__pycache__/
 
-# Env
+# Environment files
 *.env
+
+# IntelliJ
+.idea

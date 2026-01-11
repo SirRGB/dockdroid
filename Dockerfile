@@ -1,100 +1,31 @@
-FROM docker.io/debian:trixie-slim
+FROM docker.io/sirrgb/dockdroid-base:latest
 
 # User
 ARG userid=1000
 ARG groupid=1000
-ARG username=droid
-ENV USER="${username}"
 
-# Dirs
+# Directories
 ARG ROOT_DIR=/droid_workdir
 ENV SCRIPT_DIR="${ROOT_DIR}"/scripts
-ENV ROM_DIR="${ROOT_DIR}"/src/Los15
+ENV ROM_DIR=''
 ENV KEYS_DIR="${ROOT_DIR}"/keys
-ENV BIN_DIR="${ROOT_DIR}"/bin
 ENV LOGS_DIR="${ROOT_DIR}"/logs
 
-# Switch to Root for Setup
 USER root
 
-# Android build dependencies
-RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    bc \
-    bison \
-    build-essential \
-    ca-certificates \
-    ccache \
-    curl \
-    flex \
-    g++-multilib \
-    gcc-multilib \
-    git \
-    git-lfs \
-    gnupg \
-    gperf \
-    imagemagick \
-    lib32readline-dev \
-    lib32z1-dev \
-    libelf-dev \
-    libncurses6 \
-    libsdl1.2-dev \
-    libssl-dev \
-    libxml2 \
-    libxml2-utils \
-    lz4 \
-    lzop \
-    pngcrush \
-    python3 \
-    python-is-python3 \
-    rsync \
-    schedtool \
-    ssh \
-    squashfs-tools \
-    xsltproc \
-    zip \
-    zlib1g-dev \
-# Python
-    libbz2-dev \
-    liblzma-dev \
-    libsqlite3-dev \
-    libreadline-dev \
-# Automation
-    file \
-    jq \
-    unzip
-
-RUN rm --recursive /var/lib/apt/lists /var/cache/apt/archives
-
-# Symlink libncurses for compatibility
-RUN ln -s /usr/lib/x86_64-linux-gnu/libncurses.so.6 /usr/lib/x86_64-linux-gnu/libncurses.so.5
-RUN ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
-
 # Create dirs and copy scripts
-RUN mkdir -p "${SCRIPT_DIR}" "${BIN_DIR}" "${KEYS_DIR}"
+RUN mkdir --parents "${SCRIPT_DIR}"
 COPY scripts/ "${SCRIPT_DIR}"/
+COPY py-utils/ "${BIN_DIR}"/
 
 # Set up user and work directories
-RUN groupadd -g "${groupid}" "${username}" \
-   && useradd -m -s /bin/bash -u "${userid}" -g "${groupid}" "${username}" -d "${ROOT_DIR}"
-RUN chown -R "${userid}":"${groupid}" "${ROOT_DIR}" && chmod -R ug+srw "${ROOT_DIR}"
+RUN chown --recursive "${userid}":"${groupid}" "${ROOT_DIR}" && chmod --recursive u+srw "${ROOT_DIR}"
 
 # Switch to user for execution
-USER "${username}"
-
-# Install and verify repo
-RUN gpg --recv-key 8BB9AD793E8E6153AF0F9A4416530D5E920F5C65
-RUN curl -o "${BIN_DIR}"/repo https://storage.googleapis.com/git-repo-downloads/repo
-RUN curl https://storage.googleapis.com/git-repo-downloads/repo.asc | gpg --verify - "${BIN_DIR}"/repo
-
-# Provide make_key to create signing keys
-RUN curl https://raw.githubusercontent.com/LineageOS/android_development/refs/heads/lineage-23.0/tools/make_key > "${BIN_DIR}"/make_key
-
-# Patch for longer key size and drop input
-RUN sed -i "/read -p \"Enter password for '\$1' (blank for none\; password will be visible): \" \\\/d" "${BIN_DIR}"/make_key
-RUN sed -i "s/  password/password=\"\"/g; s/echo; exit 1' EXIT INT QUIT/' EXIT/g; s/2048/4096/g" "${BIN_DIR}"/make_key
+USER "${USER}"
 
 # Make scripts executable
-RUN chmod -R 500 "${BIN_DIR}" "${SCRIPT_DIR}"
+RUN chmod --recursive 500 "${SCRIPT_DIR}" "${BIN_DIR}"
 
 # ROM variables
 ENV LOCAL_MANIFEST=''
@@ -110,19 +41,25 @@ ENV LUNCH_PREFIX_FALLBACK=''
 ENV ROM_PREFIX_FALLBACK=''
 ENV ROM_VERSION_FALLBACK=''
 ENV ROM_OTA_BRANCH_FALLBACK=''
+ENV RELEASETOOL_EXTRA_FLAGS=''
 
 # Extra variables
 ENV CCACHE_SIZE=40
 ENV OTA_REPO_URL=''
 ENV KEYS_SUBJECT='/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
-ENV TIME_ZONE="UTC"
+ENV TIME_ZONE='UTC'
 ENV REPOPICK_PICKS=''
 ENV REPOPICK_TOPICS=''
+ENV REPOPICK_PULLS=''
+ENV DEBUG=''
 
 # Authentification
 ENV TELEGRAM_TOKEN=''
 ENV GITHUB_TOKEN=''
 ENV SF_USER=''
 ENV SF_RELEASES_REPO=''
+ENV SSH_USER=''
+ENV SSH_UPLOAD_URL=''
+ENV SSH_DOWNLOAD_URL=''
 
 ENTRYPOINT ["/bin/bash", "-c", "${SCRIPT_DIR}/init.sh"]
