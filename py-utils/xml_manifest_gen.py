@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 
+import xml
 from xml.etree import ElementTree
 import sys
 from urllib.request import urlopen, Request
 
 
-def is_in_manifest(manifest: str, project_path: str = "", project_remote: str = "") -> bool:
+def is_in_manifest(manifest: xml, project_path: str = "", project_remote: str = "") -> bool:
     for manifest_project in manifest.findall("project"):
         if project_path == manifest_project.get("path"):
             return True
@@ -17,8 +18,8 @@ def is_in_manifest(manifest: str, project_path: str = "", project_remote: str = 
     return False
 
 
-def add_project_to_manifest(manifest: str, project_name: str, project_path: str, project_remote: str = "",
-                            project_revision: str = "") -> str:
+def add_project_to_manifest(manifest: xml, project_name: str, project_path: str, project_remote: str = "",
+                            project_revision: str = "") -> xml:
     if is_in_manifest(manifest=manifest, project_path=project_path):
         return manifest
 
@@ -40,7 +41,7 @@ def add_project_to_manifest(manifest: str, project_name: str, project_path: str,
     return manifest
 
 
-def add_remote_to_manifest(manifest: str, remote_name: str, remote_fetch: str, remote_revision: str = "") -> str:
+def add_remote_to_manifest(manifest: xml, remote_name: str, remote_fetch: str, remote_revision: str = "") -> xml:
     if is_in_manifest(manifest=manifest, project_remote=remote_name):
         return manifest
 
@@ -59,7 +60,7 @@ def add_remote_to_manifest(manifest: str, remote_name: str, remote_fetch: str, r
     return manifest
 
 
-def generate_manifest(local_manifest: str, remote_manifest: str) -> str:
+def generate_manifest(local_manifest: xml, remote_manifest: xml) -> xml:
     for projects in remote_manifest.findall("remote"):
         if projects.get("revision") == "":
             revision = ""
