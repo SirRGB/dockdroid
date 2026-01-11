@@ -1,6 +1,7 @@
 # Python Virtual Environments
 venv
 .venv
+py-utils/__pycache__/
 
 # Environment files
 *.env
