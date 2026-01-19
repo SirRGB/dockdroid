@@ -55,7 +55,7 @@ _key_size_recovery() {
 if [[ "${ANDROID_VERSION}" -lt 10 ]]; then
   _init_py2
 # A10-15
-else
+elif [[ "${ANDROID_VERSION}" -lt 16 ]]; then
   _init_py3
 fi
 
