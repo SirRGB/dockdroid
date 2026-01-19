@@ -37,7 +37,7 @@ _upload_gh() {
     https://api.github.com/repos/"${release_repo}"/releases \
     --data "{ \"tag_name\": \"${tag}\", \"body\": \"${desc}\" }" \
     | tr --delete '\n' | json_arg_parser.py "upload_url" \
-    | cut --delimiter='{' -f1)
+    | cut --delimiter='{' --fields=1)
 
   # Upload ROM
   DL_OTA_URL=$(curl_cmd \

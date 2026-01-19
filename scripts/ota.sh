@@ -32,9 +32,11 @@ _push_ota_info() {
     target_ota_repo_url="${OTA_REPO_URL}"
   elif [[ -n "${GITHUB_TOKEN}" ]]; then
     target_ota_repo_url="${OTA_REPO_URL//git@github.com:/https://${GITHUB_TOKEN}@github.com/}"
+  else
+    _cleanup_fail
   fi
 
-  # Specify a fallback, so that roms, that purely rely on android numbers dont collide
+  # Specify a fallback, so that roms, that purely rely on android numbers do not collide
   if [[ -n "${ROM_OTA_BRANCH_FALLBACK}" ]]; then
     target_ota_branch="${ROM_OTA_BRANCH_FALLBACK}"
   else
