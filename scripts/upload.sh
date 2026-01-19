@@ -79,8 +79,6 @@ _cleanup_fail() {
   exit 1
 }
 
-trap _cleanup_fail ERR
-
 _upload
 if [[ -n "${UPLOAD_TARGET}" ]]; then
   _print_upload_success

@@ -56,8 +56,6 @@ _cleanup_fail() {
   exit 1
 }
 
-trap _cleanup_fail ERR
-
 _ota_info
 if [[ -n "${OTA_REPO_URL}" ]]; then
   _push_ota_info

@@ -88,8 +88,6 @@ _cleanup_fail() {
   exit 1
 }
 
-trap _cleanup_fail ERR
-
 _cleanup
 if [[ -n "${ROM_BUILD_FLAGS}" ]]; then
   IFS=',' read -r -a "ROM_BUILD_FLAGS" <<< "${ROM_BUILD_FLAGS}"

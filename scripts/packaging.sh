@@ -66,8 +66,6 @@ _cleanup_fail() {
   exit 1
 }
 
-trap _cleanup_fail ERR
-
 _packaging
 _extract_recovery
 _print_build_success
