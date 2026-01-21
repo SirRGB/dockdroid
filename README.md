@@ -113,6 +113,12 @@ LOCAL_MANIFEST=https://raw.githubusercontent.com/SirRGB/local_manifests/refs/hea
 
 ### optional
 
+- Fallbacks
+  - ```LUNCH_PREFIX_FALLBACK```: Prefix for lunching, i.e. lineage_ for LineageOS. Needed when neither ```LOCAL_MANIFEST``` or ```CLONE_REPOS``` are specified.
+  - ```ROM_PREFIX_FALLBACK```: Prefix for naming, i.e. lineage will result in a package name like lineage-extraversion(if set)-version-date-device-signed.zip. Needed when *_TARGET_PACKAGE is not defined in vendor/*/build/tasks/* or build/core/Makefile.
+  - ```ROM_VERSION_FALLBACK```: Version fallback for package name. Needed when rom does not specify PRODUCT_VERSION_MINOR/PRODUCT_VERSION_MAJOR in vendor/*/config/.
+  - ```ROM_OTA_BRANCH_FALLBACK```: Ota branch fallback. Needed when roms have conflicting branch names and ota updates are set up.
+  - ```RELEASETOOL_EXTRA_FLAGS```: Releasetool flags for setting up legacy quirks i.e. skip certain vintf checks.
 - GitHub Upload
   - ```[GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)```
   - ```OTA_REPO_URL```: for example git@github.com:user/ota_config, will also be used for uploading
