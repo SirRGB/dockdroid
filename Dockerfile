@@ -16,7 +16,7 @@ USER root
 # Create dirs and copy scripts
 RUN mkdir --parents "${SCRIPT_DIR}"
 COPY scripts/ "${SCRIPT_DIR}"/
-COPY py-utils/ "${BIN_DIR}"/
+COPY py-utils/ "${SCRIPT_DIR}"/
 
 # Set up user and work directories
 RUN chown --recursive "${userid}":"${groupid}" "${ROOT_DIR}" && chmod --recursive u+srw "${ROOT_DIR}"

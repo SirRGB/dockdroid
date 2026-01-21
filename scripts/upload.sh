@@ -36,7 +36,7 @@ _upload_gh() {
     --header 'content-type: application/json' \
     https://api.github.com/repos/"${release_repo}"/releases \
     --data "{ \"tag_name\": \"${tag}\", \"body\": \"${desc}\" }" \
-    | tr --delete '\n' | json_arg_parser.py "upload_url" \
+    | tr --delete '\n' | "${SCRIPT_DIR}"/json_arg_parser.py "upload_url" \
     | cut --delimiter='{' --fields=1)
 
   # Upload ROM
@@ -47,7 +47,7 @@ _upload_gh() {
     --header "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME}")" \
     --upload-file "${OUT}"/"${PACKAGE_NAME}" \
     "${upload_url}"?name="${PACKAGE_NAME}" \
-    | tr --delete '\n' | json_arg_parser.py "browser_download_url")
+    | tr --delete '\n' | "${SCRIPT_DIR}"/json_arg_parser.py "browser_download_url")
 
   # Upload Recovery
   curl_cmd \

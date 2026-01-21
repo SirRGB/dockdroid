@@ -18,10 +18,10 @@ _sync() {
   find "${ROM_DIR}"/.repo/local_manifests/ -type f -exec rm {} \;
   if [[ -n "${LOCAL_MANIFEST}" ]]; then
     # Merge local manifests into one to avoid conflicts with duplicate dependencies
-    xml_manifest_gen.py "${LOCAL_MANIFEST}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+    "${SCRIPT_DIR}"/xml_manifest_gen.py "${LOCAL_MANIFEST}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
   elif [[ -z "${CLONE_REPOS}" ]]; then
     # Generate vendor manifest, so that official lineage just builds
-    xml_roomservice.py "${DEVICE}" "${ROM_BRANCH}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+    "${SCRIPT_DIR}"/xml_roomservice.py "${DEVICE}" "${ROM_BRANCH}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
   fi
   local threads
   threads=$(nproc)
