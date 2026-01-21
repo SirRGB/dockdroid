@@ -71,7 +71,7 @@ _clone() {
   branch=$(rev <<< "${full_repo_name}" | cut --delimiter='/' --fields=-1 | rev)
   target_path=$(rev <<< "${full_repo_name}" | cut --delimiter='/' --fields=3 | rev | sed 's/android_//g; s/proprietary_//g; s|_|/|g')
   rm --recursive --force "${target_path}" || true
-  git clone "${repo_name}" --branch "${branch}" "${target_path}"
+  git clone "${repo_name}" --branch "${branch}" "${ANDROID_BUILD_TOP}"/"${target_path}"
 }
 
 # Wrapper to clone all repos defined in $CLONE_REPOS

@@ -9,7 +9,7 @@ _lunch() {
 
   # Append release codename, if exists (A14+)
   local release_codename
-  release_codename=
+  release_codename=''
   if [[ -d "${ANDROID_BUILD_TOP}"/build/release/aconfig/ ]]; then
     release_codename=-$(find "${ANDROID_BUILD_TOP}"/build/release/aconfig/* -maxdepth 0 -type d -name '[a-z][a-z][0-9][a-z]' -printf '%f\n' | tail --lines=1)
   fi
