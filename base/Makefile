@@ -1,13 +1,15 @@
 all: build run
 tag ?= $$(date +%Y%m%d%H%M)
+user ?= sirrgb
+registry ?= docker.io
 
 build:
-	docker build . --tag docker.io/sirrgb/dockdroid-base:latest
+	docker build . --tag $(registry)/$(user)/dockdroid-base:latest
 
 run:
-	docker run --interactive --tty docker.io/sirrgb/dockdroid-base:latest
+	docker run --interactive --tty $(registry)/$(user)/dockdroid-base:latest
 
 publish:
-	docker tag docker.io/sirrgb/dockdroid-base:latest docker.io/sirrgb/dockdroid-base:$(tag)
-	docker image push docker.io/sirrgb/dockdroid-base:$(tag)
-	docker image push docker.io/sirrgb/dockdroid-base:latest
+	docker tag $(registry)/$(user)/dockdroid-base:latest $(registry)/$(user)/dockdroid-base:$(tag)
+	docker image push $(registry)/$(user)/dockdroid-base:$(tag)
+	docker image push $(registry)/$(user)/dockdroid-base:latest
