@@ -121,6 +121,11 @@ LOCAL_MANIFEST=https://raw.githubusercontent.com/SirRGB/local_manifests/refs/hea
   - ```SF_USER```: Username of your account
   - ```SF_RELEASES_REPO```: Project name
   - Requires passwordless ssh keys added to your [SourceForge account](https://sourceforge.net/p/forge/documentation/SSH%20Keys)
+- SSH Upload
+  - ```SSH_USER```: Username on the ssh server
+  - ```SSH_UPLOAD_URL```: ssh server domain or ip
+  - ```SSH_DOWNLOAD_URL```: Direct download url excluding filename to ssh server
+  - Requires passwordless ssh keys with respective public keys authorized on your ssh server
 - Telegram logging
   - ```[TELEGRAM_TOKEN](https://core.telegram.org/bots/features#botfather)```
   - ```TELEGRAM_CHAT```: either as @xyz or the id
