@@ -11,10 +11,10 @@ This project targets Android 7 up to the most recent version.
 ## Prerequisites
 
 - [Podman](https://podman.io/docs/installation)
-  - [Podman compose](https://github.com/containers/podman-compose?tab=readme-ov-file#pip)
+  - [Podman compose](https://github.com/containers/podman-compose?tab=readme-ov-file#generate-binary-using-dockerpodman-locally)
 - or [Docker](https://docs.docker.com/engine/install)
   - [Docker Compose](https://docs.docker.com/compose/install)
-  - [Docker Rootless](https://docs.docker.com/engine/security/rootless/)
+  - [Docker Rootless](https://docs.docker.com/engine/security/rootless)
 - [SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - [GitConfig](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
 - ZRam (highly recommended): [Debian](https://wiki.debian.org/ZRam), [Fedora](https://github.com/systemd/zram-generator), [Ubuntu, Arch and others](https://wiki.archlinux.org/title/Zram)
@@ -55,7 +55,7 @@ sudo chown --recursive 52587:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles
 
 #### Other
 (If you know a smarter way to do this please tell me,  
-I know the available subuids can be found with `grep $USER < /etc/subuid | cut --delimiter=":" --fields=2`  
+I know the available subuids can be found with `grep ${USER} < /etc/subuid | cut --delimiter=':' --fields=2`  
 I just do not know if the container uid is predictable,  
 it seems to be 1000 for debian/ubuntu and 100 for fedora)
 
@@ -79,7 +79,7 @@ sudo chown --recursive UID:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~
 ```
 And remove the incomplete sync
 ```
-sudo rm -rf ~/docker_droid/src/Los15/
+sudo rm --recursive --force ~/docker_droid/src/Los15/
 ```
 </details>
 
