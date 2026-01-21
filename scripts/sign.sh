@@ -5,7 +5,6 @@ source "${SCRIPT_DIR}"/print.sh
 
 # Drop old builds
 _cleanup() {
-  cd "${ROM_DIR}" || exit
   set +eu
   if ! m installclean -j"$(nproc)" 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/build.txt
   then
