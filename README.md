@@ -120,7 +120,7 @@ LOCAL_MANIFEST=https://raw.githubusercontent.com/SirRGB/local_manifests/refs/hea
   - ```ROM_OTA_BRANCH_FALLBACK```: Ota branch fallback. Needed when roms have conflicting branch names and ota updates are set up.
   - ```RELEASETOOL_EXTRA_FLAGS```: Releasetool flags for setting up legacy quirks i.e. skip certain vintf checks.
 - GitHub Upload
-  - ```[GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)```
+  - ```[GITHUB_TOKEN]```: [Github Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) for upload (and/or push) authentification
   - ```OTA_REPO_URL```: for example git@github.com:user/ota_config, will also be used for uploading
   - Requires ```GITHUB_TOKEN``` or passwordless ssh keys [added to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 - SourceForge Upload
@@ -133,7 +133,7 @@ LOCAL_MANIFEST=https://raw.githubusercontent.com/SirRGB/local_manifests/refs/hea
   - ```SSH_DOWNLOAD_URL```: Direct download url excluding filename to ssh server
   - Requires passwordless ssh keys with respective public keys authorized on your ssh server
 - Telegram logging
-  - ```[TELEGRAM_TOKEN](https://core.telegram.org/bots/features#botfather)```
+  - ```TELEGRAM_TOKEN```: [Telegram Token](https://core.telegram.org/bots/features#botfather). Needed when telegram logging is set up.
   - ```TELEGRAM_CHAT```: either as @xyz or the id
 - ```TIME_ZONE```: either as in the format UTC+2 or CET
 - ```ROM_BUILD_FLAGS```: if you want to define values like ```WITH_GMS=true``` you can do this in here, even with multiple of them separated by comma for separate builds or space for the same build
