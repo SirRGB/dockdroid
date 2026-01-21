@@ -29,12 +29,12 @@ which should be $subUID+$containerUID-1 according to the [docker forums](https:/
 
 We need to manually create the required folders for the respective volumes
 ```
-mkdir -p ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
+mkdir --parents ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
 ```
 Copy the required dotfiles from the host machines
 ```
 cp ~/.gitconfig ~/docker_droid/dotfiles/
-cp -r ~/.ssh ~/docker_droid/dotfiles/
+cp --recursive ~/.ssh ~/docker_droid/dotfiles/
 ```
 and clone this repo
 ```
@@ -70,7 +70,7 @@ docker compose up --force-recreate --build
 Wait until it starts syncing and stop using ctrl + c  
 Find out the uid by running:
 ```
-ls -n ~/docker_droid/src/Los15/.repo
+ls --numeric-uid-gid ~/docker_droid/src/Los15/.repo
 ```
 Give ownership to the uid you found out:  
 (replace the 1st UID)
