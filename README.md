@@ -177,7 +177,7 @@ docker compose up --force-recreate --build
 ## Debugging
 
 - Look up known issues in [TODO.md](TODO.md)
-- If the error is undocumented you can uncomment [this](https://github.com/SirRGB/dockdroid/blob/da9593dca1ced7932f7f4295d20fab7077104b73/scripts/init.sh#L3) and send the part of the logs, where things go overboard via the [issues](https://github.com/SirRGB/dockdroid/issues) or debug it on your own and send a pull request.
+- If the error is undocumented you can set DEBUG=true in the target.env and send the part of the logs, where things go overboard via the [issues](https://github.com/SirRGB/dockdroid/issues) or debug it on your own and send a pull request.
 
 
 ## Too much RAM
