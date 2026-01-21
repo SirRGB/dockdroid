@@ -134,6 +134,10 @@ LOCAL_MANIFEST=https://raw.githubusercontent.com/SirRGB/local_manifests/refs/hea
 - OTA Updates
   - At least one file provider mentioned above
   - ```OTA_REPO_URL```: Any git hoster using ssh authentification i.e. GitHub, GitLab, CodeBerg,...
+- Repopick
+  - ```REPOPICK_PICKS```: Fetch changes from respective Gerrit instance using short-form change-id
+  - ```REPOPICK_TOPICS```: Fetch changes from respective Gerrit instance using topics
+  - ```REPOPICK_PULLS```: Pull changes from respective Gerrit instance using short-form change-id
 
 These variables should be defined in config.env.
 
