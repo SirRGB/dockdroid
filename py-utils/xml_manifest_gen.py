@@ -6,9 +6,13 @@ import sys
 from urllib.request import urlopen, Request
 
 
-def is_in_manifest(manifest: xml, project_path: str = "", project_remote: str = "") -> bool:
+def is_in_manifest(manifest: xml, project_path: str = "", project_remote: str = "", project_remove: str = "") -> bool:
     for manifest_project in manifest.findall("project"):
         if project_path == manifest_project.get("path"):
+            return True
+
+    for manifest_project in manifest.findall("remove-project"):
+        if project_remove == manifest_project.get("name"):
             return True
 
     for manifest_project in manifest.findall("remote"):
@@ -36,6 +40,20 @@ def add_project_to_manifest(manifest: xml, project_name: str, project_path: str,
 
     if project_revision:
         element.attrib["revision"] = project_revision
+
+    manifest.append(element)
+    return manifest
+
+def add_project_remove_to_manifest(manifest: xml, project_remove_name: str) -> xml:
+    if is_in_manifest(manifest=manifest, project_remove=project_remove_name):
+        return manifest
+
+    element = ElementTree.Element(
+        "remove-project",
+        attrib={
+            "name": project_remove_name,
+        },
+    )
 
     manifest.append(element)
     return manifest
@@ -72,6 +90,12 @@ def generate_manifest(local_manifest: xml, remote_manifest: xml) -> xml:
             remote_name=projects.get("name"),
             remote_fetch=projects.get("fetch"),
             remote_revision=revision
+        )
+
+    for projects in remote_manifest.findall("remove-project"):
+        local_manifest = add_project_remove_to_manifest(
+            manifest=local_manifest,
+            project_remove_name=projects.get("name")
         )
 
     for projects in remote_manifest.findall("project"):
