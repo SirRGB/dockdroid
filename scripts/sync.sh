@@ -17,8 +17,12 @@ _sync() {
   # Remove local manifests
   find "${ROM_DIR}"/.repo/local_manifests/ -type f -exec rm {} \;
   if [[ -n "${LOCAL_MANIFEST}" ]]; then
-    # Merge local manifests into one to avoid conflicts with duplicate dependencies
-    "${SCRIPT_DIR}"/xml_manifest_gen.py "${LOCAL_MANIFEST}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+    if grep -q ',' <<< "${LOCAL_MANIFEST}"; then
+      # Merge local manifests into one to avoid conflicts with duplicate dependencies
+      "${SCRIPT_DIR}"/xml_manifest_gen.py "${LOCAL_MANIFEST}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+    else
+      curl_cmd "${LOCAL_MANIFEST}" --output "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+    fi
   elif [[ -z "${CLONE_REPOS}" ]]; then
     # Generate vendor manifest, so that official lineage just builds
     "${SCRIPT_DIR}"/xml_roomservice.py "${DEVICE}" "${ROM_BRANCH}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
