@@ -21,7 +21,20 @@ _push_ota_info() {
   fi
   cd "${ROM_DIR}"_ota || exit
   git init
-  git pull "${OTA_REPO_URL}" "${ROM_BRANCH}"
+
+  # Specify a fallback, so that roms, that purely rely on android numbers do not collide
+  if [[ -n "${ROM_OTA_BRANCH_FALLBACK}" ]]; then
+    target_ota_branch="${ROM_OTA_BRANCH_FALLBACK}"
+  else
+    target_ota_branch="${ROM_BRANCH}"
+  fi
+
+  # Append extraversion to avoid collision of different flavours
+  if [[ -n "${ROM_EXTRAVERSION}" ]]; then
+    target_ota_branch="${target_ota_branch}"-"$(tr --delete '-' <<< "${ROM_EXTRAVERSION,,}")"
+  fi
+
+  git pull "${OTA_REPO_URL}" "${target_ota_branch}"
 
   cp "${OUT}"/"${PACKAGE_NAME}".json "${ROM_DIR}"_ota/"${TARGET_DEVICE}".json
   git add "${ROM_DIR}"_ota/"${TARGET_DEVICE}".json
@@ -34,18 +47,6 @@ _push_ota_info() {
     target_ota_repo_url="${OTA_REPO_URL//git@github.com:/https://${GITHUB_TOKEN}@github.com/}"
   else
     _cleanup_fail
-  fi
-
-  # Specify a fallback, so that roms, that purely rely on android numbers do not collide
-  if [[ -n "${ROM_OTA_BRANCH_FALLBACK}" ]]; then
-    target_ota_branch="${ROM_OTA_BRANCH_FALLBACK}"
-  else
-    target_ota_branch="${ROM_BRANCH}"
-  fi
-
-  # Append extraversion to avoid collision of different flavours
-  if [[ -n "${ROM_EXTRAVERSION}" ]]; then
-    target_ota_branch="${target_ota_branch}"-"$(tr --delete '-' <<< "${ROM_EXTRAVERSION,,}")"
   fi
 
   if [[ -n "${target_ota_repo_url}" ]]; then
