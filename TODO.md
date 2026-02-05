@@ -5,3 +5,8 @@
 - project linkfile handling
 - progress message telegram
 - incremental updates
+- drop use of git, https://stackoverflow.com/questions/69069145/using-curl-for-pushing-a-file-to-github-repository
+- move to py (apart from env vars?, devices as objects?)
+ - linting, pre-commit
+- rename files to indicate order
+- only log errors (docker/podman logs work otherwise)
