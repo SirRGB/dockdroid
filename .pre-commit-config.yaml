@@ -1,0 +1,35 @@
+---
+repos:
+ - repo: https://github.com/pre-commit/pre-commit-hooks
+   rev: v6.0.0
+   hooks:
+    - id: trailing-whitespace
+      exclude: |
+          (?x)(
+             README.md
+          )$
+    - id: check-merge-conflict
+    - id: check-yaml
+    - id: check-ast
+    - id: detect-private-key
+    - id: end-of-file-fixer
+
+ - repo: https://github.com/asottile/pyupgrade
+   rev: v3.21.2
+   hooks:
+    - id: pyupgrade
+      args: [--py36-plus]
+
+ - repo: https://github.com/psf/black
+   rev: 26.1.0
+   hooks:
+    - id: black
+      language_version: python3.14
+
+ - repo: https://github.com/astral-sh/ruff-pre-commit
+   rev: v0.15.1
+   hooks:
+    # Run the linter.
+    - id: ruff-check
+    # Run the formatter.
+    - id: ruff-format

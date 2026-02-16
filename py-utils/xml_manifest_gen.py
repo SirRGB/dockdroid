@@ -6,7 +6,12 @@ import sys
 from urllib.request import urlopen, Request
 
 
-def is_in_manifest(manifest: xml, project_path: str = "", project_remote: str = "", project_remove: str = "") -> bool:
+def is_in_manifest(
+    manifest: xml,
+    project_path: str = "",
+    project_remote: str = "",
+    project_remove: str = "",
+) -> bool:
     for manifest_project in manifest.findall("project"):
         if project_path == manifest_project.get("path"):
             return True
@@ -22,8 +27,13 @@ def is_in_manifest(manifest: xml, project_path: str = "", project_remote: str = 
     return False
 
 
-def add_project_to_manifest(manifest: xml, project_name: str, project_path: str, project_remote: str = "",
-                            project_revision: str = "") -> xml:
+def add_project_to_manifest(
+    manifest: xml,
+    project_name: str,
+    project_path: str,
+    project_remote: str = "",
+    project_revision: str = "",
+) -> xml:
     if is_in_manifest(manifest=manifest, project_path=project_path):
         return manifest
 
@@ -44,6 +54,7 @@ def add_project_to_manifest(manifest: xml, project_name: str, project_path: str,
     manifest.append(element)
     return manifest
 
+
 def add_project_remove_to_manifest(manifest: xml, project_remove_name: str) -> xml:
     if is_in_manifest(manifest=manifest, project_remove=project_remove_name):
         return manifest
@@ -59,7 +70,9 @@ def add_project_remove_to_manifest(manifest: xml, project_remove_name: str) -> x
     return manifest
 
 
-def add_remote_to_manifest(manifest: xml, remote_name: str, remote_fetch: str, remote_revision: str = "") -> xml:
+def add_remote_to_manifest(
+    manifest: xml, remote_name: str, remote_fetch: str, remote_revision: str = ""
+) -> xml:
     if is_in_manifest(manifest=manifest, project_remote=remote_name):
         return manifest
 
@@ -89,13 +102,12 @@ def generate_manifest(local_manifest: xml, remote_manifest: xml) -> xml:
             manifest=local_manifest,
             remote_name=projects.get("name"),
             remote_fetch=projects.get("fetch"),
-            remote_revision=revision
+            remote_revision=revision,
         )
 
     for projects in remote_manifest.findall("remove-project"):
         local_manifest = add_project_remove_to_manifest(
-            manifest=local_manifest,
-            project_remove_name=projects.get("name")
+            manifest=local_manifest, project_remove_name=projects.get("name")
         )
 
     for projects in remote_manifest.findall("project"):
@@ -114,7 +126,7 @@ def generate_manifest(local_manifest: xml, remote_manifest: xml) -> xml:
             project_name=projects.get("name"),
             project_path=projects.get("path"),
             project_remote=remote,
-            project_revision=revision
+            project_revision=revision,
         )
 
     ElementTree.indent(local_manifest)
@@ -135,5 +147,5 @@ def main() -> None:
     print(ElementTree.tostring(local_manifest).decode())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

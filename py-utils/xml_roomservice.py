@@ -25,7 +25,7 @@ def fetch_device_vendor(local_manifest, remote_manifest, device: str) -> xml:
                 project_name=projects.get("name"),
                 project_path=projects.get("path"),
                 project_remote=remote,
-                project_revision=revision
+                project_revision=revision,
             )
 
             ElementTree.indent(local_manifest)
@@ -49,5 +49,5 @@ def main() -> None:
     print(ElementTree.tostring(local_manifest).decode())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
