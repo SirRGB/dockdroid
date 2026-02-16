@@ -1,40 +1,12 @@
 #!/bin/bash
 
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-NC='\033[0m'
-
-# Skeleton for posting to telegram
-_telegram() {
-  if [[ -n "${TELEGRAM_TOKEN}" ]]; then
-    curl_cmd \
-      --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendMessage \
-      --data chat_id="${TELEGRAM_CHAT}" \
-      --data parse_mode='Markdown' \
-      --data text="${1}"
-  fi
-}
-
-_telegram_separator() {
-  if [[ -n "${TELEGRAM_TOKEN}" ]]; then
-    curl_cmd \
-      --request POST https://api.telegram.org/bot"${TELEGRAM_TOKEN}"/sendSticker \
-      --data chat_id="${TELEGRAM_CHAT}" \
-      --data parse_mode='HTML' \
-      --data sticker='CAADBQADGgEAAixuhBPbSa3YLUZ8DBYE'
-  fi
-}
-
-# Skelleton for printing to stdout
+# Skeleton for printing to stdout
 _print_success() {
-  echo -e "${GREEN}$*${NC}"
-  _telegram "$*"
+  "${SCRIPT_DIR}"/print.py print_success "$*"
 }
 
 _print_error() {
-  echo -e "${RED}$*${NC}"
-  _telegram "$*"
-  _telegram_separator
+   "${SCRIPT_DIR}"/print.py print_error "$*"
 }
 
 
@@ -95,13 +67,15 @@ _print_upload_fail() {
   _print_error 'Upload failed'
 }
 
+
 # Ota
 _print_ota_fail() {
   _print_error 'Ota info failed'
 }
 
 
+# End
 _print_done() {
   _print_success 'Completed successfully'
-  _telegram_separator
+  "${SCRIPT_DIR}"/print.py send_telegram_end
 }
