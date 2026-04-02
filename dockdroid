@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+set -x
+
+_build() {
+  docker build --tag localhost/sirrgb/dockdroid:latest .
+}
+
+_args() {
+  #local volumes
+  volumes=(
+    -v ~/docker_droid/src:/droid_workdir/src
+    -v ~/docker_droid/logs:/droid_workdir/logs
+    -v ~/docker_droid/ccache:/mnt/ccache
+    -v ~/docker_droid/keys:/droid_workdir/keys
+    -v ~/docker_droid/dotfiles/.gitconfig:/droid_workdir/.gitconfig:ro
+    -v ~/docker_droid/dotfiles/.ssh:/droid_workdir/.ssh:ro
+  )
+  # TODO >1 env-file
+  env_file=~/docker_droid/minideb/target.env
+  # "${@}"
+
+  if which podman; then
+    args="--userns=keep-id"
+  else
+    args=("--user" "${UID}":"${GID}")
+  fi
+}
+
+_run() {
+  docker run "${volumes[@]}" --env-file "${env_file}" "${args[@]}" localhost/sirrgb/dockdroid:latest
+}
+
+_build
+_args
+_run

@@ -11,20 +11,11 @@ This project targets Android 7 up to the most recent version.
 ## Prerequisites
 
 - [Podman](https://podman.io/docs/installation)
-  - [Podman compose](https://github.com/containers/podman-compose?tab=readme-ov-file#generate-binary-using-dockerpodman-locally)
+  - podman-docker or alias
 - or [Docker](https://docs.docker.com/engine/install)
-  - [Docker Compose](https://docs.docker.com/compose/install)
-  - [Docker Rootless](https://docs.docker.com/engine/security/rootless)
 - [SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - [GitConfig](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
 - ZRam (highly recommended): [Debian](https://wiki.debian.org/ZRam), [Fedora](https://github.com/systemd/zram-generator), [Ubuntu, Arch and others](https://wiki.archlinux.org/title/Zram)
-
-
-### Setting up permissions
-
-First we need to find the UID, that is used for Docker/Podman.  
-For Debian, Ubuntu and Gentoo this seems to be 100999 and on Fedora 52587,  
-which should be $subUID+$containerUID-1 according to the [docker forums](https://forums.docker.com/t/map-more-uid-on-rootless-docker-and-mount-volume/102928/8).
 
 
 We need to manually create the required folders for the respective volumes
@@ -43,44 +34,6 @@ git clone https://github.com/SirRGB/dockdroid ~/docker_droid/minideb
 
 Then we need to chown that directory to the Docker user:
 
-#### Debian/Ubuntu
-```
-sudo chown --recursive 100999:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
-```
-
-#### Fedora
-```
-sudo chown --recursive 52587:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
-```
-
-#### Other
-(If you know a smarter way to do this please tell me,  
-I know the available subuids can be found with `grep ${USER} < /etc/subuid | cut --delimiter=':' --fields=2`  
-I just do not know if the container uid is predictable,  
-it seems to be 1000 for debian/ubuntu and 100 for fedora)
-
-Let other users read the directory
-```
-sudo chmod --recursive 507 ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
-```
-Run the first docker build
-```
-docker compose up --force-recreate --build
-```
-Wait until it starts syncing and stop using ctrl + c  
-Find out the uid by running:
-```
-ls --numeric-uid-gid ~/docker_droid/src/Los15/.repo
-```
-Give ownership to the uid you found out:  
-(replace the 1st UID)
-```
-sudo chown --recursive UID:"${UID}" ~/docker_droid/src ~/docker_droid/dotfiles ~/docker_droid/ccache ~/docker_droid/logs ~/docker_droid/keys
-```
-And remove the incomplete sync
-```
-sudo rm --recursive --force ~/docker_droid/src/Los15/
-```
 </details>
 
 
@@ -166,11 +119,7 @@ OTA_REPO_URL=git@github.com:user/ota_config
 
 - After setting everything up you should do a test build with the default variables for testing. (Be sure to be in ~/docker_droid/minideb)
 ```
-podman compose up --force-recreate --build
-```
-or
-```
-docker compose up --force-recreate --build
+bash dockdroid
 ```
 
 
