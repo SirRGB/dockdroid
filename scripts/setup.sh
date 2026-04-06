@@ -100,6 +100,15 @@ _keysgen() {
       openssl pkcs8 -in "${KEYS_DIR}"/"${apex}".pk8 -inform DER -nocrypt -out "${KEYS_DIR}"/"${apex}".pem
     fi
   done
+
+  if [[ -n "${BL_RELOCK}" ]]; then
+    if [[ ! -f "${KEYS_DIR}"/avbkey_4096.x509.pem ]] || [[ ! -f "${KEYS_DIR}"/avbkey_4096.pem ]] ; then
+      subject="${KEYS_SUBJECT//CN=Android/CN=\$\{apex\}}"
+      make_key "${KEYS_DIR}"/avbkey_4096 "${subject}"
+      openssl pkcs8 -in "${KEYS_DIR}"/avbkey_4096.pk8 -inform DER -nocrypt -out "${KEYS_DIR}"/avbkey_4096.pem
+    fi
+  fi
+
   unset KEYS_SUBJECT
 }
 

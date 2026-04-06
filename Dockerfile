@@ -35,6 +35,7 @@ ENV BUILD_TYPE=''
 ENV ROM_MANIFEST=''
 ENV ROM_BRANCH=''
 ENV ROM_BUILD_FLAGS=''
+ENV BL_RELOCK=''
 
 # Fallbacks (required for non-standard naming and conflicts)
 ENV LUNCH_PREFIX_FALLBACK=''

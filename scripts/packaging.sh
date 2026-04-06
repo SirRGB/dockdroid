@@ -52,6 +52,11 @@ _packaging() {
   then
     _cleanup_fail
   fi
+
+  # Extract AVB key
+  if [[ -n "${BL_RELOCK}" ]]; then
+    avbtool extract_public_key --key "${KEYS_DIR}"/avbkey_4096.pem --output "${OUT}"/"${PACKAGE_NAME//.zip/-pkmd.bin}"
+  fi
   set -eu
 }
 

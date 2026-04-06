@@ -151,3 +151,4 @@ You can further speed up build times by using tmpfs as described [here](https://
 - [LineageOS4MicroG](https://github.com/lineageos4microg/docker-lineage-cicd)
 - [amyROM](https://github.com/amyROM/vendor_amy/blob/207d5e32c3fba38b9fe1ab9cd12c71ca6b81d653/scripts/generate_json_build_info.sh)
 - [LineageOS Infra](https://github.com/lineageos-infra/build-config/tree/main/android)
+- [Halogen OS](https://github.com/halogenOS/android_external_xos/blob/fb9a58362b930807766100d1288ff809df6b7c51/xostools/xostools.sh)

@@ -58,11 +58,27 @@ _upload_gh() {
     --header "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
     --upload-file "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" \
     "${upload_url}"?name="${PACKAGE_NAME//.zip/-recovery.img}"
+
+
+  # Upload Recovery
+  if [[ -n "${BL_RELOCK}" ]]; then
+    curl_cmd \
+      --header 'Accept: application/vnd.github.v3+json' \
+      --header "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME//.zip/-pkmd.bin}")" \
+      --header "Authorization: token ${GITHUB_TOKEN}" \
+      --header "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME//.zip/-pkmd.bin}")" \
+      --upload-file "${OUT}"/"${PACKAGE_NAME//.zip/-pkmd.bin}" \
+      "${upload_url}"?name="${PACKAGE_NAME//.zip/-pkmd.bin}"
+  fi
 }
 
 _upload_ssh() {
   scp "${OUT}"/"${PACKAGE_NAME}" "${1}"@"${2}"
   scp "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" "${1}"@"${2}"
+  if [[ -n "${BL_RELOCK}" ]]; then
+    scp "${OUT}"/"${PACKAGE_NAME//.zip/-pkmd.bin}" "${1}"@"${2}"
+  fi
+
   DL_OTA_URL="${3}"
 }
 

@@ -55,10 +55,14 @@ _sign_old() {
 
 # New signing process (APEX), A12/up
 _sign_new() {
-  local apex_args
+  local sign_args
   for apex_key in "${APEX_KEYS[@]}"; do
-    apex_args+=('--extra_apks' "${apex_key}.apex=${KEYS_DIR}/${apex_key}" '--extra_apex_payload_key' "${apex_key}.apex=${KEYS_DIR}/${apex_key}.pem")
+    sign_args+=('--extra_apks' "${apex_key}.apex=${KEYS_DIR}/${apex_key}" '--extra_apex_payload_key' "${apex_key}.apex=${KEYS_DIR}/${apex_key}.pem")
   done
+
+  if [[ -n "${BL_RELOCK}" ]]; then
+    sign_args+=('--avb_vbmeta_key' "${KEYS_DIR}"/avbkey_4096.pem '--avb_vbmeta_algorithm' 'SHA256_RSA4096')
+  fi
 
   set +eu
   if ! sign_target_files_apks -o -d "${KEYS_DIR}" \
@@ -73,7 +77,7 @@ _sign_new() {
       --extra_apks ServiceUwbResources.apk="${KEYS_DIR}"/releasekey \
       --extra_apks ServiceWifiResources.apk="${KEYS_DIR}"/releasekey \
       --extra_apks WifiDialog.apk="${KEYS_DIR}"/releasekey \
-      "${apex_args[@]}" \
+      "${sign_args[@]}" \
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files*.zip \
       "${OUT}"/signed-target_files.zip 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/sign.txt
   then
