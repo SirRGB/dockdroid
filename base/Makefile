@@ -4,7 +4,7 @@ user ?= sirrgb
 registry ?= docker.io
 
 build:
-	docker build . --tag $(registry)/$(user)/dockdroid-base:latest
+	docker build . --tag $(registry)/$(user)/dockdroid-base:latest --no-cache
 
 run:
 	docker run --interactive --tty $(registry)/$(user)/dockdroid-base:latest
