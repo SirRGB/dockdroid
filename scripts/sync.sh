@@ -23,7 +23,7 @@ _sync() {
     else
       curl_cmd "${LOCAL_MANIFEST}" --output "${ROM_DIR}"/.repo/local_manifests/manifest.xml
     fi
-  elif [[ -z "${CLONE_REPOS}" ]]; then
+  elif [[ -z "${CLONE_REPOS}" ]] && [[ -n "${FETCH_MUPPETS}" ]]; then
     # Generate vendor manifest, so that official lineage just builds
     "${SCRIPT_DIR}"/xml_roomservice.py "${DEVICE}" "${ROM_BRANCH}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
   fi
