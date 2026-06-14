@@ -31,9 +31,8 @@ _upload_gh() {
 
   # Create a release and get url
   upload_url=$(curl_cmd \
-    --url "https://api.github.com/octocat" \
     --request POST \
-    --header "Authorization: Bearer ${GITHUB_TOKEN}" \
+    --header "Authorization: token ${GITHUB_TOKEN}" \
     --header 'content-type: application/json' \
     https://api.github.com/repos/"${release_repo}"/releases \
     --data "{ \"tag_name\": \"${tag}\", \"body\": \"${desc}\" }" \
