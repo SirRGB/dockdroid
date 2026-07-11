@@ -25,7 +25,6 @@ _keysgen() {
     com.android.adservices
     com.android.adservices.api
     com.android.appsearch
-    com.android.appsearch.apk
     com.android.art
     com.android.bluetooth
     com.android.bt
@@ -65,6 +64,7 @@ _keysgen() {
     com.android.networkstack.tethering
     com.android.neuralnetworks
     com.android.nfcservices
+    com.android.npumanager
     com.android.ondevicepersonalization
     com.android.os.statsd
     com.android.permission
@@ -86,6 +86,8 @@ _keysgen() {
     com.android.uwb.resources
     com.android.virt
     com.android.vndk.current
+    com.android.vndk.current.on_vendor
+    com.android.webapp
     com.android.wifi
     com.android.wifi.dialog
     com.android.wifi.resources

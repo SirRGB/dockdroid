@@ -66,6 +66,7 @@ _sign_new() {
 
   set +eu
   if ! sign_target_files_apks -o -d "${KEYS_DIR}" \
+      --extra_apks com.android.appsearch.apk="${KEYS_DIR}"/releasekey \
       --extra_apks AdServicesApk.apk="${KEYS_DIR}"/releasekey \
       --extra_apks FederatedCompute.apk="${KEYS_DIR}"/releasekey \
       --extra_apks HalfSheetUX.apk="${KEYS_DIR}"/releasekey \
@@ -76,6 +77,9 @@ _sign_new() {
       --extra_apks ServiceConnectivityResources.apk="${KEYS_DIR}"/releasekey \
       --extra_apks ServiceUwbResources.apk="${KEYS_DIR}"/releasekey \
       --extra_apks ServiceWifiResources.apk="${KEYS_DIR}"/releasekey \
+      --extra_apks TelecomServiceResources.apk="${KEYS_DIR}"/releasekey \
+      --extra_apks TelecomUi.apk="${KEYS_DIR}"/releasekey \
+      --extra_apks WebAppService.apk="${KEYS_DIR}"/releasekey \
       --extra_apks WifiDialog.apk="${KEYS_DIR}"/releasekey \
       "${sign_args[@]}" \
       "${OUT}"/obj/PACKAGING/target_files_intermediates/*-target_files*.zip \
