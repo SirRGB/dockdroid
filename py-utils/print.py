@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 import os
 import sys
 
@@ -6,7 +7,7 @@ import requests
 
 
 def send_telegram_message(msg: str):
-    telegram_token = os.getenv("TELEGRAM_TOKEN", False)
+    telegram_token = os.getenv("TELEGRAM_TOKEN", "")
     if not telegram_token:
         return
 
@@ -22,7 +23,7 @@ def send_telegram_message(msg: str):
 
 
 def send_telegram_end():
-    telegram_token = os.getenv("TELEGRAM_TOKEN", False)
+    telegram_token = os.getenv("TELEGRAM_TOKEN", "")
     if not telegram_token:
         return
 

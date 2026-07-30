@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-import xml
-from xml.etree import ElementTree
 import sys
-from urllib.request import urlopen, Request
+import xml
+from urllib.request import Request, urlopen
+from xml.etree import ElementTree
 
 
 def is_in_manifest(
@@ -137,8 +137,8 @@ def main() -> None:
     local_manifest = ElementTree.Element("manifest")
 
     for urls in sys.argv[1].split(","):
-        request = Request(urls, headers={"User-Agent": "Mozilla/5.0"})
-        source_manifest = urlopen(request).read()
+        request = Request(urls)
+        source_manifest = urlopen(request, timeout=5).read()
         remote_manifest = ElementTree.fromstring(source_manifest)
 
         local_manifest = generate_manifest(local_manifest, remote_manifest)

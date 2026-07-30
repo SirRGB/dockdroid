@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 
-import xml
-import xml_manifest_gen
-from xml.etree import ElementTree
 import sys
-from urllib.request import urlopen, Request
+import xml
+from urllib.request import Request, urlopen
+from xml.etree import ElementTree
+
+import xml_manifest_gen
 
 
 def fetch_device_vendor(local_manifest, remote_manifest, device: str) -> xml:
