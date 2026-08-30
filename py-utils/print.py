@@ -1,12 +1,30 @@
 #!/usr/bin/python3
 
+import argparse
 import os
-import sys
 
 import requests
 
 
-def send_telegram_message(msg: str):
+def arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-a", "--action", required=True)
+    parser.add_argument("-m", "--message")
+
+    return parser.parse_args()
+
+
+def eval_arg(args: argparse.Namespace) -> None:
+    match args.action:
+        case "print_success":
+            print_success(args.message)
+        case "print_error":
+            print_error(args.message)
+        case "send_telegram_end":
+            send_telegram_end()
+
+
+def send_telegram_message(msg: str) -> None:
     telegram_token = os.getenv("TELEGRAM_TOKEN", "")
     if not telegram_token:
         return
@@ -22,7 +40,7 @@ def send_telegram_message(msg: str):
     )
 
 
-def send_telegram_end():
+def send_telegram_end() -> None:
     telegram_token = os.getenv("TELEGRAM_TOKEN", "")
     if not telegram_token:
         return
@@ -39,19 +57,16 @@ def send_telegram_end():
 
 
 # Skeleton for printing to stdout
-def print_success(msg):
+def print_success(msg) -> None:
     print(f"\033[32m{msg}\033[00m")
     send_telegram_message(msg)
 
 
-def print_error(msg):
+def print_error(msg) -> None:
     print(f"\033[31m{msg}\033[00m")
     send_telegram_message(msg)
     send_telegram_end()
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 2:
-        globals()[sys.argv[1]](sys.argv[2])
-    else:
-        globals()[sys.argv[1]]()
+    eval_arg(arguments())

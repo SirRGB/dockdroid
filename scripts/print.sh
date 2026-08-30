@@ -2,11 +2,11 @@
 
 # Skeleton for printing to stdout
 _print_success() {
-  "${SCRIPT_DIR}"/print.py print_success "$*"
+  "${SCRIPT_DIR}"/print.py -a print_success -m "$*"
 }
 
 _print_error() {
-   "${SCRIPT_DIR}"/print.py print_error "$*"
+   "${SCRIPT_DIR}"/print.py -a print_error -m "$*"
 }
 
 
@@ -77,5 +77,5 @@ _print_ota_fail() {
 # End
 _print_done() {
   _print_success 'Completed successfully'
-  "${SCRIPT_DIR}"/print.py send_telegram_end
+  "${SCRIPT_DIR}"/print.py -a send_telegram_end
 }
