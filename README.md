@@ -65,6 +65,8 @@ ROM_BRANCH=lineage-22.2
   - ```LOCAL_MANIFEST```: Direct link to the local manifest(s)
   or
   - ```CLONE_REPOS```: Links to the repo(s) to clone. Repo name MUST have the following pattern https://github.com/user/android_dir1_dir2_dir3/tree/branch, https://github.com/user/dir1_dir2_dir3/tree/branch or https://github.com/user/proprietary_dir1_dir2_dir3/tree/branch. Not recommended.
+  - ```FETCH_MUPPETS```: Whether to fetch the official TheMuppets vendor repos. Only works on LineageOS 21 and above due to the respective [manifest](https://github.com/TheMuppets/manifests/blob/lineage-21.0/muppets.xml) groups. Any non-empty value is true. Only works with CLONE_REPOS.
+  - ```BL_RELOCK```: Signs vbmeta and uploads pkmd custom key. Untested, use at your own risk.
 - Fallbacks
   - ```LUNCH_PREFIX_FALLBACK```: Prefix for lunching, i.e. lineage_ for LineageOS. Needed when neither ```LOCAL_MANIFEST``` or ```CLONE_REPOS``` are specified.
   - ```ROM_PREFIX_FALLBACK```: Prefix for naming, i.e. lineage will result in a package name like lineage-extraversion(if set)-version-date-device-signed.zip. Needed when *_TARGET_PACKAGE is not defined in vendor/*/build/tasks/* or build/core/Makefile.
@@ -72,7 +74,7 @@ ROM_BRANCH=lineage-22.2
   - ```ROM_OTA_BRANCH_FALLBACK```: Ota branch fallback. Needed when roms have conflicting branch names and ota updates are set up.
   - ```RELEASETOOL_EXTRA_FLAGS```: Releasetool flags for setting up legacy quirks i.e. skip certain vintf checks.
 - GitHub Upload
-  - ```[GITHUB_TOKEN]```: [Github Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) for upload (and/or push) authentification
+  - ```GITHUB_TOKEN```: [Github Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) for upload (and/or push) authentification
   - ```OTA_REPO_URL```: for example git@github.com:user/ota_config, will also be used for uploading
   - Requires ```GITHUB_TOKEN``` or passwordless ssh keys [added to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 - SourceForge Upload
