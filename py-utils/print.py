@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import argparse
+import sys
 
 import requests
 
@@ -32,10 +33,16 @@ def send_telegram_message(msg: str, telegram_token: str, telegram_chat: str) -> 
         "text": msg,
     }
 
-    requests.post(
-        "https://api.telegram.org/bot" + telegram_token + "/sendMessage",
-        data=data,
-    )
+    try:
+        response = requests.post(
+            "https://api.telegram.org/bot" + telegram_token + "/sendMessage",
+            data=data,
+        )
+        response.raise_for_status()
+    except requests.exceptions.HTTPError:
+        print(f"http code: {response.status_code}")
+        print(response)
+        sys.exit(1)
 
 
 def send_telegram_end(telegram_token: str, telegram_chat: str) -> None:
@@ -45,10 +52,16 @@ def send_telegram_end(telegram_token: str, telegram_chat: str) -> None:
         "sticker": "CAADBQADGgEAAixuhBPbSa3YLUZ8DBYE",
     }
 
-    requests.post(
-        "https://api.telegram.org/bot" + telegram_token + "/sendSticker",
-        data=data,
-    )
+    try:
+        response = requests.post(
+            "https://api.telegram.org/bot" + telegram_token + "/sendSticker",
+            data=data,
+        )
+        response.raise_for_status()
+    except requests.exceptions.HTTPError:
+        print(f"http code: {response.status_code}")
+        print(response)
+        sys.exit(1)
 
 
 # Skeleton for printing to stdout

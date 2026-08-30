@@ -52,6 +52,7 @@ def upload_file(args: argparse.Namespace) -> None:
         )
 
         print(args.url + "?name=" + args.file.split("/")[-1])
+        response.raise_for_status()
     except requests.exceptions.HTTPError:
         print(f"http code: {response.status_code}")
         print(response)
