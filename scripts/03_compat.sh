@@ -22,11 +22,7 @@ _init_py3() {
 _setup_jdk8() {
   local jdk_dir jdk_tag jdk_name
   jdk_dir="${HOME}"/java/jdk
-  jdk_tag=$(curl_cmd \
-    --header 'Accept: application/vnd.github+json' \
-    --header 'X-GitHub-Api-Version: 2022-11-28' \
-    https://api.github.com/repos/adoptium/temurin8-binaries/releases/latest \
-    | tr --delete '\n' | "${SCRIPT_DIR}"/03_json_arg_parser.py "tag_name")
+  jdk_tag=$("${SCRIPT_DIR}"/03_fetch_temurin_tag.py)
   jdk_name=OpenJDK8U-jdk_x64_linux_hotspot_$(tr --delete '-' <<< "${jdk_tag//jdk/}").tar.gz
   mkdir --parents "${jdk_dir}"
   curl_cmd --remote-name https://github.com/adoptium/temurin8-binaries/releases/download/"${jdk_tag}"/"${jdk_name}" --output-dir "${jdk_dir}"

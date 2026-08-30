@@ -19,7 +19,7 @@ def arguments() -> argparse.Namespace:
 def eval_arg(args: argparse.Namespace) -> None:
     match args.action:
         case "print_message":
-            print_message(args, False if args.failed else True)
+            print_message(args, args.failed)
         case "send_telegram_end":
             if args.token and args.chat:
                 send_telegram_end(args.token, args.chat)
