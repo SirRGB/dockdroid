@@ -2,11 +2,18 @@
 
 # Skeleton for printing to stdout
 _print_success() {
-  "${SCRIPT_DIR}"/print.py -a print_success -m "$*"
+  args=()
+  if [[ -n "${TELEGRAM_TOKEN}" ]] && [[ -n "${TELEGRAM_CHAT}" ]]; then
+    args=("${args[@]}" "--token" "${TELEGRAM_TOKEN}" "--chat" "${TELEGRAM_CHAT}")
+  fi
+  "${SCRIPT_DIR}"/print.py --action print_message --message "$*" "${args[@]}"
 }
 
 _print_error() {
-   "${SCRIPT_DIR}"/print.py -a print_error -m "$*"
+    if [[ -n "${TELEGRAM_TOKEN}" ]] && [[ -n "${TELEGRAM_CHAT}" ]]; then
+      args=("${args[@]}" "--token" "${TELEGRAM_TOKEN}" "--chat" "${TELEGRAM_CHAT}")
+    fi
+   "${SCRIPT_DIR}"/print.py --action print_message --message "$*" --failed "true" "${args[@]}"
 }
 
 
