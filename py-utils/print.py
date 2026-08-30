@@ -26,43 +26,47 @@ def eval_arg(args: argparse.Namespace) -> None:
 
 def send_telegram_message(msg: str) -> None:
     telegram_token = os.getenv("TELEGRAM_TOKEN", "")
+
     if not telegram_token:
         return
 
     data = {
-        "chat_id": telegram_token,
+        "chat_id": os.getenv('TELEGRAM_CHAT', ""),
         "parse_mode": "Markdown",
         "text": msg,
     }
+
     requests.post(
-        f"https://api.telegram.org/{os.environ['TELEGRAM_TOKEN']}/sendMessage",
+        "https://api.telegram.org/bot" + telegram_token + "/sendMessage",
         data=data,
     )
 
 
 def send_telegram_end() -> None:
     telegram_token = os.getenv("TELEGRAM_TOKEN", "")
+
     if not telegram_token:
         return
 
     data = {
-        "chat_id": telegram_token,
+        "chat_id": os.getenv('TELEGRAM_CHAT', ""),
         "parse_mode": "HTML",
         "sticker": "CAADBQADGgEAAixuhBPbSa3YLUZ8DBYE",
     }
+
     requests.post(
-        f"https://api.telegram.org/{os.environ['TELEGRAM_TOKEN']}/sendMessage",
+        "https://api.telegram.org/bot" + telegram_token + "/sendSticker",
         data=data,
     )
 
 
 # Skeleton for printing to stdout
-def print_success(msg) -> None:
+def print_success(msg: str) -> None:
     print(f"\033[32m{msg}\033[00m")
     send_telegram_message(msg)
 
 
-def print_error(msg) -> None:
+def print_error(msg: str) -> None:
     print(f"\033[31m{msg}\033[00m")
     send_telegram_message(msg)
     send_telegram_end()
