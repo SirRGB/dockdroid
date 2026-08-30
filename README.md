@@ -46,9 +46,6 @@ Then we need to chown that directory to the Docker user:
 - ```ROM_DIR```: Only change the last part after src/. Defines the source path within the container
 - ```ROM_MANIFEST```: URL of the rom manifest you want to sync
 - ```ROM_BRANCH```: Branch of the rom you want to sync
-- ```LOCAL_MANIFEST```: Direct link to the local manifest(s)
-or
-- ```CLONE_REPOS```: Links to the repo(s) to clone. Repo name MUST have the following pattern https://github.com/user/android_dir1_dir2_dir3/tree/branch, https://github.com/user/dir1_dir2_dir3/tree/branch or https://github.com/user/proprietary_dir1_dir2_dir3/tree/branch. Not recommended.
 
 These variables should be defined in the target.env.
 
@@ -61,11 +58,13 @@ DEVICE=cheeseburger,dumpling,TP1803
 ROM_DIR=/droid_workdir/src/Los15
 ROM_MANIFEST=https://github.com/LineageOS/android.git
 ROM_BRANCH=lineage-22.2
-LOCAL_MANIFEST=https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/cheeseburgerdumpling/A15Lineage.xml,https://raw.githubusercontent.com/SirRGB/local_manifests/refs/heads/main/TP1803/A15Lineage.xml
 ```
 
 ### optional
-
+- Device tree sources for unofficial support
+  - ```LOCAL_MANIFEST```: Direct link to the local manifest(s)
+  or
+  - ```CLONE_REPOS```: Links to the repo(s) to clone. Repo name MUST have the following pattern https://github.com/user/android_dir1_dir2_dir3/tree/branch, https://github.com/user/dir1_dir2_dir3/tree/branch or https://github.com/user/proprietary_dir1_dir2_dir3/tree/branch. Not recommended.
 - Fallbacks
   - ```LUNCH_PREFIX_FALLBACK```: Prefix for lunching, i.e. lineage_ for LineageOS. Needed when neither ```LOCAL_MANIFEST``` or ```CLONE_REPOS``` are specified.
   - ```ROM_PREFIX_FALLBACK```: Prefix for naming, i.e. lineage will result in a package name like lineage-extraversion(if set)-version-date-device-signed.zip. Needed when *_TARGET_PACKAGE is not defined in vendor/*/build/tasks/* or build/core/Makefile.
