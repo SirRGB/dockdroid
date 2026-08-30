@@ -35,10 +35,10 @@ _upload_gh() {
   )
 
   # Upload ROM
-  DL_OTA_URL=$("${SCRIPT_DIR}"/07_upload_github.py --url upload_url --token "${GITHUB_TOKEN}" --file "${OUT}"/"${PACKAGE_NAME}")
+  DL_OTA_URL=$("${SCRIPT_DIR}"/07_upload_github.py --url "${upload_url}" --token "${GITHUB_TOKEN}" --file "${OUT}"/"${PACKAGE_NAME}")
 
   # Upload Recovery
-  "${SCRIPT_DIR}"/07_upload_github.py --url upload_url --token "${GITHUB_TOKEN}" --file "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}"
+  "${SCRIPT_DIR}"/07_upload_github.py --url "${upload_url}" --token "${GITHUB_TOKEN}" --file "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}"
 
   # Upload Recovery
   if [[ -n "${BL_RELOCK}" ]]; then
