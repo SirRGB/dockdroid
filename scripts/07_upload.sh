@@ -40,15 +40,9 @@ _upload_gh() {
   # Upload Recovery
   "${SCRIPT_DIR}"/07_upload_github.py --url "${upload_url}" --token "${GITHUB_TOKEN}" --file "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}"
 
-  # Upload Recovery
+  # Upload Keys
   if [[ -n "${BL_RELOCK}" ]]; then
-    curl_cmd \
-      --header 'Accept: application/vnd.github.v3+json' \
-      --header "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME//.zip/-pkmd.bin}")" \
-      --header "Authorization: token ${GITHUB_TOKEN}" \
-      --header "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME//.zip/-pkmd.bin}")" \
-      --upload-file "${OUT}"/"${PACKAGE_NAME//.zip/-pkmd.bin}" \
-      "${upload_url}"?name="${PACKAGE_NAME//.zip/-pkmd.bin}"
+    "${SCRIPT_DIR}"/07_upload_github.py --url "${upload_url}" --token "${GITHUB_TOKEN}" --file "${OUT}"/"${PACKAGE_NAME//.zip/-pkmd.bin}"
   fi
 }
 
