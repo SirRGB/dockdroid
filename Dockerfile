@@ -45,14 +45,16 @@ ENV ROM_VERSION_FALLBACK=''
 ENV ROM_OTA_BRANCH_FALLBACK=''
 ENV RELEASETOOL_EXTRA_FLAGS=''
 
-# Extra variables
+# Repopick
+ENV REPOPICK_PICKS=''
+ENV REPOPICK_TOPICS=''
+ENV REPOPICK_PULLS=''
+
+# Build env variables
 ENV CCACHE_SIZE=40
 ENV OTA_REPO_URL=''
 ENV KEYS_SUBJECT='/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
 ENV TIME_ZONE='UTC'
-ENV REPOPICK_PICKS=''
-ENV REPOPICK_TOPICS=''
-ENV REPOPICK_PULLS=''
 ENV DEBUG=''
 
 # Authentification
