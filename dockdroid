@@ -3,11 +3,26 @@
 set -euo pipefail
 set -x
 
+config=""
+case "${1}" in
+  "--config" | "-c")
+    config=${2}
+    ;;
+  *)
+    ;;
+esac
+
 _build() {
   docker build --tag localhost/sirrgb/dockdroid:latest .
 }
 
 _args() {
+  if which podman; then
+    args=("--userns=keep-id")
+  else
+    args=("--user" "${UID}":"${GID}")
+  fi
+
   #local volumes
   volumes=(
     -v ~/docker_droid/src:/droid_workdir/src
@@ -17,14 +32,10 @@ _args() {
     -v ~/docker_droid/dotfiles/.gitconfig:/droid_workdir/.gitconfig:ro
     -v ~/docker_droid/dotfiles/.ssh:/droid_workdir/.ssh:ro
   )
-  # TODO >1 env-file
-  env_file=~/docker_droid/minideb/target.env
-  # "${@}"
 
-  if which podman; then
-    args="--userns=keep-id"
-  else
-    args=("--user" "${UID}":"${GID}")
+  env_file=~/docker_droid/minideb/target.en
+  if [[ -n "${config}" ]]; then
+    args=("${args[@]}" "--env-file" "${config}")
   fi
 }
 
