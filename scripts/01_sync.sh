@@ -19,13 +19,13 @@ _sync() {
   if [[ -n "${LOCAL_MANIFEST}" ]]; then
     if grep -q ',' <<< "${LOCAL_MANIFEST}"; then
       # Merge local manifests into one to avoid conflicts with duplicate dependencies
-      "${SCRIPT_DIR}"/xml_manifest_gen.py "${LOCAL_MANIFEST}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+      "${SCRIPT_DIR}"/_01_xml_manifest_gen.py "${LOCAL_MANIFEST}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
     else
       curl_cmd "${LOCAL_MANIFEST}" --output "${ROM_DIR}"/.repo/local_manifests/manifest.xml
     fi
   elif [[ -z "${CLONE_REPOS}" ]] && [[ -n "${FETCH_MUPPETS}" ]]; then
     # Generate vendor manifest, so that official lineage just builds
-    "${SCRIPT_DIR}"/xml_roomservice.py "${DEVICE}" "${ROM_BRANCH}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+    "${SCRIPT_DIR}"/01_xml_roomservice.py "${DEVICE}" "${ROM_BRANCH}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
   fi
   local threads
   threads=$(nproc)
@@ -97,4 +97,4 @@ _print_sync_start
 _sync
 _print_sync_success
 
-source "${SCRIPT_DIR}"/setup.sh
+source "${SCRIPT_DIR}"/02_setup.sh

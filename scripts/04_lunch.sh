@@ -38,5 +38,5 @@ for device in "${DEVICE[@]}"; do
   _lunch
   _print_build_start
 
-  source "${SCRIPT_DIR}"/sign.sh
+  source "${SCRIPT_DIR}"/05_sign.sh
 done

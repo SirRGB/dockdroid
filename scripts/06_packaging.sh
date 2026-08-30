@@ -75,5 +75,5 @@ _packaging
 _extract_recovery
 _print_build_success
 
-# shellcheck source=scripts/upload.sh
-source "${SCRIPT_DIR}"/upload.sh
+# shellcheck source=scripts/07_upload.sh
+source "${SCRIPT_DIR}"/07_upload.sh

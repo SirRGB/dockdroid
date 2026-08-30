@@ -64,4 +64,4 @@ ENV SSH_USER=''
 ENV SSH_UPLOAD_URL=''
 ENV SSH_DOWNLOAD_URL=''
 
-ENTRYPOINT ["/bin/bash", "-c", "${SCRIPT_DIR}/init.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "${SCRIPT_DIR}/00_init.sh"]

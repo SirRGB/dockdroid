@@ -5,5 +5,4 @@
 - progress message telegram
 - incremental updates
 - move to py (apart from env vars?, devices as objects?)
-- rename files to indicate order
 - only log errors (docker/podman logs work otherwise)

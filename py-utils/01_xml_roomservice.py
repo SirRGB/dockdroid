@@ -5,7 +5,7 @@ import xml
 from urllib.request import Request, urlopen
 from xml.etree import ElementTree
 
-import xml_manifest_gen
+import _01_xml_manifest_gen
 
 
 def fetch_device_vendor(local_manifest, remote_manifest, device: str) -> xml:
@@ -21,7 +21,7 @@ def fetch_device_vendor(local_manifest, remote_manifest, device: str) -> xml:
             else:
                 revision = projects.get("revision")
 
-            local_manifest = xml_manifest_gen.add_project_to_manifest(
+            local_manifest = _01_xml_manifest_gen.add_project_to_manifest(
                 manifest=local_manifest,
                 project_name=projects.get("name"),
                 project_path=projects.get("path"),

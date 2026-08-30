@@ -31,14 +31,14 @@ _upload_gh() {
 
   # Create a release and get url
   upload_url=$(
-    "${SCRIPT_DIR}"/create_github_release.py --repo "${release_repo}" --token "${GITHUB_TOKEN}" --name "${tag}" --desc "${desc}"
+    "${SCRIPT_DIR}"/07_create_github_release.py --repo "${release_repo}" --token "${GITHUB_TOKEN}" --name "${tag}" --desc "${desc}"
   )
 
   # Upload ROM
-  DL_OTA_URL=$("${SCRIPT_DIR}"/upload_github.py --url upload_url --token "${GITHUB_TOKEN}" --file "${OUT}"/"${PACKAGE_NAME}")
+  DL_OTA_URL=$("${SCRIPT_DIR}"/07_upload_github.py --url upload_url --token "${GITHUB_TOKEN}" --file "${OUT}"/"${PACKAGE_NAME}")
 
   # Upload Recovery
-  "${SCRIPT_DIR}"/upload_github.py --url upload_url --token "${GITHUB_TOKEN}" --file "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}"
+  "${SCRIPT_DIR}"/07_upload_github.py --url upload_url --token "${GITHUB_TOKEN}" --file "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}"
 
   # Upload Recovery
   if [[ -n "${BL_RELOCK}" ]]; then
@@ -81,4 +81,4 @@ if [[ -n "${UPLOAD_TARGET}" ]]; then
   _print_upload_success
 fi
 
-source "${SCRIPT_DIR}"/ota.sh
+source "${SCRIPT_DIR}"/08_ota.sh

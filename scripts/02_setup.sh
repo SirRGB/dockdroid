@@ -148,10 +148,10 @@ _repopick() {
 _ccache
 _keysgen
 _get_android_version
-# shellcheck source=scripts/compat.sh
-source "${SCRIPT_DIR}"/compat.sh
+# shellcheck source=scripts/03_compat.sh
+source "${SCRIPT_DIR}"/03_compat.sh
 _run_envsetup
 _repopick
 
-# shellcheck source=scripts/lunch.sh
-source "${SCRIPT_DIR}"/lunch.sh
+# shellcheck source=scripts/04_lunch.sh
+source "${SCRIPT_DIR}"/04_lunch.sh

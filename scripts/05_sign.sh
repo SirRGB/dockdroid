@@ -106,5 +106,5 @@ if [[ -n "${ROM_BUILD_FLAGS}" ]]; then
   done
 else
   _determine_signing
-  source "${SCRIPT_DIR}"/packaging.sh
+  source "${SCRIPT_DIR}"/06_packaging.sh
 fi
