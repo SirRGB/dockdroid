@@ -4,13 +4,15 @@ set -euo pipefail
 set -x
 
 config=""
-case "${1}" in
-  "--config" | "-c")
-    config=${2}
-    ;;
-  *)
-    ;;
-esac
+if [[ 0 -ne "${#}" ]]; then
+  case "${1}" in
+    "--config" | "-c")
+      config=${2}
+      ;;
+    *)
+      ;;
+  esac
+fi
 
 _build() {
   docker build --tag localhost/sirrgb/dockdroid:latest .
@@ -33,7 +35,7 @@ _args() {
     -v ~/docker_droid/dotfiles/.ssh:/droid_workdir/.ssh:ro
   )
 
-  env_file=~/docker_droid/minideb/target.en
+  env_file=~/docker_droid/minideb/target.env
   if [[ -n "${config}" ]]; then
     args=("${args[@]}" "--env-file" "${config}")
   fi
