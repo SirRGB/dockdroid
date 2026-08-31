@@ -2,7 +2,6 @@
 
 import argparse
 import json
-import subprocess
 import sys
 
 import requests
@@ -17,39 +16,23 @@ def arguments() -> argparse.Namespace:
 
 
 def upload_file(args: argparse.Namespace) -> None:
-    file_size = subprocess.run(
-        "stat -c%s " + args.file, shell=True, check=True, capture_output=True, text=True
-    ).stdout
-    file_type = subprocess.run(
-        "file -b --mime-type " + args.file,
-        shell=True,
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout.strip()
-
     headers = {
         "Accept": "application/vnd.github+json",
         "Authorization": "Token " + args.token,
         "X-GitHub-Api-Version": "2026-03-10",
-        "Content-Length": file_size,
-        "Content-Type": file_type,
+        "Content-Type": "application/octet-stream",
     }
 
     with open(args.file, "rb") as f:
-        data = {"files": f.read}
+        data = f.read()
 
     params = {
         "name": args.file.split("/")[-1],
     }
 
+    url = f"{args.url}?name={args.file.split('/')[-1]}"
     try:
-        response = requests.put(
-            args.url + "?name=" + args.file.split("/")[-1],
-            params=params,
-            headers=headers,
-            data=data,
-        )
+        response = requests.post(url=url, params=params, headers=headers, data=data)
 
         response.raise_for_status()
     except requests.exceptions.HTTPError:
