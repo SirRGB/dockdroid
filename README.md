@@ -105,6 +105,13 @@ These variables should be defined in config.env.
 GITHUB_TOKEN=thing1234
 OTA_REPO_URL=git@github.com:user/ota_config
 ```
+You can use config.env for all variables, that span across more than one device. To include this run:
+
+```
+bash dockdroid -c config.env
+```
+`--config` can also be used. Your config file can be named however you please.
+
 </details>
 
 
