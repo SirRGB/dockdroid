@@ -21,10 +21,9 @@ _init_py3() {
 _setup_jdk8() {
   local jdk_dir jdk_tag jdk_name
   jdk_dir="${HOME}"/java/jdk
-  jdk_tag=$("${SCRIPT_DIR}"/03_fetch_temurin_tag.py)
-  jdk_name=OpenJDK8U-jdk_x64_linux_hotspot_$(tr --delete '-' <<< "${jdk_tag//jdk/}").tar.gz
   mkdir --parents "${jdk_dir}"
-  curl_cmd --remote-name https://github.com/adoptium/temurin8-binaries/releases/download/"${jdk_tag}"/"${jdk_name}" --output-dir "${jdk_dir}"
+  jdk_tag=$("${SCRIPT_DIR}"/03_download_temurin.py --path="${jdk_dir}")
+  jdk_name=OpenJDK8U-jdk_x64_linux_hotspot_$(tr --delete '-' <<< "${jdk_tag//jdk/}").tar.gz
   curl_cmd https://github.com/adoptium/temurin8-binaries/releases/download/"${jdk_tag}"/"${jdk_name}".sha256.txt | sed "s|${jdk_name}|${jdk_dir}/${jdk_name}|g" | sha256sum --check
   tar --extract --verbose --file="${jdk_dir}"/"${jdk_name}" --directory="${jdk_dir}"
   rm "${jdk_dir}"/"${jdk_name}"
