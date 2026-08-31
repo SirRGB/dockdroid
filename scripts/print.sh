@@ -39,7 +39,7 @@ _print_sync_fail() {
 # Building
 _print_build_start() {
   BUILD_START=$(date +"%s")
-  _print_success "Build started for ${TARGET_DEVICE}"
+  _print_success "Build started for ${TARGET_DEVICE/_/\\_}"
 }
 
 _print_build_success() {
