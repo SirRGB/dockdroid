@@ -3,15 +3,27 @@
 set -euo pipefail
 set -x
 
+# parse args
 config=""
-if [[ 0 -ne "${#}" ]]; then
+rom_config=""
+while [ 0 -ne "${#}" ]; do
   case "${1}" in
+    "--rom" | "-r")
+      rom_config="${2}"
+      shift 2
+      ;;
     "--config" | "-c")
-      config=${2}
+      config="${2}"
+      shift 2
       ;;
     *)
       ;;
   esac
+done
+
+if [[ -z "${rom_config}" ]]; then
+  echo "Provide -r or --rom"
+  exit 2
 fi
 
 _build() {
@@ -25,7 +37,7 @@ _args() {
     args=("--user" "${UID}":"${GID}")
   fi
 
-  #local volumes
+  # local volumes
   volumes=(
     -v ~/docker_droid/src:/droid_workdir/src
     -v ~/docker_droid/logs:/droid_workdir/logs
@@ -35,7 +47,7 @@ _args() {
     -v ~/docker_droid/dotfiles/.ssh:/droid_workdir/.ssh:ro
   )
 
-  env_file=~/docker_droid/minideb/target.env
+  env_file=~/docker_droid/minideb/"${rom_config}"
   if [[ -n "${config}" ]]; then
     args=("${args[@]}" "--env-file" "${config}")
   fi

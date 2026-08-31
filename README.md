@@ -127,7 +127,7 @@ bash dockdroid -c config.env
 
 - After setting everything up you should do a test build with the default variables for testing. (Be sure to be in ~/docker_droid/minideb)
 ```
-bash dockdroid
+bash dockdroid -r target.env
 ```
 
 
