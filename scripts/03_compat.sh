@@ -15,7 +15,6 @@ _init_py2() {
 _init_py3() {
   _setup_pyenv
   pyenv global 3.11
-  pip3 install requests
 }
 
 # Set up Temurin 8 and re-enable TLS 1/1.1
