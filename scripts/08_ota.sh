@@ -8,7 +8,7 @@ _ota_info() {
   local file_size id datetime custom_build_type
   file_size=$(stat --format=%s "${OUT}"/"${PACKAGE_NAME}")
   id=$(sha256sum "${OUT}"/"${PACKAGE_NAME}" | cut --delimiter=' ' --fields=1)
-  datetime=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut --delimiter='=' -f2)
+  datetime=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut --delimiter='=' --fields=2)
   custom_build_type='UNOFFICIAL'
   python3 -m json.tool --indent 2 <<< "{\"response\": [{\"datetime\": ${datetime},\"filename\": \"${PACKAGE_NAME}\",\"id\": \"${id}\",\"romtype\": \"${custom_build_type}\", \"size\": ${file_size}, \"url\": \"${DL_OTA_URL}\", \"version\": \"${ROM_VERSION}\"}]}" > "${OUT}"/"${PACKAGE_NAME}".json
 }
