@@ -80,7 +80,7 @@ _clone() {
 
 # Wrapper to clone all repos defined in $CLONE_REPOS
 _clone_all() {
-  IFS=',' read -r -a "CLONE_REPOS" <<< "${CLONE_REPOS}"
+  readarray -d "," -t "CLONE_REPOS" <<< "${CLONE_REPOS}"
   for repo in "${CLONE_REPOS[@]}"; do
     _clone "${repo}"
   done
