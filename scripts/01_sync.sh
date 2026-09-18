@@ -17,11 +17,15 @@ _sync() {
   # Remove local manifests
   find "${ROM_DIR}"/.repo/local_manifests/ -type f -exec rm {} \;
   if [[ -n "${LOCAL_MANIFEST}" ]]; then
-    # Merge local manifests into one to avoid conflicts with duplicate dependencies
-    xml_manifest_gen.py "${LOCAL_MANIFEST}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
-  elif [[ -z "${CLONE_REPOS}" ]]; then
+    if grep -q ',' <<< "${LOCAL_MANIFEST}"; then
+      # Merge local manifests into one to avoid conflicts with duplicate dependencies
+      "${SCRIPT_DIR}"/_01_xml_manifest_gen.py "${LOCAL_MANIFEST}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+    else
+      curl_cmd "${LOCAL_MANIFEST}" --output "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+    fi
+  elif [[ -z "${CLONE_REPOS}" ]] && [[ -n "${FETCH_MUPPETS}" ]]; then
     # Generate vendor manifest, so that official lineage just builds
-    xml_roomservice.py "${DEVICE}" "${ROM_BRANCH}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
+    "${SCRIPT_DIR}"/01_xml_roomservice.py "${DEVICE}" "${ROM_BRANCH}" > "${ROM_DIR}"/.repo/local_manifests/manifest.xml
   fi
   local threads
   threads=$(nproc)
@@ -71,12 +75,12 @@ _clone() {
   branch=$(rev <<< "${full_repo_name}" | cut --delimiter='/' --fields=-1 | rev)
   target_path=$(rev <<< "${full_repo_name}" | cut --delimiter='/' --fields=3 | rev | sed 's/android_//g; s/proprietary_//g; s|_|/|g')
   rm --recursive --force "${target_path}" || true
-  git clone "${repo_name}" --branch "${branch}" "${target_path}"
+  git clone "${repo_name}" --branch "${branch}" "${ANDROID_BUILD_TOP}"/"${target_path}"
 }
 
 # Wrapper to clone all repos defined in $CLONE_REPOS
 _clone_all() {
-  IFS=',' read -r -a "CLONE_REPOS" <<< "${CLONE_REPOS}"
+  readarray -d "," -t "CLONE_REPOS" <<< "${CLONE_REPOS}"
   for repo in "${CLONE_REPOS[@]}"; do
     _clone "${repo}"
   done
@@ -93,4 +97,4 @@ _print_sync_start
 _sync
 _print_sync_success
 
-source "${SCRIPT_DIR}"/setup.sh
+source "${SCRIPT_DIR}"/02_setup.sh

@@ -55,6 +55,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq && DEBIAN_FRONTEND=noninte
     libreadline-dev \
 # Automation
     file \
+    python3-requests \
     unzip
 
 RUN rm --recursive /var/lib/apt/lists /var/cache/apt/archives

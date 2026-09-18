@@ -25,7 +25,6 @@ _keysgen() {
     com.android.adservices
     com.android.adservices.api
     com.android.appsearch
-    com.android.appsearch.apk
     com.android.art
     com.android.bluetooth
     com.android.bt
@@ -44,6 +43,7 @@ _keysgen() {
     com.android.hardware.boot
     com.android.hardware.cas
     com.android.hardware.contexthub
+    com.android.hardware.drm.clearkey
     com.android.hardware.dumpstate
     com.android.hardware.gatekeeper.nonsecure
     com.android.hardware.neuralnetworks
@@ -65,6 +65,7 @@ _keysgen() {
     com.android.networkstack.tethering
     com.android.neuralnetworks
     com.android.nfcservices
+    com.android.npumanager
     com.android.ondevicepersonalization
     com.android.os.statsd
     com.android.permission
@@ -86,6 +87,8 @@ _keysgen() {
     com.android.uwb.resources
     com.android.virt
     com.android.vndk.current
+    com.android.vndk.current.on_vendor
+    com.android.webapp
     com.android.wifi
     com.android.wifi.dialog
     com.android.wifi.resources
@@ -100,6 +103,15 @@ _keysgen() {
       openssl pkcs8 -in "${KEYS_DIR}"/"${apex}".pk8 -inform DER -nocrypt -out "${KEYS_DIR}"/"${apex}".pem
     fi
   done
+
+  if [[ -n "${BL_RELOCK}" ]]; then
+    if [[ ! -f "${KEYS_DIR}"/avbkey_4096.x509.pem ]] || [[ ! -f "${KEYS_DIR}"/avbkey_4096.pem ]] ; then
+      subject="${KEYS_SUBJECT//CN=Android/CN=\$\{apex\}}"
+      make_key "${KEYS_DIR}"/avbkey_4096 "${subject}"
+      openssl pkcs8 -in "${KEYS_DIR}"/avbkey_4096.pk8 -inform DER -nocrypt -out "${KEYS_DIR}"/avbkey_4096.pem
+    fi
+  fi
+
   unset KEYS_SUBJECT
 }
 
@@ -136,10 +148,10 @@ _repopick() {
 _ccache
 _keysgen
 _get_android_version
-# shellcheck source=scripts/compat.sh
-source "${SCRIPT_DIR}"/compat.sh
+# shellcheck source=scripts/03_compat.sh
+source "${SCRIPT_DIR}"/03_compat.sh
 _run_envsetup
 _repopick
 
-# shellcheck source=scripts/lunch.sh
-source "${SCRIPT_DIR}"/lunch.sh
+# shellcheck source=scripts/04_lunch.sh
+source "${SCRIPT_DIR}"/04_lunch.sh

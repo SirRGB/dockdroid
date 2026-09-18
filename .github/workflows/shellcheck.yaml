@@ -6,6 +6,6 @@ jobs:
     name: ShellCheck
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Run ShellCheck
       run: find ./scripts -type f -name "*.sh" -exec shellcheck --enable require-double-brackets,require-variable-braces,avoid-nullary-conditions {} +
