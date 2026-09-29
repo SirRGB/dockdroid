@@ -32,7 +32,7 @@ _lunch() {
 }
 
 # Iterate over device array
-readarray -d "," -t "DEVICE" <<< "${DEVICE}"
+IFS=',' read -r -a "DEVICE" <<< "${DEVICE}"
 for device in "${DEVICE[@]}"; do
   TARGET_DEVICE="${device}"
   _lunch
