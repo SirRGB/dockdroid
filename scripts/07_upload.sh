@@ -30,39 +30,30 @@ _upload_gh() {
   release_repo="${OTA_REPO_URL//git@github.com:/}"
 
   # Create a release and get url
-  upload_url=$(curl_cmd \
-    --request POST \
-    --header "Authorization: token ${GITHUB_TOKEN}" \
-    --header 'content-type: application/json' \
-    https://api.github.com/repos/"${release_repo}"/releases \
-    --data "{ \"tag_name\": \"${tag}\", \"body\": \"${desc}\" }" \
-    | tr --delete '\n' | json_arg_parser.py "upload_url" \
-    | cut --delimiter='{' -f1)
+  upload_url=$(
+    "${SCRIPT_DIR}"/07_create_github_release.py --repo "${release_repo}" --token "${GITHUB_TOKEN}" --name "${tag}" --desc "${desc}"
+  )
 
   # Upload ROM
-  DL_OTA_URL=$(curl_cmd \
-    --header 'Accept: application/vnd.github.v3+json' \
-    --header "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME}")" \
-    --header "Authorization: token ${GITHUB_TOKEN}" \
-    --header "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME}")" \
-    --upload-file "${OUT}"/"${PACKAGE_NAME}" \
-    "${upload_url}"?name="${PACKAGE_NAME}" \
-    | tr --delete '\n' | json_arg_parser.py "browser_download_url")
+  DL_OTA_URL=$("${SCRIPT_DIR}"/07_upload_github.py --url "${upload_url}" --token "${GITHUB_TOKEN}" --file "${OUT}"/"${PACKAGE_NAME}")
 
   # Upload Recovery
-  curl_cmd \
-    --header 'Accept: application/vnd.github.v3+json' \
-    --header "Content-Length: $(stat -c%s "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
-    --header "Authorization: token ${GITHUB_TOKEN}" \
-    --header "Content-Type: $(file -b --mime-type "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}")" \
-    --upload-file "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" \
-    "${upload_url}"?name="${PACKAGE_NAME//.zip/-recovery.img}"
+  "${SCRIPT_DIR}"/07_upload_github.py --url "${upload_url}" --token "${GITHUB_TOKEN}" --file "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}"
+
+  # Upload Keys
+  if [[ -n "${BL_RELOCK}" ]]; then
+    "${SCRIPT_DIR}"/07_upload_github.py --url "${upload_url}" --token "${GITHUB_TOKEN}" --file "${OUT}"/"${PACKAGE_NAME//.zip/-pkmd.bin}"
+  fi
 }
 
 _upload_ssh() {
   scp "${OUT}"/"${PACKAGE_NAME}" "${1}"@"${2}"
   scp "${OUT}"/"${PACKAGE_NAME//.zip/-recovery.img}" "${1}"@"${2}"
-  DL_OTA_URL="${3}"
+  if [[ -n "${BL_RELOCK}" ]]; then
+    scp "${OUT}"/"${PACKAGE_NAME//.zip/-pkmd.bin}" "${1}"@"${2}"
+  fi
+
+  export DL_OTA_URL="${3}"
 }
 
 # Upload to SourceForge
@@ -79,11 +70,9 @@ _cleanup_fail() {
   exit 1
 }
 
-trap _cleanup_fail ERR
-
 _upload
 if [[ -n "${UPLOAD_TARGET}" ]]; then
   _print_upload_success
 fi
 
-source "${SCRIPT_DIR}"/ota.sh
+source "${SCRIPT_DIR}"/08_ota.sh

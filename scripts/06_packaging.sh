@@ -52,6 +52,11 @@ _packaging() {
   then
     _cleanup_fail
   fi
+
+  # Extract AVB key
+  if [[ -n "${BL_RELOCK}" ]]; then
+    avbtool extract_public_key --key "${KEYS_DIR}"/avbkey_4096.pem --output "${OUT}"/"${PACKAGE_NAME//.zip/-pkmd.bin}"
+  fi
   set -eu
 }
 
@@ -66,11 +71,9 @@ _cleanup_fail() {
   exit 1
 }
 
-trap _cleanup_fail ERR
-
 _packaging
 _extract_recovery
 _print_build_success
 
-# shellcheck source=scripts/upload.sh
-source "${SCRIPT_DIR}"/upload.sh
+# shellcheck source=scripts/07_upload.sh
+source "${SCRIPT_DIR}"/07_upload.sh

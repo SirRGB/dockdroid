@@ -16,7 +16,7 @@ USER root
 # Create dirs and copy scripts
 RUN mkdir --parents "${SCRIPT_DIR}"
 COPY scripts/ "${SCRIPT_DIR}"/
-COPY py-utils/ "${BIN_DIR}"/
+COPY py-utils/ "${SCRIPT_DIR}"/
 
 # Set up user and work directories
 RUN chown --recursive "${userid}":"${groupid}" "${ROOT_DIR}" && chmod --recursive u+srw "${ROOT_DIR}"
@@ -35,6 +35,8 @@ ENV BUILD_TYPE=''
 ENV ROM_MANIFEST=''
 ENV ROM_BRANCH=''
 ENV ROM_BUILD_FLAGS=''
+ENV BL_RELOCK=''
+ENV FETCH_MUPPETS=''
 
 # Fallbacks (required for non-standard naming and conflicts)
 ENV LUNCH_PREFIX_FALLBACK=''
@@ -43,14 +45,16 @@ ENV ROM_VERSION_FALLBACK=''
 ENV ROM_OTA_BRANCH_FALLBACK=''
 ENV RELEASETOOL_EXTRA_FLAGS=''
 
-# Extra variables
+# Repopick
+ENV REPOPICK_PICKS=''
+ENV REPOPICK_TOPICS=''
+ENV REPOPICK_PULLS=''
+
+# Build env variables
 ENV CCACHE_SIZE=40
 ENV OTA_REPO_URL=''
 ENV KEYS_SUBJECT='/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com'
 ENV TIME_ZONE='UTC'
-ENV REPOPICK_PICKS=''
-ENV REPOPICK_TOPICS=''
-ENV REPOPICK_PULLS=''
 ENV DEBUG=''
 
 # Authentification
@@ -62,4 +66,4 @@ ENV SSH_USER=''
 ENV SSH_UPLOAD_URL=''
 ENV SSH_DOWNLOAD_URL=''
 
-ENTRYPOINT ["/bin/bash", "-c", "${SCRIPT_DIR}/init.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "${SCRIPT_DIR}/00_init.sh"]

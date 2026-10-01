@@ -1,14 +1,23 @@
 #!/usr/bin/python3
 
-import xml
-from xml.etree import ElementTree
 import sys
-from urllib.request import urlopen, Request
+import xml
+from urllib.request import Request, urlopen
+from xml.etree import ElementTree
 
 
-def is_in_manifest(manifest: xml, project_path: str = "", project_remote: str = "") -> bool:
+def is_in_manifest(
+    manifest: xml,
+    project_path: str = "",
+    project_remote: str = "",
+    project_remove: str = "",
+) -> bool:
     for manifest_project in manifest.findall("project"):
         if project_path == manifest_project.get("path"):
+            return True
+
+    for manifest_project in manifest.findall("remove-project"):
+        if project_remove == manifest_project.get("name"):
             return True
 
     for manifest_project in manifest.findall("remote"):
@@ -18,8 +27,13 @@ def is_in_manifest(manifest: xml, project_path: str = "", project_remote: str = 
     return False
 
 
-def add_project_to_manifest(manifest: xml, project_name: str, project_path: str, project_remote: str = "",
-                            project_revision: str = "") -> xml:
+def add_project_to_manifest(
+    manifest: xml,
+    project_name: str,
+    project_path: str,
+    project_remote: str = "",
+    project_revision: str = "",
+) -> xml:
     if is_in_manifest(manifest=manifest, project_path=project_path):
         return manifest
 
@@ -41,7 +55,24 @@ def add_project_to_manifest(manifest: xml, project_name: str, project_path: str,
     return manifest
 
 
-def add_remote_to_manifest(manifest: xml, remote_name: str, remote_fetch: str, remote_revision: str = "") -> xml:
+def add_project_remove_to_manifest(manifest: xml, project_remove_name: str) -> xml:
+    if is_in_manifest(manifest=manifest, project_remove=project_remove_name):
+        return manifest
+
+    element = ElementTree.Element(
+        "remove-project",
+        attrib={
+            "name": project_remove_name,
+        },
+    )
+
+    manifest.append(element)
+    return manifest
+
+
+def add_remote_to_manifest(
+    manifest: xml, remote_name: str, remote_fetch: str, remote_revision: str = ""
+) -> xml:
     if is_in_manifest(manifest=manifest, project_remote=remote_name):
         return manifest
 
@@ -71,7 +102,12 @@ def generate_manifest(local_manifest: xml, remote_manifest: xml) -> xml:
             manifest=local_manifest,
             remote_name=projects.get("name"),
             remote_fetch=projects.get("fetch"),
-            remote_revision=revision
+            remote_revision=revision,
+        )
+
+    for projects in remote_manifest.findall("remove-project"):
+        local_manifest = add_project_remove_to_manifest(
+            manifest=local_manifest, project_remove_name=projects.get("name")
         )
 
     for projects in remote_manifest.findall("project"):
@@ -90,7 +126,7 @@ def generate_manifest(local_manifest: xml, remote_manifest: xml) -> xml:
             project_name=projects.get("name"),
             project_path=projects.get("path"),
             project_remote=remote,
-            project_revision=revision
+            project_revision=revision,
         )
 
     ElementTree.indent(local_manifest)
@@ -101,8 +137,8 @@ def main() -> None:
     local_manifest = ElementTree.Element("manifest")
 
     for urls in sys.argv[1].split(","):
-        request = Request(urls, headers={"User-Agent": "Mozilla/5.0"})
-        source_manifest = urlopen(request).read()
+        request = Request(urls)
+        source_manifest = urlopen(request, timeout=5).read()
         remote_manifest = ElementTree.fromstring(source_manifest)
 
         local_manifest = generate_manifest(local_manifest, remote_manifest)
@@ -111,5 +147,5 @@ def main() -> None:
     print(ElementTree.tostring(local_manifest).decode())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

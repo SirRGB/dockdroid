@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 
-import xml
-import xml_manifest_gen
-from xml.etree import ElementTree
 import sys
-from urllib.request import urlopen, Request
+import xml
+from urllib.request import Request, urlopen
+from xml.etree import ElementTree
+
+import _01_xml_manifest_gen
 
 
 def fetch_device_vendor(local_manifest, remote_manifest, device: str) -> xml:
@@ -20,12 +21,12 @@ def fetch_device_vendor(local_manifest, remote_manifest, device: str) -> xml:
             else:
                 revision = projects.get("revision")
 
-            local_manifest = xml_manifest_gen.add_project_to_manifest(
+            local_manifest = _01_xml_manifest_gen.add_project_to_manifest(
                 manifest=local_manifest,
                 project_name=projects.get("name"),
                 project_path=projects.get("path"),
                 project_remote=remote,
-                project_revision=revision
+                project_revision=revision,
             )
 
             ElementTree.indent(local_manifest)
@@ -49,5 +50,5 @@ def main() -> None:
     print(ElementTree.tostring(local_manifest).decode())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
