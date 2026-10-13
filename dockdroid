@@ -53,6 +53,7 @@ _args() {
   if [[ -n "${config}" ]]; then
     args=("${args[@]}" "--env-file" "${config}")
   fi
+  args=("${args[@]}" --name "dockdroid" --rm)
 }
 
 _run() {
