@@ -84,7 +84,7 @@ ROM_BRANCH=lineage-22.2
   - Requires passwordless ssh keys added to your [SourceForge account](https://sourceforge.net/p/forge/documentation/SSH%20Keys)
 - SSH Upload
   - ```SSH_USER```: Username on the ssh server
-  - ```SSH_UPLOAD_URL```: ssh server domain or ip
+  - ```SSH_UPLOAD_URL```: ssh server domain or ip and path for the respective upload
   - ```SSH_DOWNLOAD_URL```: Direct download url excluding filename to ssh server
   - Requires passwordless ssh keys with respective public keys authorized on your ssh server
 - Telegram logging
