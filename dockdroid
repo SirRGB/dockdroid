@@ -17,6 +17,8 @@ while [ 0 -ne "${#}" ]; do
       shift 2
       ;;
     *)
+      echo "Invalid options"
+      exit 2
       ;;
   esac
 done
