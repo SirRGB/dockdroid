@@ -39,12 +39,12 @@ _args() {
 
   # local volumes
   volumes=(
-    -v ~/docker_droid/src:/droid_workdir/src
-    -v ~/docker_droid/logs:/droid_workdir/logs
-    -v ~/docker_droid/ccache:/mnt/ccache
-    -v ~/docker_droid/keys:/droid_workdir/keys
-    -v ~/docker_droid/dotfiles/.gitconfig:/droid_workdir/.gitconfig:ro
-    -v ~/docker_droid/dotfiles/.ssh:/droid_workdir/.ssh:ro
+    -v ~/docker_droid/src:/droid_workdir/src:z
+    -v ~/docker_droid/logs:/droid_workdir/logs:z
+    -v ~/docker_droid/ccache:/mnt/ccache:z
+    -v ~/docker_droid/keys:/droid_workdir/keys:z
+    -v ~/docker_droid/dotfiles/.gitconfig:/droid_workdir/.gitconfig:ro,z
+    -v ~/docker_droid/dotfiles/.ssh:/droid_workdir/.ssh:ro,z
   )
 
   env_file=~/docker_droid/minideb/"${rom_config}"
