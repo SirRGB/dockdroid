@@ -43,6 +43,7 @@ Then we need to chown that directory to the Docker user:
 ### required
 
 - ```DEVICE```: Codename(s) of your device(s)
+- ```BUILD_TYPE```: Build type of your builds i.e. user, userdebug or eng
 - ```ROM_DIR```: Only change the last part after src/. Defines the source path within the container
 - ```ROM_MANIFEST```: URL of the rom manifest you want to sync
 - ```ROM_BRANCH```: Branch of the rom you want to sync

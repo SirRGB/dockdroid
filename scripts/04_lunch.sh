@@ -14,6 +14,10 @@ _lunch() {
     release_codename=-$(find "${ANDROID_BUILD_TOP}"/build/release/aconfig/* -maxdepth 0 -type d -name '[a-z][a-z][0-9][a-z]' -printf '%f\n' | tail --lines=1)
   fi
 
+  if [[ -z "${BUILD_TYPE}" ]]; then
+    BUILD_TYPE="userdebug"
+  fi
+
   # Extract lunch prefix from AndroidProducts
   local product
   if [[ -n "${LUNCH_PREFIX_FALLBACK}" ]]; then
