@@ -11,7 +11,7 @@ This project targets Android 7 up to the most recent version.
 ## Prerequisites
 
 - [Podman](https://podman.io/docs/installation)
-  - podman-docker or alias
+  - podman-docker
 - or [Docker](https://docs.docker.com/engine/install)
 - [SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - [GitConfig](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
