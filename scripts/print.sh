@@ -84,5 +84,7 @@ _print_ota_fail() {
 # End
 _print_done() {
   _print_success 'Completed successfully'
-  "${SCRIPT_DIR}"/print.py --action send_telegram_end --token "${TELEGRAM_TOKEN}" "--chat" "${TELEGRAM_CHAT}"
+  if [[ -n "${TELEGRAM_TOKEN}" ]] && [[ -n "${TELEGRAM_CHAT}" ]]; then
+    "${SCRIPT_DIR}"/print.py --action send_telegram_end --token "${TELEGRAM_TOKEN}" "--chat" "${TELEGRAM_CHAT}"
+  fi
 }
