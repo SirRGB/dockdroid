@@ -34,7 +34,7 @@ _args() {
   if which podman; then
     args=("--userns=keep-id")
   else
-    args=("--user" "${UID}":"${GID}")
+    args=("--user" "$(id -u)":"$(id -g)")
   fi
 
   # local volumes
