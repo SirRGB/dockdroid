@@ -66,7 +66,7 @@ ROM_BRANCH=lineage-22.2
   - ```LOCAL_MANIFEST```: Direct link to the local manifest(s)
   or
   - ```CLONE_REPOS```: Links to the repo(s) to clone. Repo name MUST have the following pattern https://github.com/user/android_dir1_dir2_dir3/tree/branch, https://github.com/user/dir1_dir2_dir3/tree/branch or https://github.com/user/proprietary_dir1_dir2_dir3/tree/branch. Not recommended.
-  - ```FETCH_MUPPETS```: Whether to fetch the official TheMuppets vendor repos. Only works on LineageOS 21 and above due to the respective [manifest](https://github.com/TheMuppets/manifests/blob/lineage-21.0/muppets.xml) groups. Any non-empty value is true. Only works with CLONE_REPOS.
+  - ```FETCH_MUPPETS```: Whether to fetch the official TheMuppets vendor repos. Only works on LineageOS 21 and above due to the respective [manifest](https://github.com/TheMuppets/manifests/blob/lineage-21.0/muppets.xml) groups. Any non-empty value is true. Only works with official roomservice-based workflow.
   - ```BL_RELOCK```: Signs vbmeta and uploads pkmd custom key. Untested, use at your own risk.
 - Fallbacks
   - ```LUNCH_PREFIX_FALLBACK```: Prefix for lunching, i.e. lineage for LineageOS. Needed when neither ```LOCAL_MANIFEST``` nor ```CLONE_REPOS``` are specified.
