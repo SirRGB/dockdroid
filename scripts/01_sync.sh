@@ -30,7 +30,7 @@ _sync() {
   local threads
   threads=$(nproc)
   repo forall -c "rm .git/*.lock" || true
-  repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
+  repo sync --current-branch --force-remove-dirty --force-sync --no-tags --no-clone-bundle --retry-fetches=25 --jobs="${threads}" --jobs-network=$((threads < 16 ? threads : 16)) 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt || true
   if grep --quiet "Failing repos" "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
   then
     # Extract failing repositories from the error message and echo the deletion path
@@ -41,8 +41,8 @@ _sync() {
         repo_path=$(dirname "${repo_info}")
         repo_name=$(basename "${repo_info}")
         # Delete the repository
-        rm --recursive --force "${repo_path:?}/${repo_name}"
-        rm --recursive --force "${ROM_DIR}"/.repo/project/"${repo_path}"/"${repo_name}"/*.git
+        rm --recursive --force "${repo_path:?}"/"${repo_name}"
+        rm --recursive --force "${ROM_DIR}"/.repo/projects/"${repo_path}"/"${repo_name}"/*.git
     done <<< "$(awk '/Failing repos.*:/ {flag=1; next} /Try/ {flag=0} flag' < "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt | sort -u)"
   fi
 
@@ -55,8 +55,8 @@ _sync() {
           repo_path=$(dirname "${repo_info}")
           repo_name=$(basename "${repo_info}")
           # Delete the repository
-          rm --recursive --force "${repo_path:?}/${repo_name}"
-          rm --recursive --force "${ROM_DIR}"/".repo/project/${repo_path}/${repo_name}"/*.git
+          rm --recursive --force "${repo_path:?}"/"${repo_name}"
+          rm --recursive --force "${ROM_DIR}"/.repo/projects/"${repo_path}"/"${repo_name}"/*.git
       done <<< "$(grep 'uncommitted changes are present' < "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt)"
   fi
 
