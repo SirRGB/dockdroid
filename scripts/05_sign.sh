@@ -102,7 +102,7 @@ if [[ -n "${ROM_BUILD_FLAGS}" ]]; then
     read -r -a "TARGET_BUILD_FLAGS" <<< "${flags}"
     _print_success "Current build flags: ${flags}"
     _determine_signing "${TARGET_BUILD_FLAGS[@]}"
-    source "${SCRIPT_DIR}"/packaging.sh
+    source "${SCRIPT_DIR}"/06_packaging.sh
   done
 else
   _determine_signing
