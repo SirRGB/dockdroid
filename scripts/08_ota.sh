@@ -16,9 +16,11 @@ _ota_info() {
 # Push OTA info
 _push_ota_info() {
   local target_ota_repo_url target_ota_branch
-  if [[ ! -d "${ROM_DIR}"_ota ]]; then
-    mkdir "${ROM_DIR}"_ota
+  if [[ -d "${ROM_DIR}"_ota ]]; then
+    rm --recursive --force "${ROM_DIR}"_ota
   fi
+
+  mkdir "${ROM_DIR}"_ota
   cd "${ROM_DIR}"_ota || exit
   git init
 
