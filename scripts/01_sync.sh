@@ -10,10 +10,6 @@ _sync() {
   fi
   cd "${ROM_DIR}" || exit
   repo init -u "${ROM_MANIFEST}" -b "${ROM_BRANCH}" --depth=1 -g default,-darwin --git-lfs --no-clone-bundle 2>&1 | tee --append "${LOGS_DIR}"/"${BUILD_DATE}"/sync.txt
-  # Pull the latest repo tool
-  cd "${ROM_DIR}"/.repo/repo || exit
-  git pull
-  cd "${ROM_DIR}" || exit
   # Remove local manifests
   find "${ROM_DIR}"/.repo/local_manifests/ -type f -exec rm {} \;
   if [[ -n "${LOCAL_MANIFEST}" ]]; then
