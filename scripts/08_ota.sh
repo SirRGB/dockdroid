@@ -5,12 +5,50 @@ source "${SCRIPT_DIR}"/print.sh
 
 # Create/print ota json
 _ota_info() {
-  local file_size id datetime custom_build_type
-  file_size=$(stat --format=%s "${OUT}"/"${PACKAGE_NAME}")
-  id=$(sha256sum "${OUT}"/"${PACKAGE_NAME}" | cut --delimiter=' ' --fields=1)
+  if [[ 15 -lt "${ANDROID_VERSION}"  ]]; then
+    _ota_info_new
+  else
+    _ota_info_old
+  fi
+}
+
+_extract_meta() {
+  sed -n "s/^${1}=//;T;p;q" <<<"${metadata}"
+}
+
+_ota_info_new() {
+  local metadata date datetime filename filepath os_patch_level os_sdk_level ota_property_files sha1 sha256 file_size type url
+  metadata="$(unzip -p "${OUT}"/"${PACKAGE_NAME}" META-INF/com/android/metadata 2>/dev/null || true)"
+  [[ -n "${metadata}" ]] || echo "no META-INF/com/android/metadata in ${PACKAGE_NAME} — is this really an OTA zip?"
+
+  date=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut --delimiter='=' --fields=2)
   datetime=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut --delimiter='=' --fields=2)
-  custom_build_type='UNOFFICIAL'
-  python3 -m json.tool --indent 2 <<< "{\"response\": [{\"datetime\": ${datetime},\"filename\": \"${PACKAGE_NAME}\",\"id\": \"${id}\",\"romtype\": \"${custom_build_type}\", \"size\": ${file_size}, \"url\": \"${DL_OTA_URL}\", \"version\": \"${ROM_VERSION}\"}]}" > "${OUT}"/"${PACKAGE_NAME}".json
+  filename="${PACKAGE_NAME}"
+  filepath=$(cut --delimiter='/' --fields=4- <<< "${DL_OTA_URL}"/"${PACKAGE_NAME}")
+  os_patch_level="$(_extract_meta 'post-security-patch-level')"
+  os_sdk_level="$(_extract_meta 'post-sdk-level')"
+  ota_property_files="$(_extract_meta 'ota-property-files')"
+  sha1=$(sha1sum "${OUT}"/"${PACKAGE_NAME}" | cut --delimiter=' ' --fields=1)
+  sha256=$(sha256sum "${OUT}"/"${PACKAGE_NAME}" | cut --delimiter=' ' --fields=1)
+  file_size=$(stat --format=%s "${OUT}"/"${PACKAGE_NAME}")
+  type='UNOFFICIAL'
+  url="${DL_OTA_URL}"
+  version="${ROM_VERSION}"
+
+  python3 -m json.tool --indent 2 <<< "[{\"date\": \"${date}\",\"datetime\": ${datetime},\"files\":[{\"date\": \"${date}\",\"datetime\": ${datetime},\"filename\": \"${filename}\",\"filepath\": \"${filepath}\",\"os_patch_level\": ${os_patch_level},\"os_sdk_level\": ${os_sdk_level},\"os_property_files\": \"${ota_property_files}\",\"sha1\": \"${sha1}\",\"sha256\": \"${sha256}\",\"size\": ${file_size},\"type\": \"${type}\",\"url\": \"${url}\"}],\"type\": \"${type}\",\"version\": \"${version}\"}]" > "${OUT}"/"${PACKAGE_NAME}".json
+}
+
+_ota_info_old() {
+  local datetime file_id filename file_size romtype url version
+  datetime=$(grep ro\.build\.date\.utc "${OUT}"/system/build.prop | cut --delimiter='=' --fields=2)
+  filename="${PACKAGE_NAME}"
+  file_id=$(sha256sum "${OUT}"/"${PACKAGE_NAME}" | cut --delimiter=' ' --fields=1)
+  romtype='UNOFFICIAL'
+  file_size=$(stat --format=%s "${OUT}"/"${PACKAGE_NAME}")
+  url="${DL_OTA_URL}"
+  version="${ROM_VERSION}"
+
+  python3 -m json.tool --indent 2 <<< "{\"response\": [{\"datetime\": ${datetime},\"filename\": \"${filename}\",\"id\": \"${file_id}\",\"romtype\": \"${romtype}\",\"size\": ${file_size},\"url\": \"${url}\",\"version\": \"${version}\"}]}" > "${OUT}"/"${PACKAGE_NAME}".json
 }
 
 # Push OTA info
