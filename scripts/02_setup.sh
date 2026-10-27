@@ -117,7 +117,7 @@ _keysgen() {
 
 # Get android version for legacy workarounds and signing
 _get_android_version() {
-  ANDROID_VERSION=$(< "${ROM_DIR}"/cts/tests/tests/os/assets/platform_versions.txt tr --delete 'A-z' | cut --delimiter='.' --fields=1 | sort | tail --lines=1)
+  ANDROID_VERSION=$(< "${ROM_DIR}"/cts/tests/tests/os/assets/platform_versions.txt tr --delete 'A-z' | cut --delimiter='.' --fields=1 | sort --numeric-sort | tail --lines=1)
 }
 
 # Prepare Android build env
