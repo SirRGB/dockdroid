@@ -40,6 +40,7 @@ IFS=',' read -r -a "DEVICE" <<< "${DEVICE}"
 for device in "${DEVICE[@]}"; do
   TARGET_DEVICE="${device}"
   _lunch
+  # shellcheck disable=SC2218
   _print_build_start
 
   source "${SCRIPT_DIR}"/05_sign.sh

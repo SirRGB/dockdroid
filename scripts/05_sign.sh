@@ -100,6 +100,7 @@ if [[ -n "${ROM_BUILD_FLAGS}" ]]; then
   IFS=',' read -r -a "ROM_BUILD_FLAGS" <<< "${ROM_BUILD_FLAGS}"
   for flags in "${ROM_BUILD_FLAGS[@]}"; do
     read -r -a "TARGET_BUILD_FLAGS" <<< "${flags}"
+    # shellcheck disable=SC2218
     _print_success "Current build flags: ${flags}"
     _determine_signing "${TARGET_BUILD_FLAGS[@]}"
     source "${SCRIPT_DIR}"/06_packaging.sh

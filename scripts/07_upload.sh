@@ -72,6 +72,7 @@ _cleanup_fail() {
 
 _upload
 if [[ -n "${UPLOAD_TARGET}" ]]; then
+  # shellcheck disable=SC2218
   _print_upload_success
 fi
 
