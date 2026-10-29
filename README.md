@@ -70,8 +70,8 @@ ROM_BRANCH=lineage-22.2
   - ```BL_RELOCK```: Signs vbmeta and uploads pkmd custom key. Untested, use at your own risk.
 - Fallbacks
   - ```LUNCH_PREFIX_FALLBACK```: Prefix for lunching, i.e. lineage for LineageOS. Needed when neither ```LOCAL_MANIFEST``` nor ```CLONE_REPOS``` are specified.
-  - ```ROM_PREFIX_FALLBACK```: Prefix for naming, i.e. lineage will result in a package name like lineage-extraversion(if set)-version-date-device-signed.zip. Needed when *_TARGET_PACKAGE is not defined in vendor/*/build/tasks/* or build/core/Makefile.
-  - ```ROM_VERSION_FALLBACK```: Version fallback for package name. Needed when rom does not specify PRODUCT_VERSION_MINOR/PRODUCT_VERSION_MAJOR in vendor/*/config/.
+  - ```ROM_PREFIX_FALLBACK```: Prefix for naming, i.e. lineage will result in a package name like lineage-extraversion(if set)-version-date-device-signed.zip. Needed when \*_TARGET_PACKAGE is not defined in vendor/\*/build/tasks/\* or build/core/Makefile.
+  - ```ROM_VERSION_FALLBACK```: Version fallback for package name. Needed when rom does not specify PRODUCT_VERSION_MINOR/PRODUCT_VERSION_MAJOR in vendor/\*/config/.
   - ```ROM_OTA_BRANCH_FALLBACK```: Ota branch fallback. Needed when roms have conflicting branch names and ota updates are set up.
   - ```RELEASETOOL_EXTRA_FLAGS```: Releasetool flags for setting up legacy quirks i.e. skip certain vintf checks.
 - GitHub Upload
